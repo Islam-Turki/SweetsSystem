@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -8,8 +9,30 @@ namespace sweetSystem
     // ── Rounded Panel ─────────────────────────────────────────────────────────
     public class RoundedPanel : Panel
     {
-        public int    Radius      { get; set; } = Theme.CornerRadius;
-        public Color  BorderColor { get; set; } = Theme.SurfaceBorder;
+        private int _radius = Theme.CornerRadius;
+        private Color _borderColor = Theme.SurfaceBorder;
+
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int Radius
+        {
+            get => _radius;
+            set { _radius = value; Invalidate(); }
+        }
+
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BorderColor
+        {
+            get => _borderColor;
+            set { _borderColor = value; Invalidate(); }
+        }
+
+        public RoundedPanel()
+        {
+        }
 
         protected override void OnPaintBackground(PaintEventArgs e) { /* suppress flicker */ }
 
@@ -49,7 +72,16 @@ namespace sweetSystem
     // ── Flat Rounded Button ───────────────────────────────────────────────────
     public class FlatButton : Button
     {
-        public int Radius { get; set; } = 6;
+        private int _radius = 6;
+
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int Radius
+        {
+            get => _radius;
+            set { _radius = value; Invalidate(); }
+        }
 
         public FlatButton()
         {
@@ -57,12 +89,16 @@ namespace sweetSystem
             FlatAppearance.BorderSize = 0;
             FlatAppearance.MouseOverBackColor = Color.Transparent;
             FlatAppearance.MouseDownBackColor = Color.Transparent;
-            BackColor = Theme.AccentGreen;
-            ForeColor = Color.White;
-            Font      = Theme.FontBodyB;
-            Cursor    = Cursors.Hand;
-            Height    = Theme.ButtonHeight;
             UseVisualStyleBackColor = false;
+
+            if (!this.DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+            {
+                BackColor = Theme.AccentGreen;
+                ForeColor = Color.White;
+                Font      = Theme.FontBodyB;
+                Cursor    = Cursors.Hand;
+                Height    = Theme.ButtonHeight;
+            }
         }
 
         private bool _hover, _pressed;
@@ -183,18 +219,62 @@ namespace sweetSystem
         private readonly Label _titleLbl, _valueLbl, _subLbl;
         private Color _accentColor = Theme.AccentGreen;
 
-        public string Title { get => _titleLbl.Text; set => _titleLbl.Text = value; }
-        public string Value { get => _valueLbl.Text; set => _valueLbl.Text = value; }
-        public string SubText { get => _subLbl.Text; set => _subLbl.Text = value; }
-        public Color AccentColor { get => _accentColor; set { _accentColor = value; Invalidate(); } }
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string Title 
+        { 
+            get => _titleLbl.Text; 
+            set { _titleLbl.Text = value; Invalidate(); } 
+        }
 
-        public StatCard() : this("العنوان", "—", "نص فرعي", Theme.AccentGreen) { }
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string Value 
+        { 
+            get => _valueLbl.Text; 
+            set { _valueLbl.Text = value; Invalidate(); } 
+        }
 
-        public StatCard(string title, string value, string sub, Color accent)
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string SubText 
+        { 
+            get => _subLbl.Text; 
+            set { _subLbl.Text = value; Invalidate(); } 
+        }
+
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color AccentColor 
+        { 
+            get => _accentColor; 
+            set { _accentColor = value; Invalidate(); } 
+        }
+
+        public StatCard()
         {
             Width     = 195; Height    = 95;
-            BackColor = Theme.Surface;
-            _accentColor = accent;
+
+            _titleLbl = new Label { Text = "العنوان", AutoSize = true, Left = 14, Top = 10, RightToLeft = RightToLeft.No };
+            _valueLbl = new Label { Text = "—", AutoSize = true, Left = 14, Top = 30, RightToLeft = RightToLeft.No };
+            _subLbl   = new Label { Text = "نص فرعي", AutoSize = true, Left = 14, Top = 66, RightToLeft = RightToLeft.No };
+
+            if (!this.DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+            {
+                BackColor = Theme.Surface;
+                _titleLbl.Font = Theme.FontSmall;
+                _titleLbl.ForeColor = Theme.TextSecondary;
+                _valueLbl.Font = Theme.FontH2;
+                _valueLbl.ForeColor = Theme.TextPrimary;
+                _subLbl.Font = Theme.FontSmall;
+                _subLbl.ForeColor = Theme.TextSecondary;
+            }
+
+            Controls.AddRange(new Control[] { _titleLbl, _valueLbl, _subLbl });
 
             Paint += (_, e) =>
             {
@@ -203,11 +283,14 @@ namespace sweetSystem
                 using var br = new SolidBrush(_accentColor);
                 e.Graphics.FillRectangle(br, new Rectangle(0, 8, 4, Height - 16));
             };
+        }
 
-            _titleLbl = new Label { Text = title, Font = Theme.FontSmall, ForeColor = Theme.TextSecondary, AutoSize = true, Left = 14, Top = 10, RightToLeft = RightToLeft.No };
-            _valueLbl = new Label { Text = value, Font = Theme.FontH2,    ForeColor = Theme.TextPrimary,   AutoSize = true, Left = 14, Top = 30, RightToLeft = RightToLeft.No };
-            _subLbl   = new Label { Text = sub,   Font = Theme.FontSmall, ForeColor = Theme.TextSecondary, AutoSize = true, Left = 14, Top = 66, RightToLeft = RightToLeft.No };
-            Controls.AddRange(new Control[] { _titleLbl, _valueLbl, _subLbl });
+        public StatCard(string title, string value, string sub, Color accent) : this()
+        {
+            _titleLbl.Text = title;
+            _valueLbl.Text = value;
+            _subLbl.Text = sub;
+            _accentColor = accent;
         }
 
         public void Update(string value, string sub = "")
@@ -220,18 +303,25 @@ namespace sweetSystem
     // ── Section Header ────────────────────────────────────────────────────────
     public class SectionHeader : Label
     {
-        public SectionHeader() : this("عنوان القسم") { }
-
-        public SectionHeader(string text)
+        public SectionHeader()
         {
-            Text      = text;
-            Font      = Theme.FontH2;
-            ForeColor = Theme.TextPrimary;
+            Text      = "عنوان القسم";
             AutoSize  = false;
             Height    = 28;
             Dock      = DockStyle.Top;
             TextAlign = ContentAlignment.MiddleRight;
             Padding   = new Padding(0, 2, 4, 2);
+
+            if (!this.DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+            {
+                Font      = Theme.FontH2;
+                ForeColor = Theme.TextPrimary;
+            }
+        }
+
+        public SectionHeader(string text) : this()
+        {
+            Text = text;
         }
     }
 
@@ -240,27 +330,57 @@ namespace sweetSystem
     {
         private bool _active;
         private bool _hover;
+        private string _icon = "";
+        private ContentAlignment _textAlignment = ContentAlignment.MiddleRight;
 
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool Active
         {
             get => _active;
             set { if (_active == value) return; _active = value; Invalidate(); }
         }
 
-        public string Icon { get; set; } = "";
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public string Icon 
+        { 
+            get => _icon; 
+            set { _icon = value; Invalidate(); } 
+        }
 
-        public NavButton(string text, string icon = "")
+        [Category("Appearance")]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public ContentAlignment TextAlignment 
+        { 
+            get => _textAlignment; 
+            set { _textAlignment = value; Invalidate(); } 
+        }
+
+        public NavButton()
         {
-            Text     = text;
-            Icon     = icon;
+            Text     = "Nav Button";
             Width    = Theme.SidebarWidth;
             Height   = 46;
-            Font     = Theme.FontNav;
             Cursor   = Cursors.Hand;
             SetStyle(ControlStyles.AllPaintingInWmPaint  |
                      ControlStyles.UserPaint             |
                      ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.ResizeRedraw, true);
+
+            if (!this.DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+            {
+                Font = Theme.FontNav;
+            }
+        }
+
+        public NavButton(string text, string icon = "") : this()
+        {
+            Text = text;
+            Icon = icon;
         }
 
         protected override void OnMouseEnter(EventArgs e) { _hover = true;  Invalidate(); base.OnMouseEnter(e); }
@@ -296,14 +416,21 @@ namespace sweetSystem
             // Text + icon  (right-to-left: icon on right, text flows right)
             Color fc    = _active ? Color.FromArgb(30, 46, 33) : Theme.TextOnDark;
             string label = $"{Text}  {Icon}";
+            
+            StringAlignment hAlign =
+            TextAlignment == ContentAlignment.MiddleLeft ? StringAlignment.Near :
+            TextAlignment == ContentAlignment.MiddleCenter ? StringAlignment.Center :
+            StringAlignment.Far;
+
             var sf = new StringFormat
             {
-                Alignment     = StringAlignment.Far,      // right-aligned for Arabic
+                Alignment     = hAlign,
                 LineAlignment = StringAlignment.Center,
-                FormatFlags   = StringFormatFlags.NoWrap | StringFormatFlags.DirectionRightToLeft
+                FormatFlags   = StringFormatFlags.NoWrap
             };
             using var tf = new SolidBrush(fc);
-            g.DrawString(label, Font, tf, new RectangleF(6, 0, Width - 14, Height), sf);
+            RectangleF textRect = new RectangleF(6, 0, Width - 12, Height);
+            g.DrawString(label, Font, tf, textRect, sf);
         }
     }
 }

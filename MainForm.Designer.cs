@@ -28,253 +28,311 @@ namespace sweetSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this._sidebar = new System.Windows.Forms.Panel();
-            this.footer = new System.Windows.Forms.Panel();
-            this.footerLabel = new System.Windows.Forms.Label();
-            this.btnWholesale = new sweetSystem.NavButton("عملاء الجملة", "🏪");
-            this.btnHR = new sweetSystem.NavButton("الموارد البشرية", "👥");
-            this.btnProdMgmt = new sweetSystem.NavButton("إدارة المنتجات", "🍬");
-            this.btnProdView = new sweetSystem.NavButton("عرض الإنتاج", "🍳");
-            this.breakLine = new System.Windows.Forms.Panel();
-            this.btnOrderMgmt = new sweetSystem.NavButton("إدارة الطلبات", "📋");
-            this.btnDelegation = new sweetSystem.NavButton("مركز التوزيع", "📦");
-            this.btnOrderEntry = new sweetSystem.NavButton("إدخال الطلبات", "🛒");
-            this.btnDashboard = new sweetSystem.NavButton("لوحة التحكم", "📊");
-            this.sep = new System.Windows.Forms.Panel();
-            this.navLabel = new System.Windows.Forms.Label();
-            this.logoPanel = new System.Windows.Forms.Panel();
-            this.appSub = new System.Windows.Forms.Label();
-            this.appName = new System.Windows.Forms.Label();
-            this.cake = new System.Windows.Forms.Label();
-            this._contentArea = new System.Windows.Forms.Panel();
-            this._sidebar.SuspendLayout();
-            this.footer.SuspendLayout();
-            this.logoPanel.SuspendLayout();
-            this._contentArea.SuspendLayout();
-            this.SuspendLayout();
+            _sidebar = new Panel();
+            btnWholesale = new NavButton();
+            btnHR = new NavButton();
+            btnProdMgmt = new NavButton();
+            btnProdView = new NavButton();
+            breakLine = new Panel();
+            btnOrderMgmt = new NavButton();
+            btnDelegation = new NavButton();
+            btnOrderEntry = new NavButton();
+            btnDashboard = new NavButton();
+            sep = new Panel();
+            navLabel = new Label();
+            logoPanel = new Panel();
+            appSub = new Label();
+            appName = new Label();
+            cake = new Label();
+            footer = new Panel();
+            footerLabel = new Label();
+            _contentArea = new Panel();
+            _sidebar.SuspendLayout();
+            logoPanel.SuspendLayout();
+            footer.SuspendLayout();
+            SuspendLayout();
             // 
             // _sidebar
             // 
-            this._sidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(46)))), ((int)(((byte)(36)))));
-            this._sidebar.Controls.Add(this.btnWholesale);
-            this._sidebar.Controls.Add(this.btnHR);
-            this._sidebar.Controls.Add(this.btnProdMgmt);
-            this._sidebar.Controls.Add(this.btnProdView);
-            this._sidebar.Controls.Add(this.breakLine);
-            this._sidebar.Controls.Add(this.btnOrderMgmt);
-            this._sidebar.Controls.Add(this.btnDelegation);
-            this._sidebar.Controls.Add(this.btnOrderEntry);
-            this._sidebar.Controls.Add(this.btnDashboard);
-            this._sidebar.Controls.Add(this.sep);
-            this._sidebar.Controls.Add(this.navLabel);
-            this._sidebar.Controls.Add(this.logoPanel);
-            this._sidebar.Controls.Add(this.footer);
-            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this._sidebar.Location = new System.Drawing.Point(0, 0);
-            this._sidebar.Name = "_sidebar";
-            this._sidebar.Size = new System.Drawing.Size(260, 800);
-            this._sidebar.TabIndex = 0;
-            // 
-            // footer
-            // 
-            this.footer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(34)))), ((int)(((byte)(25)))));
-            this.footer.Controls.Add(this.footerLabel);
-            this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 760);
-            this.footer.Name = "footer";
-            this.footer.Size = new System.Drawing.Size(260, 40);
-            this.footer.TabIndex = 0;
-            // 
-            // footerLabel
-            // 
-            this.footerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.footerLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.footerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(130)))), ((int)(((byte)(90)))));
-            this.footerLabel.Location = new System.Drawing.Point(0, 0);
-            this.footerLabel.Name = "footerLabel";
-            this.footerLabel.Size = new System.Drawing.Size(260, 40);
-            this.footerLabel.TabIndex = 0;
-            this.footerLabel.Text = "© 2026  نظام محل الحلويات v1.0";
-            this.footerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            _sidebar.BackColor = Color.FromArgb(53, 133, 142);
+            _sidebar.Controls.Add(btnWholesale);
+            _sidebar.Controls.Add(btnHR);
+            _sidebar.Controls.Add(btnProdMgmt);
+            _sidebar.Controls.Add(btnProdView);
+            _sidebar.Controls.Add(breakLine);
+            _sidebar.Controls.Add(btnOrderMgmt);
+            _sidebar.Controls.Add(btnDelegation);
+            _sidebar.Controls.Add(btnOrderEntry);
+            _sidebar.Controls.Add(btnDashboard);
+            _sidebar.Controls.Add(sep);
+            _sidebar.Controls.Add(navLabel);
+            _sidebar.Controls.Add(logoPanel);
+            _sidebar.Controls.Add(footer);
+            _sidebar.Dock = DockStyle.Left;
+            _sidebar.Location = new Point(0, 0);
+            _sidebar.Margin = new Padding(4, 5, 4, 5);
+            _sidebar.Name = "_sidebar";
+            _sidebar.Size = new Size(347, 1055);
+            _sidebar.TabIndex = 0;
             // 
             // btnWholesale
             // 
-            this.btnWholesale.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnWholesale.Location = new System.Drawing.Point(0, 461);
-            this.btnWholesale.Name = "btnWholesale";
-            this.btnWholesale.Size = new System.Drawing.Size(260, 46);
-            this.btnWholesale.TabIndex = 11;
-            this.btnWholesale.Click += new System.EventHandler(this.btnWholesale_Click);
+            btnWholesale.Active = false;
+            btnWholesale.Dock = DockStyle.Top;
+            btnWholesale.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnWholesale.Icon = "🏪";
+            btnWholesale.Location = new Point(0, 712);
+            btnWholesale.Margin = new Padding(4, 5, 4, 5);
+            btnWholesale.Name = "btnWholesale";
+            btnWholesale.Size = new Size(347, 71);
+            btnWholesale.TabIndex = 11;
+            btnWholesale.Text = "عملاء الجملة";
+            btnWholesale.TextAlignment = ContentAlignment.MiddleRight;
+            btnWholesale.Click += btnWholesale_Click;
             // 
             // btnHR
             // 
-            this.btnHR.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnHR.Location = new System.Drawing.Point(0, 415);
-            this.btnHR.Name = "btnHR";
-            this.btnHR.Size = new System.Drawing.Size(260, 46);
-            this.btnHR.TabIndex = 10;
-            this.btnHR.Click += new System.EventHandler(this.btnHR_Click);
+            btnHR.Active = false;
+            btnHR.Dock = DockStyle.Top;
+            btnHR.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnHR.Icon = "👥";
+            btnHR.Location = new Point(0, 641);
+            btnHR.Margin = new Padding(4, 5, 4, 5);
+            btnHR.Name = "btnHR";
+            btnHR.Size = new Size(347, 71);
+            btnHR.TabIndex = 10;
+            btnHR.Text = "الموارد البشرية";
+            btnHR.TextAlignment = ContentAlignment.MiddleRight;
+            btnHR.Click += btnHR_Click;
             // 
             // btnProdMgmt
             // 
-            this.btnProdMgmt.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnProdMgmt.Location = new System.Drawing.Point(0, 369);
-            this.btnProdMgmt.Name = "btnProdMgmt";
-            this.btnProdMgmt.Size = new System.Drawing.Size(260, 46);
-            this.btnProdMgmt.TabIndex = 9;
-            this.btnProdMgmt.Click += new System.EventHandler(this.btnProdMgmt_Click);
+            btnProdMgmt.Active = false;
+            btnProdMgmt.Dock = DockStyle.Top;
+            btnProdMgmt.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnProdMgmt.Icon = "🍬";
+            btnProdMgmt.Location = new Point(0, 570);
+            btnProdMgmt.Margin = new Padding(4, 5, 4, 5);
+            btnProdMgmt.Name = "btnProdMgmt";
+            btnProdMgmt.Size = new Size(347, 71);
+            btnProdMgmt.TabIndex = 9;
+            btnProdMgmt.Text = "إدارة المنتجات";
+            btnProdMgmt.TextAlignment = ContentAlignment.MiddleRight;
+            btnProdMgmt.Click += btnProdMgmt_Click;
             // 
             // btnProdView
             // 
-            this.btnProdView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnProdView.Location = new System.Drawing.Point(0, 323);
-            this.btnProdView.Name = "btnProdView";
-            this.btnProdView.Size = new System.Drawing.Size(260, 46);
-            this.btnProdView.TabIndex = 8;
-            this.btnProdView.Click += new System.EventHandler(this.btnProdView_Click);
+            btnProdView.Active = false;
+            btnProdView.Dock = DockStyle.Top;
+            btnProdView.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnProdView.Icon = "🍳";
+            btnProdView.Location = new Point(0, 499);
+            btnProdView.Margin = new Padding(4, 5, 4, 5);
+            btnProdView.Name = "btnProdView";
+            btnProdView.Size = new Size(347, 71);
+            btnProdView.TabIndex = 8;
+            btnProdView.Text = "عرض الإنتاج";
+            btnProdView.TextAlignment = ContentAlignment.MiddleRight;
+            btnProdView.Click += btnProdView_Click;
             // 
             // breakLine
             // 
-            this.breakLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(80)))), ((int)(((byte)(58)))));
-            this.breakLine.Dock = System.Windows.Forms.DockStyle.Top;
-            this.breakLine.Location = new System.Drawing.Point(0, 322);
-            this.breakLine.Name = "breakLine";
-            this.breakLine.Size = new System.Drawing.Size(260, 1);
-            this.breakLine.TabIndex = 7;
+            breakLine.BackColor = Color.FromArgb(150, 195, 150);
+            breakLine.Dock = DockStyle.Top;
+            breakLine.Location = new Point(0, 497);
+            breakLine.Margin = new Padding(4, 5, 4, 5);
+            breakLine.Name = "breakLine";
+            breakLine.Size = new Size(347, 2);
+            breakLine.TabIndex = 7;
             // 
             // btnOrderMgmt
             // 
-            this.btnOrderMgmt.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnOrderMgmt.Location = new System.Drawing.Point(0, 276);
-            this.btnOrderMgmt.Name = "btnOrderMgmt";
-            this.btnOrderMgmt.Size = new System.Drawing.Size(260, 46);
-            this.btnOrderMgmt.TabIndex = 6;
-            this.btnOrderMgmt.Click += new System.EventHandler(this.btnOrderMgmt_Click);
+            btnOrderMgmt.Active = false;
+            btnOrderMgmt.Dock = DockStyle.Top;
+            btnOrderMgmt.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnOrderMgmt.Icon = "📋";
+            btnOrderMgmt.Location = new Point(0, 426);
+            btnOrderMgmt.Margin = new Padding(4, 5, 4, 5);
+            btnOrderMgmt.Name = "btnOrderMgmt";
+            btnOrderMgmt.Size = new Size(347, 71);
+            btnOrderMgmt.TabIndex = 6;
+            btnOrderMgmt.Text = "إدارة الطلبات";
+            btnOrderMgmt.TextAlignment = ContentAlignment.MiddleRight;
+            btnOrderMgmt.Click += btnOrderMgmt_Click;
             // 
             // btnDelegation
             // 
-            this.btnDelegation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnDelegation.Location = new System.Drawing.Point(0, 230);
-            this.btnDelegation.Name = "btnDelegation";
-            this.btnDelegation.Size = new System.Drawing.Size(260, 46);
-            this.btnDelegation.TabIndex = 5;
-            this.btnDelegation.Click += new System.EventHandler(this.btnDelegation_Click);
+            btnDelegation.Active = false;
+            btnDelegation.Dock = DockStyle.Top;
+            btnDelegation.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnDelegation.Icon = "📦";
+            btnDelegation.Location = new Point(0, 355);
+            btnDelegation.Margin = new Padding(4, 5, 4, 5);
+            btnDelegation.Name = "btnDelegation";
+            btnDelegation.Size = new Size(347, 71);
+            btnDelegation.TabIndex = 5;
+            btnDelegation.Text = "مركز التوزيع";
+            btnDelegation.TextAlignment = ContentAlignment.MiddleRight;
+            btnDelegation.Click += btnDelegation_Click;
             // 
             // btnOrderEntry
             // 
-            this.btnOrderEntry.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnOrderEntry.Location = new System.Drawing.Point(0, 184);
-            this.btnOrderEntry.Name = "btnOrderEntry";
-            this.btnOrderEntry.Size = new System.Drawing.Size(260, 46);
-            this.btnOrderEntry.TabIndex = 4;
-            this.btnOrderEntry.Click += new System.EventHandler(this.btnOrderEntry_Click);
+            btnOrderEntry.Active = false;
+            btnOrderEntry.Dock = DockStyle.Top;
+            btnOrderEntry.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnOrderEntry.Icon = "\U0001f6d2";
+            btnOrderEntry.Location = new Point(0, 284);
+            btnOrderEntry.Margin = new Padding(4, 5, 4, 5);
+            btnOrderEntry.Name = "btnOrderEntry";
+            btnOrderEntry.Size = new Size(347, 71);
+            btnOrderEntry.TabIndex = 4;
+            btnOrderEntry.Text = "إدخال الطلبات";
+            btnOrderEntry.TextAlignment = ContentAlignment.MiddleRight;
+            btnOrderEntry.Click += btnOrderEntry_Click;
             // 
             // btnDashboard
             // 
-            this.btnDashboard.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnDashboard.Location = new System.Drawing.Point(0, 138);
-            this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.Size = new System.Drawing.Size(260, 46);
-            this.btnDashboard.TabIndex = 3;
-            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
+            btnDashboard.Active = false;
+            btnDashboard.Dock = DockStyle.Top;
+            btnDashboard.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            btnDashboard.Icon = "📊";
+            btnDashboard.Location = new Point(0, 213);
+            btnDashboard.Margin = new Padding(4, 5, 4, 5);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(347, 71);
+            btnDashboard.TabIndex = 3;
+            btnDashboard.Text = "لوحة التحكم";
+            btnDashboard.TextAlignment = ContentAlignment.MiddleRight;
+            btnDashboard.Click += btnDashboard_Click;
             // 
             // sep
             // 
-            this.sep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(80)))), ((int)(((byte)(58)))));
-            this.sep.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sep.Location = new System.Drawing.Point(0, 137);
-            this.sep.Name = "sep";
-            this.sep.Size = new System.Drawing.Size(260, 1);
-            this.sep.TabIndex = 2;
+            sep.BackColor = Color.FromArgb(150, 195, 150);
+            sep.Dock = DockStyle.Top;
+            sep.Location = new Point(0, 211);
+            sep.Margin = new Padding(4, 5, 4, 5);
+            sep.Name = "sep";
+            sep.Size = new Size(347, 2);
+            sep.TabIndex = 2;
             // 
             // navLabel
             // 
-            this.navLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.navLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.navLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(160)))), ((int)(((byte)(120)))));
-            this.navLabel.Location = new System.Drawing.Point(0, 107);
-            this.navLabel.Name = "navLabel";
-            this.navLabel.Size = new System.Drawing.Size(260, 30);
-            this.navLabel.TabIndex = 1;
-            this.navLabel.Text = "القائمة الرئيسية";
-            this.navLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            navLabel.BackColor = Color.FromArgb(53, 133, 142);
+            navLabel.Dock = DockStyle.Top;
+            navLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            navLabel.ForeColor = Color.FromArgb(120, 160, 120);
+            navLabel.Location = new Point(0, 165);
+            navLabel.Margin = new Padding(4, 0, 4, 0);
+            navLabel.Name = "navLabel";
+            navLabel.Size = new Size(347, 46);
+            navLabel.TabIndex = 1;
+            navLabel.Text = "القائمة الرئيسية";
+            navLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // logoPanel
             // 
-            this.logoPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(42)))), ((int)(((byte)(32)))));
-            this.logoPanel.Controls.Add(this.appSub);
-            this.logoPanel.Controls.Add(this.appName);
-            this.logoPanel.Controls.Add(this.cake);
-            this.logoPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.logoPanel.Location = new System.Drawing.Point(0, 0);
-            this.logoPanel.Name = "logoPanel";
-            this.logoPanel.Size = new System.Drawing.Size(260, 107);
-            this.logoPanel.TabIndex = 0;
+            logoPanel.BackColor = Color.FromArgb(53, 133, 142);
+            logoPanel.Controls.Add(appSub);
+            logoPanel.Controls.Add(appName);
+            logoPanel.Controls.Add(cake);
+            logoPanel.Dock = DockStyle.Top;
+            logoPanel.Location = new Point(0, 0);
+            logoPanel.Margin = new Padding(4, 5, 4, 5);
+            logoPanel.Name = "logoPanel";
+            logoPanel.Size = new Size(347, 165);
+            logoPanel.TabIndex = 0;
             // 
             // appSub
             // 
-            this.appSub.AutoSize = true;
-            this.appSub.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.appSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(195)))), ((int)(((byte)(150)))));
-            this.appSub.Location = new System.Drawing.Point(62, 54);
-            this.appSub.Name = "appSub";
-            this.appSub.Size = new System.Drawing.Size(107, 13);
-            this.appSub.TabIndex = 2;
-            this.appSub.Text = "نظام الإدارة المتكامل";
+            appSub.AutoSize = true;
+            appSub.Font = new Font("Segoe UI", 8F);
+            appSub.ForeColor = Color.FromArgb(150, 195, 150);
+            appSub.Location = new Point(202, 67);
+            appSub.Margin = new Padding(4, 0, 4, 0);
+            appSub.Name = "appSub";
+            appSub.Size = new Size(132, 19);
+            appSub.TabIndex = 2;
+            appSub.Text = "نظام الإدارة المتكامل";
             // 
             // appName
             // 
-            this.appName.AutoSize = true;
-            this.appName.Font = new System.Drawing.Font("Cairo", 11F, System.Drawing.FontStyle.Bold);
-            this.appName.ForeColor = System.Drawing.Color.White;
-            this.appName.Location = new System.Drawing.Point(62, 26);
-            this.appName.Name = "appName";
-            this.appName.Size = new System.Drawing.Size(102, 29);
-            this.appName.TabIndex = 1;
-            this.appName.Text = "محل الحلويات";
+            appName.AutoSize = true;
+            appName.Font = new Font("Cairo", 11F, FontStyle.Bold);
+            appName.ForeColor = Color.White;
+            appName.Location = new Point(204, 28);
+            appName.Margin = new Padding(4, 0, 4, 0);
+            appName.Name = "appName";
+            appName.Size = new Size(130, 36);
+            appName.TabIndex = 1;
+            appName.Text = "محل الحلويات";
             // 
             // cake
             // 
-            this.cake.AutoSize = true;
-            this.cake.Font = new System.Drawing.Font("Segoe UI Emoji", 26F);
-            this.cake.ForeColor = System.Drawing.Color.White;
-            this.cake.Location = new System.Drawing.Point(12, 18);
-            this.cake.Name = "cake";
-            this.cake.Size = new System.Drawing.Size(56, 47);
-            this.cake.TabIndex = 0;
-            this.cake.Text = "🍰";
+            cake.AutoSize = true;
+            cake.Font = new Font("Segoe UI Emoji", 26F);
+            cake.ForeColor = Color.White;
+            cake.Location = new Point(16, 28);
+            cake.Margin = new Padding(4, 0, 4, 0);
+            cake.Name = "cake";
+            cake.Size = new Size(85, 58);
+            cake.TabIndex = 0;
+            cake.Text = "🍰";
+            // 
+            // footer
+            // 
+            footer.BackColor = Color.FromArgb(22, 34, 25);
+            footer.Controls.Add(footerLabel);
+            footer.Dock = DockStyle.Bottom;
+            footer.Location = new Point(0, 993);
+            footer.Margin = new Padding(4, 5, 4, 5);
+            footer.Name = "footer";
+            footer.Size = new Size(347, 62);
+            footer.TabIndex = 0;
+            // 
+            // footerLabel
+            // 
+            footerLabel.BackColor = Color.FromArgb(53, 133, 142);
+            footerLabel.Dock = DockStyle.Fill;
+            footerLabel.Font = new Font("Segoe UI", 9F);
+            footerLabel.ForeColor = Color.FromArgb(90, 130, 90);
+            footerLabel.Location = new Point(0, 0);
+            footerLabel.Margin = new Padding(4, 0, 4, 0);
+            footerLabel.Name = "footerLabel";
+            footerLabel.Size = new Size(347, 62);
+            footerLabel.TabIndex = 0;
+            footerLabel.Text = "© 2026  نظام محل الحلويات v1.0";
+            footerLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // _contentArea
             // 
-            this._contentArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentArea.Location = new System.Drawing.Point(260, 0);
-            this._contentArea.Name = "_contentArea";
-            this._contentArea.Size = new System.Drawing.Size(1040, 800);
-            this._contentArea.TabIndex = 1;
-            // 
-
+            _contentArea.Dock = DockStyle.Fill;
+            _contentArea.Location = new Point(347, 0);
+            _contentArea.Margin = new Padding(4, 5, 4, 5);
+            _contentArea.Name = "_contentArea";
+            _contentArea.Size = new Size(1386, 1055);
+            _contentArea.TabIndex = 1;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1300, 800);
-            this.Controls.Add(this._contentArea);
-            this.Controls.Add(this._sidebar);
-            this.DoubleBuffered = true;
-            this.MinimumSize = new System.Drawing.Size(1050, 650);
-            this.Name = "MainForm";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "نظام إدارة محل الحلويات";
-            this._sidebar.ResumeLayout(false);
-            this.footer.ResumeLayout(false);
-            this.logoPanel.ResumeLayout(false);
-            this.logoPanel.PerformLayout();
-            this._contentArea.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            ClientSize = new Size(1733, 1055);
+            Controls.Add(_contentArea);
+            Controls.Add(_sidebar);
+            DoubleBuffered = true;
+            Margin = new Padding(4, 5, 4, 5);
+            MinimumSize = new Size(1394, 975);
+            Name = "MainForm";
+            RightToLeft = RightToLeft.Yes;
+            RightToLeftLayout = true;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "نظام إدارة محل الحلويات";
+            _sidebar.ResumeLayout(false);
+            logoPanel.ResumeLayout(false);
+            logoPanel.PerformLayout();
+            footer.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
