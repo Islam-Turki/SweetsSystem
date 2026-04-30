@@ -6,9 +6,9 @@ namespace sweetSystem
     public static class Theme
     {
         // ── Palette ───────────────────────────────────────────────────────────
-        public static readonly Color Sidebar       = Color.FromArgb(36,  52,  40);   // dark forest green
-        public static readonly Color SidebarHover  = Color.FromArgb(55,  78,  60);
-        public static readonly Color SidebarActive = Color.FromArgb(108, 163, 108);  // pistachio active
+        public static readonly Color Sidebar       = Color.FromArgb(53 ,133 ,142);   // dark forest green
+        public static readonly Color SidebarHover  = Color.FromArgb(230 ,238 ,201);
+        public static readonly Color SidebarActive = Color.FromArgb(194 ,208 ,153);  // pistachio active
 
         public static readonly Color Background    = Color.FromArgb(247, 246, 242);  // milk white
         public static readonly Color Surface       = Color.FromArgb(255, 255, 255);
@@ -20,8 +20,8 @@ namespace sweetSystem
         public static readonly Color AccentBlue    = Color.FromArgb(68,  125, 175);
 
         public static readonly Color TextPrimary   = Color.FromArgb(36,  36,  36);
-        public static readonly Color TextSecondary = Color.FromArgb(108, 108,  98);
-        public static readonly Color TextOnDark    = Color.FromArgb(224, 236, 224);
+        public static readonly Color TextSecondary = Color.FromArgb(36,36,36);
+        public static readonly Color TextOnDark    = Color.FromArgb(194 ,208 ,153);
         public static readonly Color TextOnAccent  = Color.White;
 
         // ── Fonts ─────────────────────────────────────────────────────────────
