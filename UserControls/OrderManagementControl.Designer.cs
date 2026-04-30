@@ -50,7 +50,7 @@ namespace sweetSystem.UserControls
             h1Label.Size = new Size(1146, 82);
             h1Label.TabIndex = 0;
             h1Label.Text = "📋  إدارة جميع الطلبات";
-            h1Label.TextAlign = ContentAlignment.MiddleRight;
+            h1Label.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // sepBar
             // 

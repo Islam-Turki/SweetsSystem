@@ -156,7 +156,7 @@ namespace sweetSystem
             g.DefaultCellStyle.Alignment                = rtl
                 ? DataGridViewContentAlignment.MiddleRight
                 : DataGridViewContentAlignment.MiddleLeft;
-            g.DefaultCellStyle.SelectionBackColor       = Color.FromArgb(198, 228, 198);
+            g.DefaultCellStyle.SelectionBackColor       = Color.FromArgb(245, 239, 230);
             g.DefaultCellStyle.SelectionForeColor       = Theme.TextPrimary;
             g.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(246, 250, 246);
             g.RowTemplate.Height                        = Theme.GridRowHeight;
