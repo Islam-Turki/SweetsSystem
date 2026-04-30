@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -22,6 +23,9 @@ namespace sweetSystem.UserControls
         {
             // ── Right col: tabs + pending orders grid
             var rightHeader = new SectionHeader("الطلبات المعلقة");
+            rightHeader.Dock = DockStyle.Top;
+            rightHeader.Height = 40;
+            rightHeader.Padding = new Padding(0, 0, 18, 0);
             var tabs = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 45, RightToLeft = RightToLeft.Yes };
             _btnToday    = new FlatButton { Text = "📅 طلبات اليوم", Width = 140, Margin = new Padding(0, 0, 8, 8) };
             _btnTomorrow = new FlatButton { Text = "📆 طلبات الغد",  Width = 140, Margin = new Padding(0, 0, 8, 8), BackColor = Theme.Surface, ForeColor = Theme.TextPrimary };
@@ -32,7 +36,7 @@ namespace sweetSystem.UserControls
 
             _pendingGrid = new DataGridView { Dock = DockStyle.Fill };
             GridHelper.Style(_pendingGrid, readOnly: true, rtl: true);
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",       HeaderText = "#",         FillWeight = 6  });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",       HeaderText = "رقم الطلب",         FillWeight = 6  });
             _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Customer", HeaderText = "العميل",    FillWeight = 32 });
             _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Type",     HeaderText = "النوع",     FillWeight = 14 });
             _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Items",    HeaderText = "الكميات",   FillWeight = 12 });
@@ -50,11 +54,15 @@ namespace sweetSystem.UserControls
 
         private void left_Controls_Add_PackagerGrid()
         {
-            leftPanel.Controls.Add(new SectionHeader("حمل المعبّئين — اليوم"));
+            var leftHeader = new SectionHeader("حمل المعبّئين");
+            leftHeader.Dock = DockStyle.Top;
+            leftHeader.Height = 40;
+            leftHeader.Padding = new Padding(0, 0, 18, 0);
+            leftPanel.Controls.Add(leftHeader);
 
             _packagerGrid = new DataGridView { Dock = DockStyle.Fill };
             GridHelper.Style(_packagerGrid, readOnly: true, rtl: true);
-            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Packager", HeaderText = "المعبّئ",  FillWeight = 45 });
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Packager", HeaderText = "الموظف المكلف",  FillWeight = 45 });
             _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Count",    HeaderText = "الطلبات",  FillWeight = 30 });
             leftPanel.Controls.Add(_packagerGrid);
 

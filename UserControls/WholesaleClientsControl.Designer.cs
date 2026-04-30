@@ -53,7 +53,7 @@ namespace sweetSystem.UserControls
             h1Label.Size = new Size(586, 82);
             h1Label.TabIndex = 0;
             h1Label.Text = "🏪  عملاء الجملة";
-            h1Label.TextAlign = ContentAlignment.MiddleRight;
+            h1Label.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // sepBar
             // 

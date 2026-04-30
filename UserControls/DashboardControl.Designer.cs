@@ -44,7 +44,7 @@ namespace sweetSystem.UserControls
             // 
             // h1Label
             // 
-            h1Label.Anchor = AnchorStyles.Top;
+            h1Label.Dock = DockStyle.Right;
             h1Label.Font = new Font("Cairo", 16F, FontStyle.Bold);
             h1Label.ForeColor = Color.FromArgb(36, 36, 36);
             h1Label.Location = new Point(0, 0);
@@ -76,6 +76,7 @@ namespace sweetSystem.UserControls
             cardRowPanel.Location = new Point(0, 84);
             cardRowPanel.Name = "cardRowPanel";
             cardRowPanel.Padding = new Padding(16, 10, 16, 0);
+            cardRowPanel.RightToLeft = RightToLeft.No;
             cardRowPanel.Size = new Size(1146, 112);
             cardRowPanel.TabIndex = 2;
             cardRowPanel.WrapContents = false;
@@ -84,7 +85,7 @@ namespace sweetSystem.UserControls
             // 
             _cOrders.AccentColor = Color.FromArgb(100, 158, 100);
             _cOrders.BackColor = Color.FromArgb(255, 255, 255);
-            _cOrders.Location = new Point(26, 10);
+            _cOrders.Location = new Point(909, 10);
             _cOrders.Margin = new Padding(0, 0, 10, 0);
             _cOrders.Name = "_cOrders";
             _cOrders.Size = new Size(195, 95);
@@ -97,7 +98,7 @@ namespace sweetSystem.UserControls
             // 
             _cPending.AccentColor = Color.FromArgb(100, 158, 100);
             _cPending.BackColor = Color.FromArgb(255, 255, 255);
-            _cPending.Location = new Point(231, 10);
+            _cPending.Location = new Point(704, 10);
             _cPending.Margin = new Padding(0, 0, 10, 0);
             _cPending.Name = "_cPending";
             _cPending.Size = new Size(195, 95);
@@ -110,7 +111,7 @@ namespace sweetSystem.UserControls
             // 
             _cRevenue.AccentColor = Color.FromArgb(100, 158, 100);
             _cRevenue.BackColor = Color.FromArgb(255, 255, 255);
-            _cRevenue.Location = new Point(436, 10);
+            _cRevenue.Location = new Point(499, 10);
             _cRevenue.Margin = new Padding(0, 0, 10, 0);
             _cRevenue.Name = "_cRevenue";
             _cRevenue.Size = new Size(195, 95);
@@ -123,7 +124,7 @@ namespace sweetSystem.UserControls
             // 
             _cClients.AccentColor = Color.FromArgb(100, 158, 100);
             _cClients.BackColor = Color.FromArgb(255, 255, 255);
-            _cClients.Location = new Point(641, 10);
+            _cClients.Location = new Point(294, 10);
             _cClients.Margin = new Padding(0, 0, 10, 0);
             _cClients.Name = "_cClients";
             _cClients.Size = new Size(195, 95);
@@ -148,6 +149,7 @@ namespace sweetSystem.UserControls
             _grid.Dock = DockStyle.Fill;
             _grid.Location = new Point(16, 16);
             _grid.Name = "_grid";
+            _grid.RightToLeft = RightToLeft.No;
             _grid.RowHeadersWidth = 51;
             _grid.Size = new Size(1114, 279);
             _grid.TabIndex = 0;
@@ -160,6 +162,7 @@ namespace sweetSystem.UserControls
             secLabel.Location = new Point(0, 196);
             secLabel.Name = "secLabel";
             secLabel.Padding = new Padding(0, 2, 4, 2);
+            secLabel.RightToLeft = RightToLeft.No;
             secLabel.Size = new Size(1146, 41);
             secLabel.TabIndex = 3;
             secLabel.Text = "آخر الطلبات";

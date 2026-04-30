@@ -48,7 +48,7 @@ namespace sweetSystem.UserControls
             h1Label.Size = new Size(1146, 82);
             h1Label.TabIndex = 0;
             h1Label.Text = "📦  مركز التوزيع";
-            h1Label.TextAlign = ContentAlignment.MiddleRight;
+            h1Label.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // sepBar
             // 
@@ -140,7 +140,7 @@ namespace sweetSystem.UserControls
             leftPanel.Dock = DockStyle.Fill;
             leftPanel.Location = new Point(19, 27);
             leftPanel.Name = "leftPanel";
-            leftPanel.Padding = new Padding(0, 0, 8, 0);
+            leftPanel.Padding = new Padding(8);
             leftPanel.Size = new Size(440, 362);
             leftPanel.TabIndex = 1;
             // 

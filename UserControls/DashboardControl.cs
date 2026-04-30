@@ -17,19 +17,22 @@ namespace sweetSystem.UserControls
             _cClients.Title = "عملاء الجملة"; _cClients.SubText = "حسابات نشطة"; _cClients.AccentColor = Theme.AccentRed;
 
             GridHelper.Style(_grid, readOnly: true, rtl: true);
+            // Ensure header alignment is applied and set headers to left-aligned
+            _grid.EnableHeadersVisualStyles = false;
+            _grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             SetupGridColumns();
         }
 
         private void SetupGridColumns()
         {
             _grid.Columns.Clear();
-            _grid.Columns.Add(MakeCol("ID",       "#",              35,  false));
+            _grid.Columns.Add(MakeCol("ID",       "رقم الطلب",              35,  false));
             _grid.Columns.Add(MakeCol("Type",     "النوع",          80,  false));
             _grid.Columns.Add(MakeCol("Customer", "العميل",         160, true));
-            _grid.Columns.Add(MakeCol("Items",    "الكميات",        80,  false));
+            _grid.Columns.Add(MakeCol("Items",    "الكميات",        80,  true));
             _grid.Columns.Add(MakeCol("Total",    "المجموع",        100, false));
             _grid.Columns.Add(MakeCol("Status",   "الحالة",         110, false));
-            _grid.Columns.Add(MakeCol("Date",     "موعد التسليم",   90,  false));
+            _grid.Columns.Add(MakeCol("Date",     "موعد التسليم",   90,  true));
         }
 
         private static DataGridViewTextBoxColumn MakeCol(string name, string header, int w, bool fill)
@@ -39,8 +42,9 @@ namespace sweetSystem.UserControls
                 Name       = name,
                 HeaderText = header,
                 FillWeight = w,
-                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleRight }
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft }
             };
+            
             if (!fill) c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             return c;
         }
