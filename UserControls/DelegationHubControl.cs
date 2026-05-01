@@ -9,7 +9,6 @@ namespace sweetSystem.UserControls
     public partial class DelegationHubControl : UserControl
     {
         private DataGridView _pendingGrid = null!, _packagerGrid = null!;
-        private Label        _lblSel = null!;
         private FlatButton   _btnToday = null!, _btnTomorrow = null!;
         private bool         _showTodayOrders = true;
 
@@ -24,6 +23,7 @@ namespace sweetSystem.UserControls
             // ── Right col: tabs + pending orders grid
             var rightHeader = new SectionHeader("الطلبات المعلقة");
             rightHeader.Dock = DockStyle.Top;
+            rightHeader.RightToLeft = RightToLeft.No;
             rightHeader.Height = 40;
             rightHeader.Padding = new Padding(0, 0, 18, 0);
             var tabs = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 45, RightToLeft = RightToLeft.Yes };
@@ -56,6 +56,8 @@ namespace sweetSystem.UserControls
         {
             var leftHeader = new SectionHeader("حمل المعبّئين");
             leftHeader.Dock = DockStyle.Top;
+            // make leftHeader right to left aligned
+            leftHeader.RightToLeft = RightToLeft.No;
             leftHeader.Height = 40;
             leftHeader.Padding = new Padding(0, 0, 18, 0);
             leftPanel.Controls.Add(leftHeader);
