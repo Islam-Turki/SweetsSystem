@@ -147,15 +147,15 @@ namespace sweetSystem
             g.ColumnHeadersDefaultCellStyle.ForeColor   = Color.White;
             g.ColumnHeadersDefaultCellStyle.Font        = Theme.FontBodyB;
             g.ColumnHeadersDefaultCellStyle.Alignment   = rtl
-                ? DataGridViewContentAlignment.MiddleRight
-                : DataGridViewContentAlignment.MiddleLeft;
+                ? DataGridViewContentAlignment.MiddleLeft
+                : DataGridViewContentAlignment.MiddleRight;
             g.ColumnHeadersHeight                       = 36;
             g.DefaultCellStyle.Font                     = Theme.FontBody;
             g.DefaultCellStyle.BackColor                = Theme.Surface;
             g.DefaultCellStyle.ForeColor                = Theme.TextPrimary;
             g.DefaultCellStyle.Alignment                = rtl
-                ? DataGridViewContentAlignment.MiddleRight
-                : DataGridViewContentAlignment.MiddleLeft;
+                ? DataGridViewContentAlignment.MiddleLeft
+                : DataGridViewContentAlignment.MiddleRight;
             g.DefaultCellStyle.SelectionBackColor       = Color.FromArgb(245, 239, 230);
             g.DefaultCellStyle.SelectionForeColor       = Theme.TextPrimary;
             g.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(246, 250, 246);

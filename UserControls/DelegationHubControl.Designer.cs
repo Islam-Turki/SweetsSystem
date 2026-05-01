@@ -19,11 +19,12 @@ namespace sweetSystem.UserControls
             btnAuto = new FlatButton();
             btnManualAll = new FlatButton();
             bodyTable = new TableLayoutPanel();
+            leftPanel = new TableLayoutPanel();
             rightPanel = new Panel();
-            leftPanel = new Panel();
             headerPanel.SuspendLayout();
             topBar.SuspendLayout();
             bodyTable.SuspendLayout();
+            leftPanel.SuspendLayout();
             SuspendLayout();
             // 
             // headerPanel
@@ -111,38 +112,44 @@ namespace sweetSystem.UserControls
             // 
             bodyTable.BackColor = Color.FromArgb(247, 246, 242);
             bodyTable.ColumnCount = 2;
-            bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            bodyTable.Controls.Add(rightPanel, 0, 0);
+            bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             bodyTable.Controls.Add(leftPanel, 1, 0);
+            bodyTable.Controls.Add(rightPanel, 0, 0);
             bodyTable.Dock = DockStyle.Fill;
             bodyTable.Location = new Point(0, 140);
             bodyTable.Name = "bodyTable";
             bodyTable.Padding = new Padding(16, 24, 16, 16);
-            bodyTable.RowCount = 1;
-            bodyTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            bodyTable.RowStyles.Add(new RowStyle(SizeType.Percent, 90F));
+            bodyTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             bodyTable.Size = new Size(1146, 408);
             bodyTable.TabIndex = 2;
+            // 
+            // leftPanel
+            // 
+            leftPanel.ColumnCount = 1;
+            leftPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            leftPanel.Dock = DockStyle.Fill;
+            leftPanel.Location = new Point(19, 27);
+            leftPanel.Name = "leftPanel";
+            leftPanel.RowCount = 3;
+            leftPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            leftPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+            leftPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            leftPanel.Size = new Size(329, 362);
+            leftPanel.TabIndex = 0;
             // 
             // rightPanel
             // 
             rightPanel.BackColor = Color.FromArgb(247, 246, 242);
             rightPanel.Dock = DockStyle.Fill;
-            rightPanel.Location = new Point(465, 27);
+            rightPanel.Location = new Point(354, 27);
             rightPanel.Name = "rightPanel";
             rightPanel.Padding = new Padding(8, 0, 0, 0);
-            rightPanel.Size = new Size(662, 362);
+            rightPanel.Size = new Size(773, 362);
             rightPanel.TabIndex = 0;
             // 
-            // leftPanel
-            // 
-            leftPanel.BackColor = Color.FromArgb(247, 246, 242);
-            leftPanel.Dock = DockStyle.Fill;
-            leftPanel.Location = new Point(19, 27);
-            leftPanel.Name = "leftPanel";
-            leftPanel.Padding = new Padding(8);
-            leftPanel.Size = new Size(440, 362);
-            leftPanel.TabIndex = 1;
+            
             // 
             // DelegationHubControl
             // 
@@ -158,6 +165,8 @@ namespace sweetSystem.UserControls
             headerPanel.ResumeLayout(false);
             topBar.ResumeLayout(false);
             bodyTable.ResumeLayout(false);
+            leftPanel.ResumeLayout(false);
+            leftPanel.PerformLayout();
             ResumeLayout(false);
         }
         #endregion
@@ -169,7 +178,8 @@ namespace sweetSystem.UserControls
         private sweetSystem.FlatButton btnAuto;
         private sweetSystem.FlatButton btnManualAll;
         private System.Windows.Forms.TableLayoutPanel bodyTable;
-        private System.Windows.Forms.Panel rightPanel;
-        private System.Windows.Forms.Panel leftPanel;
+        private Panel rightPanel;
+        private TableLayoutPanel leftPanel;
+        private Label _lblSel;
     }
 }
