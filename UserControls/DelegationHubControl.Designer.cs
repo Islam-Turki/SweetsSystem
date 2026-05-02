@@ -12,6 +12,11 @@ namespace sweetSystem.UserControls
         #region Component Designer generated code
         private void InitializeComponent()
         {
+            _pendingGrid = new DataGridView();
+            _packagerGrid = new DataGridView();
+            _lblSel = new Label();
+            rightHeader = new SectionHeader();
+            leftHeader = new SectionHeader();
             headerPanel = new Panel();
             h1Label = new Label();
             sepBar = new Panel();
@@ -21,11 +26,75 @@ namespace sweetSystem.UserControls
             bodyTable = new TableLayoutPanel();
             leftPanel = new TableLayoutPanel();
             rightPanel = new Panel();
+            tabs = new FlowLayoutPanel();
+            _btnToday = new FlatButton();
+            _btnTomorrow = new FlatButton();
+            ((System.ComponentModel.ISupportInitialize)_pendingGrid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)_packagerGrid).BeginInit();
             headerPanel.SuspendLayout();
             topBar.SuspendLayout();
             bodyTable.SuspendLayout();
             leftPanel.SuspendLayout();
+            rightPanel.SuspendLayout();
+            tabs.SuspendLayout();
             SuspendLayout();
+            // 
+            // _pendingGrid
+            // 
+            _pendingGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            _pendingGrid.Dock = DockStyle.Fill;
+            _pendingGrid.Location = new Point(8, 0);
+            _pendingGrid.Name = "_pendingGrid";
+            _pendingGrid.RowHeadersWidth = 51;
+            _pendingGrid.Size = new Size(765, 362);
+            _pendingGrid.TabIndex = 5;
+            _pendingGrid.CellClick += PendingGrid_CellClick;
+            // 
+            // _packagerGrid
+            // 
+            _packagerGrid.ColumnHeadersHeight = 29;
+            _packagerGrid.Dock = DockStyle.Fill;
+            _packagerGrid.Location = new Point(3, 39);
+            _packagerGrid.Name = "_packagerGrid";
+            _packagerGrid.RowHeadersWidth = 51;
+            _packagerGrid.Size = new Size(323, 283);
+            _packagerGrid.TabIndex = 1;
+            // 
+            // _lblSel
+            // 
+            _lblSel.Dock = DockStyle.Bottom;
+            _lblSel.Location = new Point(3, 336);
+            _lblSel.Name = "_lblSel";
+            _lblSel.Size = new Size(323, 26);
+            _lblSel.TabIndex = 2;
+            _lblSel.Text = "انقر على أي طلب من القائمة لتعيينه وطباعته.";
+            _lblSel.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // rightHeader
+            // 
+            rightHeader.Dock = DockStyle.Top;
+            rightHeader.Font = new Font("Cairo", 11F, FontStyle.Bold);
+            rightHeader.ForeColor = Color.FromArgb(31, 45, 47);
+            rightHeader.Location = new Point(8, 0);
+            rightHeader.Name = "rightHeader";
+            rightHeader.Padding = new Padding(0, 0, 18, 0);
+            rightHeader.Size = new Size(765, 40);
+            rightHeader.TabIndex = 4;
+            rightHeader.Text = "الطلبات المعلقة";
+            rightHeader.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // leftHeader
+            // 
+            leftHeader.Dock = DockStyle.Top;
+            leftHeader.Font = new Font("Cairo", 11F, FontStyle.Bold);
+            leftHeader.ForeColor = Color.FromArgb(31, 45, 47);
+            leftHeader.Location = new Point(3, 0);
+            leftHeader.Name = "leftHeader";
+            leftHeader.Padding = new Padding(0, 0, 18, 0);
+            leftHeader.Size = new Size(323, 36);
+            leftHeader.TabIndex = 0;
+            leftHeader.Text = "حمل المعبّئين";
+            leftHeader.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // headerPanel
             // 
@@ -129,6 +198,9 @@ namespace sweetSystem.UserControls
             // 
             leftPanel.ColumnCount = 1;
             leftPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            leftPanel.Controls.Add(leftHeader, 0, 0);
+            leftPanel.Controls.Add(_packagerGrid, 0, 1);
+            leftPanel.Controls.Add(_lblSel, 0, 2);
             leftPanel.Dock = DockStyle.Fill;
             leftPanel.Location = new Point(19, 27);
             leftPanel.Name = "leftPanel";
@@ -142,6 +214,9 @@ namespace sweetSystem.UserControls
             // rightPanel
             // 
             rightPanel.BackColor = Color.FromArgb(247, 246, 242);
+            rightPanel.Controls.Add(_pendingGrid);
+            rightPanel.Controls.Add(rightHeader);
+            rightPanel.Controls.Add(tabs);
             rightPanel.Dock = DockStyle.Fill;
             rightPanel.Location = new Point(354, 27);
             rightPanel.Name = "rightPanel";
@@ -149,7 +224,48 @@ namespace sweetSystem.UserControls
             rightPanel.Size = new Size(773, 362);
             rightPanel.TabIndex = 0;
             // 
-            
+            // tabs
+            // 
+            tabs.Controls.Add(_btnToday);
+            tabs.Controls.Add(_btnTomorrow);
+            tabs.Dock = DockStyle.Top;
+            tabs.Location = new Point(8, 40);
+            tabs.Name = "tabs";
+            tabs.RightToLeft = RightToLeft.Yes;
+            tabs.Size = new Size(765, 45);
+            tabs.TabIndex = 3;
+            // 
+            // _btnToday
+            // 
+            _btnToday.BackColor = Color.FromArgb(53, 133, 142);
+            _btnToday.FlatStyle = FlatStyle.Flat;
+            _btnToday.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            _btnToday.ForeColor = Color.White;
+            _btnToday.Location = new Point(625, 0);
+            _btnToday.Margin = new Padding(0, 0, 8, 8);
+            _btnToday.Name = "_btnToday";
+            _btnToday.Radius = 6;
+            _btnToday.Size = new Size(140, 36);
+            _btnToday.TabIndex = 0;
+            _btnToday.Text = "📅 طلبات اليوم";
+            _btnToday.UseVisualStyleBackColor = false;
+            _btnToday.Click += _btnToday_Click;
+            // 
+            // _btnTomorrow
+            // 
+            _btnTomorrow.BackColor = Color.FromArgb(53, 133, 142);
+            _btnTomorrow.FlatStyle = FlatStyle.Flat;
+            _btnTomorrow.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            _btnTomorrow.ForeColor = Color.White;
+            _btnTomorrow.Location = new Point(477, 0);
+            _btnTomorrow.Margin = new Padding(0, 0, 8, 8);
+            _btnTomorrow.Name = "_btnTomorrow";
+            _btnTomorrow.Radius = 6;
+            _btnTomorrow.Size = new Size(140, 36);
+            _btnTomorrow.TabIndex = 1;
+            _btnTomorrow.Text = "📆 طلبات الغد";
+            _btnTomorrow.UseVisualStyleBackColor = false;
+            _btnTomorrow.Click += _btnTomorrow_Click;
             // 
             // DelegationHubControl
             // 
@@ -162,13 +278,18 @@ namespace sweetSystem.UserControls
             Name = "DelegationHubControl";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(1146, 548);
+            ((System.ComponentModel.ISupportInitialize)_pendingGrid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)_packagerGrid).EndInit();
             headerPanel.ResumeLayout(false);
             topBar.ResumeLayout(false);
             bodyTable.ResumeLayout(false);
             leftPanel.ResumeLayout(false);
-            leftPanel.PerformLayout();
+            rightPanel.ResumeLayout(false);
+            tabs.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+
         #endregion
 
         private System.Windows.Forms.Panel headerPanel;
@@ -181,5 +302,12 @@ namespace sweetSystem.UserControls
         private Panel rightPanel;
         private TableLayoutPanel leftPanel;
         private Label _lblSel;
+        private sweetSystem.FlatButton _btnToday;
+        private sweetSystem.FlatButton _btnTomorrow;
+        private FlowLayoutPanel tabs;
+        private DataGridView _pendingGrid = null!;
+        private DataGridView _packagerGrid = null!;
+        private sweetSystem.SectionHeader rightHeader;
+        private sweetSystem.SectionHeader leftHeader;
     }
 }

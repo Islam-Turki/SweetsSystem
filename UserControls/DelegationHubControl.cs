@@ -8,16 +8,14 @@ namespace sweetSystem.UserControls
 {
     public partial class DelegationHubControl : UserControl
     {
-        private DataGridView _pendingGrid = null!, _packagerGrid = null!;
-        private FlatButton   _btnToday = null!, _btnTomorrow = null!;
-        private bool         _showTodayOrders = true;
 
         public DelegationHubControl()
         {
             InitializeComponent();
-            BuildContent();
+            ConfigureGrids(); // Set up columns and styling
+            LoadData();
+            SetTabStyle(true);
         }
-
         private void BuildContent()
         {
             // ── Right col: tabs + pending orders grid
@@ -26,21 +24,14 @@ namespace sweetSystem.UserControls
             rightHeader.RightToLeft = RightToLeft.No;
             rightHeader.Height = 40;
             rightHeader.Padding = new Padding(0, 0, 18, 0);
-            var tabs = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 45, RightToLeft = RightToLeft.Yes };
-            _btnToday    = new FlatButton { Text = "📅 طلبات اليوم", Width = 140, Margin = new Padding(0, 0, 8, 8) };
-            _btnTomorrow = new FlatButton { Text = "📆 طلبات الغد",  Width = 140, Margin = new Padding(0, 0, 8, 8), BackColor = Theme.Surface, ForeColor = Theme.TextPrimary };
-            _btnToday.Click    += (_, _) => { _showTodayOrders = true;  SetTabStyle(true);  LoadData(); };
-            _btnTomorrow.Click += (_, _) => { _showTodayOrders = false; SetTabStyle(false); LoadData(); };
-            tabs.Controls.Add(_btnToday);
-            tabs.Controls.Add(_btnTomorrow);
 
             _pendingGrid = new DataGridView { Dock = DockStyle.Fill };
             GridHelper.Style(_pendingGrid, readOnly: true, rtl: true);
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",       HeaderText = "رقم الطلب",         FillWeight = 6  });
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Customer", HeaderText = "العميل",    FillWeight = 32 });
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Type",     HeaderText = "النوع",     FillWeight = 14 });
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Items",    HeaderText = "الكميات",   FillWeight = 12 });
-            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Total",    HeaderText = "الإجمالي",  FillWeight = 16 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", HeaderText = "رقم الطلب", FillWeight = 6 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Customer", HeaderText = "العميل", FillWeight = 32 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Type", HeaderText = "النوع", FillWeight = 14 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Items", HeaderText = "الكميات", FillWeight = 12 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Total", HeaderText = "الإجمالي", FillWeight = 16 });
             _pendingGrid.CellClick += PendingGrid_CellClick;
 
             rightPanel.Controls.Add(_pendingGrid);
@@ -64,27 +55,21 @@ namespace sweetSystem.UserControls
 
             _packagerGrid = new DataGridView { Dock = DockStyle.Fill };
             GridHelper.Style(_packagerGrid, readOnly: true, rtl: true);
-            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Packager", HeaderText = "الموظف المكلف",  FillWeight = 45 });
-            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Count",    HeaderText = "الطلبات",  FillWeight = 30 });
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Packager", HeaderText = "الموظف المكلف", FillWeight = 45 });
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Count", HeaderText = "الطلبات", FillWeight = 30 });
             leftPanel.Controls.Add(_packagerGrid);
 
             _lblSel = new Label
             {
                 Text = "انقر على أي طلب من القائمة لتعيينه وطباعته.",
-                Dock = DockStyle.Bottom, Height = 26,
-                Font = Theme.FontBody, ForeColor = Theme.TextSecondary,
+                Dock = DockStyle.Bottom,
+                Height = 26,
+                Font = Theme.FontBody,
+                ForeColor = Theme.TextSecondary,
                 TextAlign = ContentAlignment.MiddleRight,
                 Padding = new Padding(0, 0, 4, 0)
             };
             leftPanel.Controls.Add(_lblSel);
-        }
-
-        private void SetTabStyle(bool todayActive)
-        {
-            _btnToday.BackColor    = todayActive  ? Theme.AccentGreen : Theme.Surface;
-            _btnToday.ForeColor    = todayActive  ? Color.White : Theme.TextPrimary;
-            _btnTomorrow.BackColor = !todayActive ? Theme.AccentGreen : Theme.Surface;
-            _btnTomorrow.ForeColor = !todayActive ? Color.White : Theme.TextPrimary;
         }
 
         public void LoadData()
@@ -118,5 +103,49 @@ namespace sweetSystem.UserControls
 
         private void BtnManualAll_Click(object? sender, EventArgs e)
             => MessageBox.Show("وظيفة تكليف الكل يدوياً قيد التطوير.", "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void _btnToday_Click(object sender, EventArgs e)
+        {
+            _showTodayOrders = true;
+            SetTabStyle(true);
+            // LoadData(); // (Make sure you have a LoadData method, or comment this out for now)
+        }
+
+        private void _btnTomorrow_Click(object sender, EventArgs e)
+        {
+            _showTodayOrders = false;
+            SetTabStyle(false);
+            // LoadData();
+        }
+        private void SetTabStyle(bool todayActive)
+        {
+            _btnToday.BackColor = todayActive ? Theme.AccentGreen : Theme.Surface;
+            _btnToday.ForeColor = todayActive ? Color.White : Theme.TextPrimary;
+
+            _btnTomorrow.BackColor = !todayActive ? Theme.AccentGreen : Theme.Surface;
+            _btnTomorrow.ForeColor = !todayActive ? Color.White : Theme.TextPrimary;
+        }
+        private bool _showTodayOrders = true;
+
+        private void ConfigureGrids()
+        {
+            // Style the Grids (Using your GridHelper)
+            GridHelper.Style(_pendingGrid, readOnly: true, rtl: true);
+            GridHelper.Style(_packagerGrid, readOnly: true, rtl: true);
+
+            // Define Pending Grid Columns
+            _pendingGrid.Columns.Clear();
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", HeaderText = "رقم الطلب", FillWeight = 6 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Customer", HeaderText = "العميل", FillWeight = 32 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Type", HeaderText = "النوع", FillWeight = 14 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Items", HeaderText = "الكميات", FillWeight = 12 });
+            _pendingGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Total", HeaderText = "الإجمالي", FillWeight = 16 });
+
+            // Define Packager Grid Columns
+            _packagerGrid.Columns.Clear();
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Packager", HeaderText = "الموظف المكلف", FillWeight = 45 });
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Count", HeaderText = "الطلبات", FillWeight = 30 });
+            _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Load", HeaderText = "الحمل", FillWeight = 25 });
+        }
+
     }
 }
