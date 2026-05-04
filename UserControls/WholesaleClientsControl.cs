@@ -11,13 +11,13 @@ namespace sweetSystem.UserControls
         {
             InitializeComponent();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
-            _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",      HeaderText = "#",            FillWeight = 6  });
+            _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",      HeaderText = "رقم العميل",            FillWeight = 6  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Name",    HeaderText = "الاسم التجاري", FillWeight = 30 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Phone",   HeaderText = "الهاتف",        FillWeight = 20 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Balance", HeaderText = "الرصيد المتبقي", FillWeight = 15 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status",  HeaderText = "الحالة",        FillWeight = 15 });
             
-            var depCol = new DataGridViewButtonColumn { Name = "Deposit", HeaderText = "", Text = "💰 إيداع", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 80 };
+            var depCol = new DataGridViewButtonColumn { Name = "Deposit", HeaderText = "", Text = "💰 إيداع", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 100 };
             _grid.Columns.Add(depCol);
             
             GridHelper.AddActionColumns(_grid);

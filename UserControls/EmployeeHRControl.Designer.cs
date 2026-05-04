@@ -140,6 +140,9 @@ namespace sweetSystem.UserControls
             // 
             // _grid
             // 
+            _grid.AllowUserToOrderColumns = true;
+            _grid.AllowUserToResizeColumns = false;
+            _grid.AllowUserToResizeRows = false;
             _grid.ColumnHeadersHeight = 29;
             _grid.Dock = DockStyle.Fill;
             _grid.Location = new Point(16, 8);

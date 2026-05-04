@@ -172,8 +172,8 @@ namespace sweetSystem
 
         public static void AddActionColumns(DataGridView g)
         {
-            var edit = new DataGridViewButtonColumn { Name = "Edit", HeaderText = "", Text = "✏ تعديل", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 70 };
-            var del = new DataGridViewButtonColumn { Name = "Delete", HeaderText = "", Text = "🗑 حذف", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 70 };
+            var edit = new DataGridViewButtonColumn { Name = "Edit", HeaderText = "", Text = "✏ تعديل", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 100 };
+            var del = new DataGridViewButtonColumn { Name = "Delete", HeaderText = "", Text = "🗑 حذف", UseColumnTextForButtonValue = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.None, Width = 100 };
             
             g.Columns.Add(edit);
             g.Columns.Add(del);
@@ -201,7 +201,7 @@ namespace sweetSystem
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 e.Graphics.FillPath(br, path);
                 
-                string text = colName == "Edit" ? "✏ تعديل" : colName == "Delete" ? "🗑 حذف" : "💰 إيداع";
+                string text = colName == "Edit" ? "تعديل" : colName == "Delete" ? "حذف" : "إيداع";
                 using var font = new Font(Theme.FontBody.FontFamily, 9f, FontStyle.Bold);
                 using var textBr = new SolidBrush(Color.White);
                 
