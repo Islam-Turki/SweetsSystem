@@ -41,17 +41,21 @@ namespace sweetSystem.UserControls
             // 
             // _pendingGrid
             // 
+            _pendingGrid.AllowUserToResizeColumns = false;
+            _pendingGrid.AllowUserToResizeRows = false;
             _pendingGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             _pendingGrid.Dock = DockStyle.Fill;
-            _pendingGrid.Location = new Point(8, 0);
+            _pendingGrid.Location = new Point(8, 85);
             _pendingGrid.Name = "_pendingGrid";
             _pendingGrid.RowHeadersWidth = 51;
-            _pendingGrid.Size = new Size(765, 362);
+            _pendingGrid.Size = new Size(765, 277);
             _pendingGrid.TabIndex = 5;
             _pendingGrid.CellClick += PendingGrid_CellClick;
             // 
             // _packagerGrid
             // 
+            _packagerGrid.AllowUserToResizeColumns = false;
+            _packagerGrid.AllowUserToResizeRows = false;
             _packagerGrid.ColumnHeadersHeight = 29;
             _packagerGrid.Dock = DockStyle.Fill;
             _packagerGrid.Location = new Point(3, 39);
@@ -75,7 +79,7 @@ namespace sweetSystem.UserControls
             rightHeader.Dock = DockStyle.Top;
             rightHeader.Font = new Font("Cairo", 11F, FontStyle.Bold);
             rightHeader.ForeColor = Color.FromArgb(31, 45, 47);
-            rightHeader.Location = new Point(8, 0);
+            rightHeader.Location = new Point(8, 45);
             rightHeader.Name = "rightHeader";
             rightHeader.Padding = new Padding(0, 0, 18, 0);
             rightHeader.Size = new Size(765, 40);
@@ -93,7 +97,7 @@ namespace sweetSystem.UserControls
             leftHeader.Padding = new Padding(0, 0, 18, 0);
             leftHeader.Size = new Size(323, 36);
             leftHeader.TabIndex = 0;
-            leftHeader.Text = "حمل المعبّئين";
+            leftHeader.Text = "جدول التكليف";
             leftHeader.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // headerPanel
@@ -229,7 +233,7 @@ namespace sweetSystem.UserControls
             tabs.Controls.Add(_btnToday);
             tabs.Controls.Add(_btnTomorrow);
             tabs.Dock = DockStyle.Top;
-            tabs.Location = new Point(8, 40);
+            tabs.Location = new Point(8, 0);
             tabs.Name = "tabs";
             tabs.RightToLeft = RightToLeft.Yes;
             tabs.Size = new Size(765, 45);

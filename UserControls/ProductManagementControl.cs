@@ -11,7 +11,7 @@ namespace sweetSystem.UserControls
         {
             InitializeComponent();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
-            _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",        HeaderText = "#",       FillWeight = 6  });
+            _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",        HeaderText = "رقم المنتج",       FillWeight = 6  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Name",      HeaderText = "المنتج",  FillWeight = 30 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Category",  HeaderText = "الفئة",   FillWeight = 15 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Retail",    HeaderText = "قطاعي",   FillWeight = 12 });

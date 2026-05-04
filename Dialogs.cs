@@ -27,7 +27,7 @@ namespace sweetSystem
 
             BtnSave = new FlatButton { Text = "✔ حفظ", BackColor = Theme.AccentGreen, Left = 16, Top = 14, Width = 130 };
             BtnCancel = new FlatButton { Text = "✕ إلغاء", BackColor = Theme.TextSecondary, Left = 156, Top = 14, Width = 110 };
-            //BtnSave.Click += (_, _) => { DialogResult = DialogResult.OK; Close(); };
+            BtnSave.Click += (_, _) => { DialogResult = DialogResult.OK; Close(); };
             BtnCancel.Click += (_, _) => { DialogResult = DialogResult.Cancel; Close(); };
 
             bottom.Controls.AddRange(new Control[] { BtnSave, BtnCancel });

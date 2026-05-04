@@ -49,7 +49,7 @@ namespace sweetSystem.UserControls
             h1Label.Padding = new Padding(0, 0, 16, 0);
             h1Label.Size = new Size(1146, 82);
             h1Label.TabIndex = 0;
-            h1Label.Text = "🍳  عرض الإنتاج — ورقة الطباخ";
+            h1Label.Text = "🍳  عرض الإنتاج ";
             h1Label.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // sepBar
@@ -142,6 +142,8 @@ namespace sweetSystem.UserControls
             // 
             // _grid
             // 
+            _grid.AllowUserToResizeColumns = false;
+            _grid.AllowUserToResizeRows = false;
             _grid.ColumnHeadersHeight = 29;
             _grid.Dock = DockStyle.Fill;
             _grid.Location = new Point(16, 16);
