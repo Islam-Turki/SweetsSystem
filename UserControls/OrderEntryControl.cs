@@ -70,7 +70,8 @@ namespace sweetSystem.UserControls
 
         private void AddCardBorder(Panel p)
         {
-            p.Paint += (_, e) => {
+            p.Paint += (_, e) =>
+            {
                 using var pen = new System.Drawing.Pen(Theme.SurfaceBorder, 1f);
                 e.Graphics.DrawRectangle(pen, new Rectangle(0, 0, p.Width - 1, p.Height - 1));
             };
@@ -157,27 +158,35 @@ namespace sweetSystem.UserControls
         private void SetupCalendarLogic()
         {
             // Toggle Retail Calendar
-            _btnDeliveryRetail.Click += (s, e) => {
+            _btnDeliveryRetail.Click += (s, e) =>
+            {
                 _calRetail.Visible = !_calRetail.Visible;
                 _calRetail.BringToFront();
             };
 
-            _calRetail.DateSelected += (s, e) => {
+            _calRetail.DateSelected += (s, e) =>
+            {
                 _lblDeliveryRetail.Text = e.Start.ToShortDateString();
                 _calRetail.Visible = false;
             };
 
             // Toggle Wholesale Calendar
-            _btnDeliveryWholesale.Click += (s, e) => {
+            _btnDeliveryWholesale.Click += (s, e) =>
+            {
                 _calWholesale.Visible = !_calWholesale.Visible;
                 _calWholesale.BringToFront();
             };
 
-            _calWholesale.DateSelected += (s, e) => {
+            _calWholesale.DateSelected += (s, e) =>
+            {
                 _lblDeliveryWholesale.Text = e.Start.ToShortDateString();
                 _calWholesale.Visible = false;
             };
         }
 
+        private void pickerCard_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
