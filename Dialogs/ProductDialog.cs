@@ -26,6 +26,8 @@ public partial class ProductDialog : BaseDialog
             InitializeComponent();
         }
 
+        public string? SelectedImageRelativePath { get; set; }
+
         public ProductDialog(Product? p = null) : this()
         {
             if (p != null)
