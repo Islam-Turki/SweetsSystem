@@ -50,32 +50,183 @@ namespace sweetSystem
 
     public class ProductDialog : BaseDialog
     {
-        public TextBox TxName = new(), TxCategory = new(), TxRetail = new(), TxWholesale = new();
-        public ComboBox TxUnit = new() { FlatStyle = FlatStyle.Flat, DropDownStyle = ComboBoxStyle.DropDownList };
-        
-        public ProductDialog(Product? p = null) : base(p == null ? "إضافة منتج جديد" : "تعديل بيانات المنتج", 420)
+        public TextBox  TxName     = new();
+        public TextBox  TxCategory = new();
+        public TextBox  TxRetail   = new();
+        public TextBox  TxWholesale = new();
+        public ComboBox TxUnit     = new() { FlatStyle = FlatStyle.Flat, DropDownStyle = ComboBoxStyle.DropDownList };
+
+        /// <summary>Relative path to the chosen image (e.g. "Images\3.png"). Empty if none.</summary>
+        public string SelectedImageRelativePath { get; private set; } = "";
+
+        private readonly PictureBox _preview;
+        private string _tempImageSource = ""; // absolute path user picked
+
+        public ProductDialog(Product? p = null)
+            : base(p == null ? "إضافة منتج جديد" : "تعديل بيانات المنتج", 560)
         {
+            // ── Standard fields ──────────────────────────────────────────────
             int y = 16;
-            AddField("اسم المنتج", TxName, y); y += 64;
-            AddField("الفئة", TxCategory, y); y += 64;
-            AddField("سعر القطاعي (د.ل)", TxRetail, y); y += 64;
-            AddField("سعر الجملة (د.ل)", TxWholesale, y); y += 64;
-            // Unit selector as ComboBox with predefined units
+            AddField("اسم المنتج",          TxName,      y); y += 64;
+            AddField("الفئة",               TxCategory,  y); y += 64;
+            AddField("سعر القطاعي (د.ل)",   TxRetail,    y); y += 64;
+            AddField("سعر الجملة (د.ل)",    TxWholesale, y); y += 64;
+
             TxUnit.Items.AddRange(new object[] { "كيلوجرام", "قطعة", "علبة" });
             if (TxUnit.Items.Count > 0) TxUnit.SelectedIndex = 0;
-            AddField("الوحدة", TxUnit, y);
-            
+            AddField("الوحدة", TxUnit, y); y += 64;
+
+            // ── Image section ─────────────────────────────────────────────────
+            Controls.Add(new Label
+            {
+                Text      = "صورة المنتج",
+                Left      = 16, Top = y,
+                AutoSize  = true,
+                Font      = Theme.FontBodyB,
+                ForeColor = Theme.TextSecondary
+            });
+            y += 22;
+
+            // Preview box
+            _preview = new PictureBox
+            {
+                Left      = 16, Top = y,
+                Width     = 120, Height = 90,
+                SizeMode  = PictureBoxSizeMode.Zoom,
+                BackColor = Theme.Background,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(_preview);
+
+            // Upload button
+            var btnUpload = new FlatButton
+            {
+                Text      = "📁 رفع صورة",
+                Left      = 146, Top = y + 20,
+                Width     = 130, Height = 34,
+                BackColor = Theme.AccentBlue,
+                ForeColor = Color.White,
+                Font      = Theme.FontBodyB,
+                Radius    = 6
+            };
+            btnUpload.Click += BtnUpload_Click;
+            Controls.Add(btnUpload);
+
+            // Clear image button
+            var btnClear = new FlatButton
+            {
+                Text      = "✕ حذف الصورة",
+                Left      = 146, Top = y + 60,
+                Width     = 130, Height = 28,
+                BackColor = Theme.TextSecondary,
+                ForeColor = Color.White,
+                Font      = Theme.FontBody,
+                Radius    = 6
+            };
+            btnClear.Click += (_, _) =>
+            {
+                _tempImageSource             = "";
+                SelectedImageRelativePath    = "";
+                _preview.Image               = null;
+                _preview.BackColor           = Theme.Background;
+            };
+            Controls.Add(btnClear);
+
+            // ── Populate if editing ──────────────────────────────────────────
             if (p != null)
             {
-                TxName.Text = p.Name; TxCategory.Text = p.Category;
-                TxRetail.Text = p.RetailPrice.ToString("N3");
+                TxName.Text      = p.Name;
+                TxCategory.Text  = p.Category;
+                TxRetail.Text    = p.RetailPrice.ToString("N3");
                 TxWholesale.Text = p.WholesalePrice.ToString("N3");
+
                 if (!string.IsNullOrEmpty(p.Unit))
                 {
                     if (TxUnit.Items.Contains(p.Unit)) TxUnit.SelectedItem = p.Unit;
                     else { TxUnit.Items.Add(p.Unit); TxUnit.SelectedItem = p.Unit; }
                 }
+
+                // Load existing image into preview
+                if (!string.IsNullOrWhiteSpace(p.ImagePath))
+                {
+                    SelectedImageRelativePath = p.ImagePath;
+                    string abs = GetAbsPath(p.ImagePath);
+                    if (System.IO.File.Exists(abs))
+                    {
+                        try { _preview.Image = Image.FromFile(abs); }
+                        catch { /* ignore corrupt image */ }
+                    }
+                }
             }
+
+            // ── Override Save to copy the image file before closing ──────────
+            BtnSave.Click -= DefaultSave;   // remove default close handler
+            BtnSave.Click += ImageAwareSave;
+        }
+
+        // ── Event handlers ────────────────────────────────────────────────────
+        private void BtnUpload_Click(object? sender, EventArgs e)
+        {
+            using var dlg = new OpenFileDialog
+            {
+                Title  = "اختر صورة المنتج",
+                Filter = "ملفات الصور|*.jpg;*.jpeg;*.png;*.bmp;*.webp|الكل|*.*"
+            };
+
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+
+            _tempImageSource = dlg.FileName;
+            try
+            {
+                _preview.Image     = Image.FromFile(_tempImageSource);
+                _preview.BackColor = Color.White;
+            }
+            catch
+            {
+                MessageBox.Show("تعذّر تحميل الصورة، تحقق من صيغة الملف.", "خطأ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _tempImageSource = "";
+            }
+        }
+
+        private void DefaultSave(object? s, EventArgs e) { }   // placeholder — never bound
+
+        private void ImageAwareSave(object? s, EventArgs e)
+        {
+            // Copy image to Images\ folder if a new one was picked
+            if (!string.IsNullOrWhiteSpace(_tempImageSource) &&
+                System.IO.File.Exists(_tempImageSource))
+            {
+                try
+                {
+                    string imagesDir = System.IO.Path.Combine(
+                        System.IO.Path.GetDirectoryName(Application.ExecutablePath) ?? "",
+                        "Images");
+                    System.IO.Directory.CreateDirectory(imagesDir);
+
+                    string ext      = System.IO.Path.GetExtension(_tempImageSource);
+                    // Use a temp name; the caller should rename to ProductId after save
+                    string fileName = $"product_new{ext}";
+                    string destPath = System.IO.Path.Combine(imagesDir, fileName);
+                    System.IO.File.Copy(_tempImageSource, destPath, overwrite: true);
+
+                    SelectedImageRelativePath = System.IO.Path.Combine("Images", fileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"لم يتمكن من حفظ الصورة:\n{ex.Message}", "تحذير",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private static string GetAbsPath(string relative)
+        {
+            string? dir = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+            return dir != null ? System.IO.Path.Combine(dir, relative) : relative;
         }
     }
 

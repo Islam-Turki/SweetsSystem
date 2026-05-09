@@ -52,11 +52,16 @@ namespace sweetSystem.UserControls
                 var dlg = new ProductDialog(p);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    p.Name = dlg.TxName.Text;
+                    p.Name     = dlg.TxName.Text;
                     p.Category = string.IsNullOrWhiteSpace(dlg.TxCategory.Text) ? "عام" : dlg.TxCategory.Text;
-                    if (decimal.TryParse(dlg.TxRetail.Text, out var r)) p.RetailPrice = r;
+                    if (decimal.TryParse(dlg.TxRetail.Text,    out var r)) p.RetailPrice    = r;
                     if (decimal.TryParse(dlg.TxWholesale.Text, out var w)) p.WholesalePrice = w;
                     p.Unit = dlg.TxUnit.Text;
+
+                    // Persist image if changed
+                    if (!string.IsNullOrWhiteSpace(dlg.SelectedImageRelativePath))
+                        p.ImagePath = RenameProductImage(dlg.SelectedImageRelativePath, p.Id);
+
                     LoadGrid();
                 }
             }
@@ -73,18 +78,49 @@ namespace sweetSystem.UserControls
             var dlg = new ProductDialog();
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                decimal.TryParse(dlg.TxRetail.Text, out var r);
+                decimal.TryParse(dlg.TxRetail.Text,    out var r);
                 decimal.TryParse(dlg.TxWholesale.Text, out var w);
+
+                int newId = MockData.NextProductId();
+                string imgPath = RenameProductImage(dlg.SelectedImageRelativePath, newId);
+
                 MockData.Products.Add(new Product
                 {
-                    Id = MockData.NextProductId(),
-                    Name = dlg.TxName.Text,
-                    Category = string.IsNullOrWhiteSpace(dlg.TxCategory.Text) ? "عام" : dlg.TxCategory.Text,
-                    RetailPrice = r, WholesalePrice = w,
-                    Unit = string.IsNullOrWhiteSpace(dlg.TxUnit.Text) ? "قطعة" : dlg.TxUnit.Text
+                    Id             = newId,
+                    Name           = dlg.TxName.Text,
+                    Category       = string.IsNullOrWhiteSpace(dlg.TxCategory.Text) ? "عام" : dlg.TxCategory.Text,
+                    RetailPrice    = r,
+                    WholesalePrice = w,
+                    Unit           = string.IsNullOrWhiteSpace(dlg.TxUnit.Text) ? "قطعة" : dlg.TxUnit.Text,
+                    ImagePath      = imgPath
                 });
                 LoadGrid();
             }
+        }
+
+        /// <summary>
+        /// Renames the temp image file saved by ProductDialog to
+        /// Images\{productId}{ext} and returns the new relative path.
+        /// </summary>
+        private static string RenameProductImage(string relativePath, int productId)
+        {
+            if (string.IsNullOrWhiteSpace(relativePath)) return "";
+            try
+            {
+                string? exeDir  = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                if (exeDir == null) return relativePath;
+
+                string absTemp  = System.IO.Path.Combine(exeDir, relativePath);
+                if (!System.IO.File.Exists(absTemp)) return relativePath;
+
+                string ext      = System.IO.Path.GetExtension(absTemp);
+                string newName  = $"{productId}{ext}";
+                string newAbs   = System.IO.Path.Combine(exeDir, "Images", newName);
+
+                System.IO.File.Move(absTemp, newAbs, overwrite: true);
+                return System.IO.Path.Combine("Images", newName);
+            }
+            catch { return relativePath; }
         }
     }
 }
