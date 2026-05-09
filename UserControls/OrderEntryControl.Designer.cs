@@ -393,6 +393,7 @@ namespace sweetSystem.UserControls
             Size                = new System.Drawing.Size(1200, 820);
             Controls.Add(bodyTable);
             Controls.Add(headerPanel);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "OrderEntryControl";
 
             // ── ResumeLayout ─────────────────────────────────────────────────
