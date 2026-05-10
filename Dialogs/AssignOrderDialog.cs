@@ -16,7 +16,7 @@ namespace sweetSystem
 
     public partial class AssignOrderDialog : BaseDialog
     {
-        private Order _order;
+        private Order? _order;
 
         public AssignOrderDialog()
         {

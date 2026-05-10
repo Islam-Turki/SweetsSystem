@@ -88,7 +88,13 @@ namespace sweetSystem.UserControls
 
         private void BindComboBoxes()
         {
-            foreach (var c in MockData.WholesaleClients) _cbClient.Items.Add(c);
+            // Clear the list first so we don't get duplicates when refreshing!
+            _cbClient.Items.Clear();
+
+            foreach (var c in MockData.WholesaleClients)
+            {
+                _cbClient.Items.Add(c);
+            }
         }
 
         // ══════════════════════════════════════════════════════════════════════
@@ -96,6 +102,7 @@ namespace sweetSystem.UserControls
         // ══════════════════════════════════════════════════════════════════════
         private void LoadCatalog()
         {
+            _catalogFlow.SuspendLayout(); // Prevents screen flickering while drawing
             _catalogFlow.Controls.Clear();
             _cardMap.Clear();
 
@@ -104,7 +111,12 @@ namespace sweetSystem.UserControls
                 var card = BuildProductCard(p);
                 _catalogFlow.Controls.Add(card);
                 _cardMap[p.Id] = card;
+
+                // Ensure the badge is restored if the item is already in the cart
+                UpdateCardBadge(p);
             }
+
+            _catalogFlow.ResumeLayout();
         }
 
         private Panel BuildProductCard(Product p)
@@ -135,8 +147,17 @@ namespace sweetSystem.UserControls
             string imgPath = GetAbsoluteImagePath(p.ImagePath);
             if (File.Exists(imgPath))
             {
-                try { picBox.Image = Image.FromFile(imgPath); }
-                catch { picBox.Image = BuildPlaceholderImage(CARD_W, 110, p.Name); }
+                try
+                {
+                    var bytes = File.ReadAllBytes(imgPath);
+                    using var ms = new MemoryStream(bytes);
+                    using var img = Image.FromStream(ms);
+                    picBox.Image = new Bitmap(img);
+                }
+                catch
+                {
+                    picBox.Image = BuildPlaceholderImage(CARD_W, 110, p.Name);
+                }
             }
             else
             {
@@ -303,8 +324,11 @@ namespace sweetSystem.UserControls
         private static string GetAbsoluteImagePath(string relative)
         {
             if (string.IsNullOrWhiteSpace(relative)) return "";
-            string? exeDir = Path.GetDirectoryName(Application.ExecutablePath);
-            return exeDir != null ? Path.Combine(exeDir, relative) : relative;
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory ?? Application.StartupPath;
+            // ensure images folder exists
+            string imagesDir = Path.Combine(baseDir, "Images", "Products");
+            if (!Directory.Exists(imagesDir)) Directory.CreateDirectory(imagesDir);
+            return Path.Combine(baseDir, relative);
         }
 
         // ══════════════════════════════════════════════════════════════════════
@@ -539,5 +563,18 @@ namespace sweetSystem.UserControls
                 e.Graphics.DrawRectangle(pen, new Rectangle(0, 0, p.Width - 1, p.Height - 1));
             };
         }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+
+            // When the screen is shown, reload the data from MockData
+            if (this.Visible)
+            {
+                LoadCatalog();
+                BindComboBoxes();
+            }
+        }
+
     }
 }

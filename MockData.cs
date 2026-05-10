@@ -8,16 +8,16 @@ namespace sweetSystem
         // ── المنتجات (Products) ───────────────────────────────────────────────
         public static List<Product> Products { get; set; } = new()
         {
-            new Product { Id=1,  Name="كعك الشوكولاتة",        Category="كعك",      RetailPrice=4.50m,  WholesalePrice=3.00m, Unit="قطعة" },
-            new Product { Id=2,  Name="كعك بالجلاسير",          Category="كعك",      RetailPrice=3.50m,  WholesalePrice=2.20m, Unit="قطعة" },
-            new Product { Id=3,  Name="بقلاوة بالفستق",         Category="بقلاوة",   RetailPrice=8.00m,  WholesalePrice=5.50m, Unit="قطعة" },
-            new Product { Id=4,  Name="بقلاوة بالعسل",          Category="بقلاوة",   RetailPrice=7.50m,  WholesalePrice=5.00m, Unit="قطعة" },
-            new Product { Id=5,  Name="كنافة",                  Category="كنافة",    RetailPrice=6.00m,  WholesalePrice=4.00m, Unit="شريحة"},
-            new Product { Id=6,  Name="كريم بف",                Category="معجنات",   RetailPrice=5.00m,  WholesalePrice=3.50m, Unit="قطعة" },
-            new Product { Id=7,  Name="كرواسون",                 Category="معجنات",   RetailPrice=4.00m,  WholesalePrice=2.50m, Unit="قطعة" },
-            new Product { Id=8,  Name="ماكارون (علبة 6 قطع)",    Category="ماكارون",  RetailPrice=12.00m, WholesalePrice=8.00m, Unit="علبة" },
-            new Product { Id=9,  Name="شريحة تشيزكيك",          Category="كيك",      RetailPrice=9.00m,  WholesalePrice=6.50m, Unit="شريحة"},
-            new Product { Id=10, Name="كعكة الشوكولاتة الكاملة", Category="كيك",      RetailPrice=35.00m, WholesalePrice=25.00m,Unit="كعكة" },
+            new Product { Id=1,  Name="كعك الشوكولاتة",        Category="كعك",      RetailPrice=4.50m,  WholesalePrice=3.00m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=2,  Name="كعك بالجلاسير",          Category="كعك",      RetailPrice=3.50m,  WholesalePrice=2.20m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=3,  Name="بقلاوة بالفستق",         Category="بقلاوة",   RetailPrice=8.00m,  WholesalePrice=5.50m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=4,  Name="بقلاوة بالعسل",          Category="بقلاوة",   RetailPrice=7.50m,  WholesalePrice=5.00m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=5,  Name="كنافة",                  Category="كنافة",    RetailPrice=6.00m,  WholesalePrice=4.00m, Unit="شريحة", ImagePath = ""},
+            new Product { Id=6,  Name="كريم بف",                Category="معجنات",   RetailPrice=5.00m,  WholesalePrice=3.50m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=7,  Name="كرواسون",                 Category="معجنات",   RetailPrice=4.00m,  WholesalePrice=2.50m, Unit="قطعة", ImagePath = "" },
+            new Product { Id=8,  Name="ماكارون (علبة 6 قطع)",    Category="ماكارون",  RetailPrice=12.00m, WholesalePrice=8.00m, Unit="علبة", ImagePath = "" },
+            new Product { Id=9,  Name="شريحة تشيزكيك",          Category="كيك",      RetailPrice=9.00m,  WholesalePrice=6.50m, Unit="شريحة", ImagePath = ""},
+            new Product { Id=10, Name="كعكة الشوكولاتة الكاملة", Category="كيك",      RetailPrice=35.00m, WholesalePrice=25.00m,Unit="كعكة", ImagePath = "" },
         };
 
         // ── الموظفون (Employees) ──────────────────────────────────────────────
