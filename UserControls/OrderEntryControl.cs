@@ -84,6 +84,38 @@ namespace sweetSystem.UserControls
             };
             _linesGrid.Columns.Add(removeCol);
             _linesGrid.CellClick += LinesGrid_CellClick;
+
+            if (_txCustomerWrap != null && _txCustomer != null)
+                AttachInputWrapperEvents(_txCustomerWrap, _txCustomer);
+            if (_txCustomerExtraWrap != null && _txCustomerExtra != null)
+                AttachInputWrapperEvents(_txCustomerExtraWrap, _txCustomerExtra);
+        }
+
+        private void AttachInputWrapperEvents(Panel wrap, TextBox tx, int radius = 8)
+        {
+            Color normalBorder = Color.FromArgb(200, 200, 200);
+            Color focusBorder  = Color.FromArgb(53, 133, 142);
+            bool focused = false;
+
+            void ApplyRegion() =>
+                wrap.Region = new Region(
+                    RoundedPanel.RoundRect(new Rectangle(0, 0, wrap.Width, wrap.Height), radius));
+
+            wrap.Resize += (_, _) => ApplyRegion();
+            wrap.HandleCreated += (_, _) => ApplyRegion();
+
+            wrap.Paint += (_, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                var r = new Rectangle(0, 0, wrap.Width - 1, wrap.Height - 1);
+                using var path = RoundedPanel.RoundRect(r, radius);
+                using var pen  = new Pen(focused ? focusBorder : normalBorder, focused ? 2f : 1.5f);
+                e.Graphics.DrawPath(pen, path);
+            };
+
+            tx.Enter += (_, _) => { focused = true;  wrap.Invalidate(); };
+            tx.Leave += (_, _) => { focused = false; wrap.Invalidate(); };
+            wrap.Click += (_, _) => tx.Focus();
         }
 
         private void BindComboBoxes()
@@ -401,8 +433,8 @@ namespace sweetSystem.UserControls
         {
             if (!_cardMap.TryGetValue(p.Id, out var card)) return;
 
-            var badge   = card.Controls.Find($"badge_{p.Id}",   false).FirstOrDefault() as Label;
-            var minusLbl = card.Controls.Find($"minus_{p.Id}",  false).FirstOrDefault() as Label;
+            Label? badge   = card.Controls.Find($"badge_{p.Id}",   false).FirstOrDefault() as Label;
+            Label? minusLbl = card.Controls.Find($"minus_{p.Id}",  false).FirstOrDefault() as Label;
 
             int qty = _cart.FirstOrDefault(l => l.Product.Id == p.Id)?.Quantity ?? 0;
 
@@ -424,7 +456,7 @@ namespace sweetSystem.UserControls
             foreach (var p in MockData.Products)
             {
                 if (!_cardMap.TryGetValue(p.Id, out var card)) continue;
-                var lbl = card.Controls.Find($"price_{p.Id}", false).FirstOrDefault() as Label;
+                Label? lbl = card.Controls.Find($"price_{p.Id}", false).FirstOrDefault() as Label;
                 if (lbl != null)
                     lbl.Text = Theme.LYD(ws ? p.WholesalePrice : p.RetailPrice);
             }
@@ -433,7 +465,7 @@ namespace sweetSystem.UserControls
         // ══════════════════════════════════════════════════════════════════════
         //  UI EVENTS
         // ══════════════════════════════════════════════════════════════════════
-        private void _rbType_CheckedChanged(object sender, EventArgs e)
+        private void _rbType_CheckedChanged(object? sender, EventArgs e)
         {
             bool ws = _rbWholesale.Checked;
             _retailPanel.Visible    = !ws;
@@ -443,8 +475,8 @@ namespace sweetSystem.UserControls
             RefreshCart();
         }
 
-        private void _cbClient_SelectedIndexChanged(object sender, EventArgs e) => RecalcTotals();
-        private void _txCustomer_TextChanged(object sender, EventArgs e)         => RecalcTotals();
+        private void _cbClient_SelectedIndexChanged(object? sender, EventArgs e) => RecalcTotals();
+        private void _txCustomer_TextChanged(object? sender, EventArgs e)         => RecalcTotals();
 
         private void BtnClear_Click(object? s, EventArgs e)
         {
@@ -505,31 +537,73 @@ namespace sweetSystem.UserControls
             BtnClear_Click(null, EventArgs.Empty);
         }
 
+        // (Layout logic moved to Designer)
+
         // ══════════════════════════════════════════════════════════════════════
         //  CALENDAR LOGIC
         // ══════════════════════════════════════════════════════════════════════
         private void SetupCalendarLogic()
         {
-            _btnDeliveryRetail.Click += (_, _) =>
+            ConfigurePopupCalendar(_btnDeliveryRetail,   _calRetail,   _lblDeliveryRetail);
+            ConfigurePopupCalendar(_btnDeliveryWholesale, _calWholesale, _lblDeliveryWholesale);
+        }
+
+        /// <summary>
+        /// Wires a delivery button to show/hide a MonthCalendar as a floating
+        /// popup anchored directly below the button, independent of panel nesting.
+        /// 
+        /// Strategy:
+        ///   1. Re-parent the calendar to THIS UserControl so it is never clipped
+        ///      by an intermediate panel and sits on top of everything.
+        ///   2. Use PointToScreen / PointToClient to translate the button's
+        ///      bottom-left corner into coordinates relative to THIS control.
+        ///   3. Call BringToFront() every time the calendar is made visible.
+        /// </summary>
+        private void ConfigurePopupCalendar(
+            Control btn, MonthCalendar cal, Label displayLabel)
+        {
+            // Re-parent the calendar to the root UserControl once
+            cal.Visible = false;
+            if (cal.Parent != this)
             {
-                _calRetail.Visible = !_calRetail.Visible;
-                _calRetail.BringToFront();
-            };
-            _calRetail.DateSelected += (_, e) =>
+                cal.Parent?.Controls.Remove(cal);
+                this.Controls.Add(cal);
+            }
+
+            btn.Click += (_, _) =>
             {
-                _lblDeliveryRetail.Text = e.Start.ToShortDateString();
-                _calRetail.Visible = false;
+                if (cal.Visible)
+                {
+                    cal.Visible = false;
+                    return;
+                }
+
+                // Compute position: screen coords of button's bottom-left corner
+                // then translate to THIS control's client coords.
+                Point screenPt = btn.PointToScreen(new Point(0, btn.Height));
+                Point clientPt = this.PointToClient(screenPt);
+
+                // Keep the calendar fully on-screen horizontally
+                int calX = Math.Max(0,
+                    Math.Min(clientPt.X, this.ClientSize.Width - cal.Width));
+                int calY = clientPt.Y + 4;   // 4 px gap below the button
+
+                cal.Location = new Point(calX, calY);
+                cal.Visible  = true;
+                cal.BringToFront();
             };
 
-            _btnDeliveryWholesale.Click += (_, _) =>
+            cal.DateSelected += (_, e) =>
             {
-                _calWholesale.Visible = !_calWholesale.Visible;
-                _calWholesale.BringToFront();
+                displayLabel.Text = e.Start.ToString("dd/MM/yyyy");
+                cal.Visible = false;
             };
-            _calWholesale.DateSelected += (_, e) =>
+
+            // Clicking anywhere outside the calendar hides it
+            this.MouseDown += (_, me) =>
             {
-                _lblDeliveryWholesale.Text = e.Start.ToShortDateString();
-                _calWholesale.Visible = false;
+                if (cal.Visible && !cal.Bounds.Contains(me.Location))
+                    cal.Visible = false;
             };
         }
 
