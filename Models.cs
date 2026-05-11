@@ -14,7 +14,7 @@ namespace sweetSystem
         public string  Category       { get; set; } = "";
         public decimal RetailPrice    { get; set; }
         public decimal WholesalePrice { get; set; }
-        public string  Unit           { get; set; } = "قطعة";
+        public string  Unit           { get; set; } = "";
         public string  ImagePath      { get; set; } = ""; // relative path: Images\{Id}.ext
         public override string ToString() => Name;
     }

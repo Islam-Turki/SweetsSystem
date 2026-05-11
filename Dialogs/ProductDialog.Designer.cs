@@ -89,52 +89,63 @@
             BtnSave.FlatAppearance.BorderSize = 0;
             BtnSave.FlatAppearance.MouseDownBackColor = Color.Transparent;
             BtnSave.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            BtnSave.Location = new Point(13, 12);
+            BtnSave.Margin = new Padding(2, 3, 2, 3);
+            BtnSave.Size = new Size(104, 31);
             // 
             // BtnCancel
             // 
             BtnCancel.FlatAppearance.BorderSize = 0;
             BtnCancel.FlatAppearance.MouseDownBackColor = Color.Transparent;
             BtnCancel.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            BtnCancel.Location = new Point(125, 12);
+            BtnCancel.Margin = new Padding(2, 3, 2, 3);
+            BtnCancel.Size = new Size(88, 31);
             // 
             // bottomPanel
             // 
-            bottomPanel.Location = new Point(0, 499);
-            bottomPanel.Size = new Size(405, 65);
+            bottomPanel.Location = new Point(0, 532);
+            bottomPanel.Margin = new Padding(2, 3, 2, 3);
+            bottomPanel.Size = new Size(324, 57);
             // 
             // TxName
             // 
             TxName.BorderStyle = BorderStyle.FixedSingle;
             TxName.Font = new Font("Cairo", 9F);
-            TxName.Location = new Point(16, 42);
+            TxName.Location = new Point(13, 56);
+            TxName.Margin = new Padding(2, 3, 2, 3);
             TxName.Name = "TxName";
-            TxName.Size = new Size(368, 41);
+            TxName.Size = new Size(295, 36);
             TxName.TabIndex = 9;
             // 
             // TxCategory
             // 
             TxCategory.BorderStyle = BorderStyle.FixedSingle;
             TxCategory.Font = new Font("Cairo", 9F);
-            TxCategory.Location = new Point(16, 106);
+            TxCategory.Location = new Point(13, 127);
+            TxCategory.Margin = new Padding(2, 3, 2, 3);
             TxCategory.Name = "TxCategory";
-            TxCategory.Size = new Size(368, 41);
+            TxCategory.Size = new Size(295, 36);
             TxCategory.TabIndex = 7;
             // 
             // TxRetail
             // 
             TxRetail.BorderStyle = BorderStyle.FixedSingle;
             TxRetail.Font = new Font("Cairo", 9F);
-            TxRetail.Location = new Point(16, 170);
+            TxRetail.Location = new Point(13, 198);
+            TxRetail.Margin = new Padding(2, 3, 2, 3);
             TxRetail.Name = "TxRetail";
-            TxRetail.Size = new Size(368, 41);
+            TxRetail.Size = new Size(295, 36);
             TxRetail.TabIndex = 5;
             // 
             // TxWholesale
             // 
             TxWholesale.BorderStyle = BorderStyle.FixedSingle;
             TxWholesale.Font = new Font("Cairo", 9F);
-            TxWholesale.Location = new Point(16, 234);
+            TxWholesale.Location = new Point(16, 269);
+            TxWholesale.Margin = new Padding(2, 3, 2, 3);
             TxWholesale.Name = "TxWholesale";
-            TxWholesale.Size = new Size(368, 41);
+            TxWholesale.Size = new Size(295, 36);
             TxWholesale.TabIndex = 3;
             // 
             // TxUnit
@@ -143,26 +154,29 @@
             TxUnit.FlatStyle = FlatStyle.Flat;
             TxUnit.Font = new Font("Cairo", 9F);
             TxUnit.Items.AddRange(new object[] { "كيلوجرام", "قطعة", "علبة" });
-            TxUnit.Location = new Point(16, 298);
+            TxUnit.Location = new Point(13, 340);
+            TxUnit.Margin = new Padding(2, 3, 2, 3);
             TxUnit.Name = "TxUnit";
-            TxUnit.Size = new Size(368, 41);
+            TxUnit.Size = new Size(295, 37);
             TxUnit.TabIndex = 1;
             // 
             // picProductImage
             // 
             picProductImage.BorderStyle = BorderStyle.FixedSingle;
-            picProductImage.Location = new Point(16, 352);
+            picProductImage.Location = new Point(13, 420);
+            picProductImage.Margin = new Padding(2, 3, 2, 3);
             picProductImage.Name = "picProductImage";
-            picProductImage.Size = new Size(120, 120);
+            picProductImage.Size = new Size(96, 106);
             picProductImage.SizeMode = PictureBoxSizeMode.Zoom;
             picProductImage.TabIndex = 12;
             picProductImage.TabStop = false;
             // 
             // btnChooseImage
             // 
-            btnChooseImage.Location = new Point(152, 388);
+            btnChooseImage.Location = new Point(13, 383);
+            btnChooseImage.Margin = new Padding(2, 3, 2, 3);
             btnChooseImage.Name = "btnChooseImage";
-            btnChooseImage.Size = new Size(120, 35);
+            btnChooseImage.Size = new Size(96, 31);
             btnChooseImage.TabIndex = 13;
             btnChooseImage.Text = "اختر صورة";
             btnChooseImage.UseVisualStyleBackColor = true;
@@ -173,9 +187,10 @@
             label1.AutoSize = true;
             label1.Font = new Font("Cairo", 9F, FontStyle.Bold);
             label1.ForeColor = Color.FromArgb(107, 124, 128);
-            label1.Location = new Point(16, 16);
+            label1.Location = new Point(13, 24);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(103, 33);
+            label1.Size = new Size(88, 29);
             label1.TabIndex = 10;
             label1.Text = "اسم المنتج";
             // 
@@ -184,9 +199,10 @@
             label2.AutoSize = true;
             label2.Font = new Font("Cairo", 9F, FontStyle.Bold);
             label2.ForeColor = Color.FromArgb(107, 124, 128);
-            label2.Location = new Point(16, 80);
+            label2.Location = new Point(13, 95);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(58, 33);
+            label2.Size = new Size(49, 29);
             label2.TabIndex = 8;
             label2.Text = "الفئة";
             // 
@@ -195,9 +211,10 @@
             label3.AutoSize = true;
             label3.Font = new Font("Cairo", 9F, FontStyle.Bold);
             label3.ForeColor = Color.FromArgb(107, 124, 128);
-            label3.Location = new Point(16, 144);
+            label3.Location = new Point(13, 166);
+            label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(167, 33);
+            label3.Size = new Size(141, 29);
             label3.TabIndex = 6;
             label3.Text = "سعر القطاعي (د.ل)";
             // 
@@ -206,9 +223,10 @@
             label4.AutoSize = true;
             label4.Font = new Font("Cairo", 9F, FontStyle.Bold);
             label4.ForeColor = Color.FromArgb(107, 124, 128);
-            label4.Location = new Point(16, 208);
+            label4.Location = new Point(16, 237);
+            label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(150, 33);
+            label4.Size = new Size(126, 29);
             label4.TabIndex = 4;
             label4.Text = "سعر الجملة (د.ل)";
             // 
@@ -217,16 +235,17 @@
             label5.AutoSize = true;
             label5.Font = new Font("Cairo", 9F, FontStyle.Bold);
             label5.ForeColor = Color.FromArgb(107, 124, 128);
-            label5.Location = new Point(16, 272);
+            label5.Location = new Point(13, 308);
+            label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(69, 33);
+            label5.Size = new Size(59, 29);
             label5.TabIndex = 2;
             label5.Text = "الوحدة";
             // 
             // ProductDialog
             // 
-            AutoScaleDimensions = new SizeF(10F, 33F);
-            ClientSize = new Size(405, 564);
+            AutoScaleDimensions = new SizeF(8F, 29F);
+            ClientSize = new Size(324, 589);
             Controls.Add(TxUnit);
             Controls.Add(label5);
             Controls.Add(TxWholesale);
@@ -239,6 +258,7 @@
             Controls.Add(label1);
             Controls.Add(picProductImage);
             Controls.Add(btnChooseImage);
+            Margin = new Padding(2, 3, 2, 3);
             Name = "ProductDialog";
             Text = "إضافة منتج جديد";
             Controls.SetChildIndex(btnChooseImage, 0);
