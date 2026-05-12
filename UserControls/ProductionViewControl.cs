@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -47,29 +48,29 @@ namespace sweetSystem.UserControls
             _btnTomorrow.BackColor = isToday ? Theme.TextSecondary : Theme.AccentGreen;
 
             var lines = MockData.Orders
-                .Where(o => o.Date.Date == _date.Date)
-                .SelectMany(o => o.Lines)
-                .GroupBy(l => l.Product.Id)
+                .Where(o => o.OrderDate.Date == _date.Date)
+                .SelectMany(o => MockData.OrderItems.Where(oi => oi.OrderId == o.Id))
+                .GroupBy(l => l.ProductId)
                 .Select(g => new
                 {
                     Product    = g.First().Product,
                     TotalQty   = g.Sum(l => l.Quantity),
                     OrderCount = MockData.Orders.Count(o =>
-                        o.Date.Date == _date.Date &&
-                        o.Lines.Any(l => l.Product.Id == g.Key))
+                        o.OrderDate.Date == _date.Date &&
+                        MockData.OrderItems.Any(oi => oi.OrderId == o.Id && oi.ProductId == g.Key))
                 })
-                .OrderBy(x => x.Product.Category)
-                .ThenBy(x => x.Product.Name);
+                .OrderBy(x => x.Product?.Category)
+                .ThenBy(x => x.Product?.Name);
 
             _grid.Rows.Clear();
             foreach (var item in lines)
             {
                 var cook = MockData.GetCookForProduct(item.Product);
                 int i = _grid.Rows.Add(
-                    item.Product.Name,
-                    item.Product.Category,
+                    item.Product?.Name ?? "—",
+                    item.Product?.Category.ToString() ?? "",
                     item.TotalQty,
-                    item.Product.Unit,
+                    item.Product?.Unit.ToString() ?? "",
                     cook?.Name ?? "⚠ غير معيّن",
                     item.OrderCount
                 );

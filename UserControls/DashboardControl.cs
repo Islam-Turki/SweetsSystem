@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -51,11 +52,11 @@ namespace sweetSystem.UserControls
 
         public void RefreshData()
         {
-            var today = MockData.Orders.Where(o => o.Date.Date == DateTime.Today).ToList();
+            var today = MockData.Orders.Where(o => o.OrderDate.Date == DateTime.Today).ToList();
             _cOrders.Update(today.Count.ToString());
             _cPending.Update(today.Count(o => o.Status == OrderStatus.Pending).ToString());
-            _cRevenue.Update(Theme.LYD(today.Sum(o => o.Subtotal)));
-            _cClients.Update(MockData.WholesaleClients.Count.ToString());
+            _cRevenue.Update(Theme.LYD(today.Sum(o => o.TotalPrice)));
+            _cClients.Update(MockData.Customers.Count.ToString());
 
             _grid.Rows.Clear();
             foreach (var o in MockData.Orders.OrderByDescending(x => x.Id).Take(25))
@@ -66,14 +67,15 @@ namespace sweetSystem.UserControls
                     OrderStatus.Completed => Color.FromArgb(220, 238, 255),
                     _                     => Theme.Surface
                 };
+                var orderItems = MockData.OrderItems.Where(oi => oi.OrderId == o.Id);
                 int i = _grid.Rows.Add(
                     o.Id,
-                    MockData.OrderTypeAr(o.Type),
-                    o.DisplayCustomer,
-                    o.Lines.Sum(l => l.Quantity),
-                    Theme.LYD(o.Subtotal),
+                    o.CustomerId != null ? "جملة" : "قطاعي",
+                    o.CustomerName,
+                    orderItems.Sum(l => l.Quantity),
+                    Theme.LYD(o.TotalPrice),
                     MockData.OrderStatusAr(o.Status),
-                    o.Date.ToString("dd/MM"));
+                    o.OrderDate.ToString("dd/MM"));
                 _grid.Rows[i].DefaultCellStyle.BackColor = rowBg;
             }
         }

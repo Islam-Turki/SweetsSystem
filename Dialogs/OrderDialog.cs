@@ -1,4 +1,5 @@
-﻿using System;
+using sweetSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,7 +25,7 @@ namespace sweetSystem
         {
             Text = $"تعديل الطلب #{o.Id}";
 
-            TxCustomer.Text = o.DisplayCustomer;
+            TxCustomer.Text = o.CustomerName;
             CbStatus.SelectedIndex = (int)o.Status;
         }
     }

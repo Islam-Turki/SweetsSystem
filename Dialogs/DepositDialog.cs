@@ -1,4 +1,5 @@
-﻿using System;
+using sweetSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,21 +16,21 @@ namespace sweetSystem
 
     public partial class DepositDialog : BaseDialog
     {
-        public decimal Amount => NumAmount.Value;
+        public double Amount => (double)NumAmount.Value;
 
         public DepositDialog()
         {
             InitializeComponent();
         }
 
-        public DepositDialog(WholesaleClient c) : this()
+        public DepositDialog(Customer c) : this()
         {
             Text = $"إيداع للعميل {c.Name}";
 
-            if (c.RemainingBalance > 0)
+            if (c.Balance > 0)
             {
-                NumAmount.Maximum = c.RemainingBalance;
-                NumAmount.Value = c.RemainingBalance;
+                NumAmount.Maximum = (decimal)c.Balance;
+                NumAmount.Value = (decimal)c.Balance;
             }
         }
     }

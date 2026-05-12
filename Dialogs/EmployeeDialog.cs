@@ -1,4 +1,5 @@
-﻿using System;
+using sweetSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,11 +39,10 @@ namespace sweetSystem
 
                 for (int i = 0; i < ClbSkills.Items.Count; i++)
                 {
+                    var prod = (Product)ClbSkills.Items[i];
                     ClbSkills.SetItemChecked(
                         i,
-                        e.SkillProductIds.Contains(
-                            ((Product)ClbSkills.Items[i]).Id
-                        )
+                        prod.MakerId == e.Id
                     );
                 }
             }

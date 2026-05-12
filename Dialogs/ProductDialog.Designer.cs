@@ -1,4 +1,5 @@
-﻿namespace sweetSystem
+using sweetSystem;
+namespace sweetSystem
 {
     //partial class ProductDialog
     //{

@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +12,7 @@ namespace sweetSystem.UserControls
     public partial class OrderEntryControl : UserControl
     {
         // ── State ─────────────────────────────────────────────────────────────
-        private readonly List<OrderLine> _cart = new();
+        private readonly List<OrderItem> _cart = new();
         // productId → card panel (so we can update badges)
         private readonly Dictionary<int, Panel> _cardMap = new();
 
@@ -41,7 +42,7 @@ namespace sweetSystem.UserControls
             lblCustomerName.Font = Theme.FontBodyB;
             _txCustomer.Font     = Theme.FontBody;
             _txCustomerExtra.Font = Theme.FontBody;
-            lblWholesaleClient.Font = Theme.FontBodyB;
+            lblCustomer.Font = Theme.FontBodyB;
             _cbClient.Font       = Theme.FontBody;
 
             // Summary card
@@ -123,7 +124,7 @@ namespace sweetSystem.UserControls
             // Clear the list first so we don't get duplicates when refreshing!
             _cbClient.Items.Clear();
 
-            foreach (var c in MockData.WholesaleClients)
+            foreach (var c in MockData.Customers)
             {
                 _cbClient.Items.Add(c);
             }
@@ -216,7 +217,7 @@ namespace sweetSystem.UserControls
             // ── Price label ──────────────────────────────────────────────────
             var priceLabel = new Label
             {
-                Text      = Theme.LYD(_rbWholesale.Checked ? p.WholesalePrice : p.RetailPrice),
+                Text      = Theme.LYD(_rbWholesale.Checked ? p.WholesalePrice : p.Price),
                 AutoSize  = false,
                 Width     = CARD_W - 12,
                 Height    = 20,
@@ -369,11 +370,11 @@ namespace sweetSystem.UserControls
         private void AddToCart(Product p)
         {
             bool ws    = _rbWholesale.Checked;
-            decimal pr = ws ? p.WholesalePrice : p.RetailPrice;
+            double pr = ws ? p.WholesalePrice : p.Price;
             var ex = _cart.FirstOrDefault(l => l.Product.Id == p.Id);
 
             if (ex != null) ex.Quantity++;
-            else _cart.Add(new OrderLine { Product = p, Quantity = 1, UnitPrice = pr });
+            else _cart.Add(new OrderItem { Product = p, ProductId = p.Id, Quantity = 1, TotalPrice = pr });
 
             RefreshCart();
             UpdateCardBadge(p);
@@ -410,9 +411,10 @@ namespace sweetSystem.UserControls
             _linesGrid.Rows.Clear();
             foreach (var l in _cart)
             {
-                l.UnitPrice = ws ? l.Product.WholesalePrice : l.Product.RetailPrice;
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                l.TotalPrice = unitPrice * l.Quantity;
                 _linesGrid.Rows.Add(l.Product.Name, l.Quantity,
-                    Theme.LYD(l.UnitPrice), Theme.LYD(l.LineTotal), "✕");
+                    Theme.LYD(unitPrice), Theme.LYD(l.TotalPrice), "✕");
             }
 
             RecalcTotals();
@@ -421,8 +423,8 @@ namespace sweetSystem.UserControls
         private void RecalcTotals()
         {
             bool ws = _rbWholesale.Checked;
-            decimal sub  = _cart.Sum(l => l.LineTotal);
-            decimal prev = ws && _cbClient.SelectedItem is WholesaleClient wc ? wc.RemainingBalance : 0m;
+            double sub  = _cart.Sum(l => l.TotalPrice);
+            double prev = ws && _cbClient.SelectedItem is Customer wc ? wc.Balance : 0;
 
             _lblSub.Text     = Theme.LYD(sub);
             _lblBalance.Text = Theme.LYD(prev);
@@ -436,7 +438,7 @@ namespace sweetSystem.UserControls
             Label? badge   = card.Controls.Find($"badge_{p.Id}",   false).FirstOrDefault() as Label;
             Label? minusLbl = card.Controls.Find($"minus_{p.Id}",  false).FirstOrDefault() as Label;
 
-            int qty = _cart.FirstOrDefault(l => l.Product.Id == p.Id)?.Quantity ?? 0;
+            var qty = _cart.FirstOrDefault(l => l.Product.Id == p.Id)?.Quantity ?? 0;
 
             if (badge != null)
             {
@@ -458,7 +460,7 @@ namespace sweetSystem.UserControls
                 if (!_cardMap.TryGetValue(p.Id, out var card)) continue;
                 Label? lbl = card.Controls.Find($"price_{p.Id}", false).FirstOrDefault() as Label;
                 if (lbl != null)
-                    lbl.Text = Theme.LYD(ws ? p.WholesalePrice : p.RetailPrice);
+                    lbl.Text = Theme.LYD(ws ? p.WholesalePrice : p.Price);
             }
         }
 
@@ -503,7 +505,7 @@ namespace sweetSystem.UserControls
 
             bool ws = _rbWholesale.Checked;
             string customer = ws
-                ? (_cbClient.SelectedItem as WholesaleClient)?.Name ?? ""
+                ? (_cbClient.SelectedItem as Customer)?.Name ?? ""
                 : _txCustomer.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(customer))
@@ -516,18 +518,31 @@ namespace sweetSystem.UserControls
             var order = new Order
             {
                 Id              = MockData.NextOrderId(),
-                Date            = DateTime.Today,
-                Type            = ws ? OrderType.Wholesale : OrderType.Retail,
+                OrderDate       = DateTime.Today,
                 CustomerName    = ws ? "" : customer,
-                WholesaleClient = ws ? _cbClient.SelectedItem as WholesaleClient : null,
-                Lines           = _cart.Select(l => new OrderLine
-                {
-                    Product  = l.Product,
-                    Quantity = l.Quantity,
-                    UnitPrice = l.UnitPrice
-                }).ToList(),
+                Customer = ws ? _cbClient.SelectedItem as Customer : null,
+                CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null,
                 Status = OrderStatus.Pending
             };
+
+            // Compute total and add order items
+            double total = 0;
+            foreach (var l in _cart)
+            {
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                var oi = new OrderItem
+                {
+                    OrderId  = order.Id,
+                    ProductId = l.Product.Id,
+                    Product  = l.Product,
+                    Quantity = l.Quantity,
+                    TotalPrice = unitPrice * l.Quantity,
+                    Order    = order
+                };
+                MockData.OrderItems.Add(oi);
+                total += oi.TotalPrice;
+            }
+            order.TotalPrice = total;
 
             MockData.Orders.Add(order);
 
@@ -620,7 +635,7 @@ namespace sweetSystem.UserControls
                 if (ctrl.Tag is Product p)
                     ctrl.Visible = string.IsNullOrWhiteSpace(query) ||
                                    p.Name.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                                   p.Category.Contains(query, StringComparison.OrdinalIgnoreCase);
+                                   p.Category.ToString().Contains(query, StringComparison.OrdinalIgnoreCase);
             }
 
             _catalogFlow.ResumeLayout(true);

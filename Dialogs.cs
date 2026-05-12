@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -139,7 +140,7 @@ namespace sweetSystem
     //        {
     //            Text = "تعديل بيانات المنتج";
     //            TxName.Text = p.Name; TxCategory.Text = p.Category;
-    //            TxRetail.Text = p.RetailPrice.ToString("N3");
+    //            TxRetail.Text = p.Price.ToString("N3");
     //            TxWholesale.Text = p.WholesalePrice.ToString("N3");
     //            if (!string.IsNullOrEmpty(p.Unit))
     //            {
@@ -401,7 +402,7 @@ namespace sweetSystem
     //    }
     //}
 
-    //public partial class WholesaleClientDialog : BaseDialog
+    //public partial class CustomerDialog : BaseDialog
     //{
     //    private IContainer components = null;
     //    public TextBox TxName;
@@ -411,12 +412,12 @@ namespace sweetSystem
     //    private Label label2;
     //    private Label label3;
 
-    //    public WholesaleClientDialog()
+    //    public CustomerDialog()
     //    {
     //        InitializeComponent();
     //    }
 
-    //    public WholesaleClientDialog(WholesaleClient? c = null) : this()
+    //    public CustomerDialog(Customer? c = null) : this()
     //    {
     //        if (c != null)
     //        {
@@ -493,7 +494,7 @@ namespace sweetSystem
     //        this.TxBalance.Name = "TxBalance";
     //        this.TxBalance.Size = new System.Drawing.Size(368, 23);
     //        this.TxBalance.TabIndex = 2;
-    //        // WholesaleClientDialog
+    //        // CustomerDialog
     //        this.ClientSize = new System.Drawing.Size(400, 300);
     //        this.Controls.Add(this.TxBalance);
     //        this.Controls.Add(this.label3);
@@ -501,7 +502,7 @@ namespace sweetSystem
     //        this.Controls.Add(this.label2);
     //        this.Controls.Add(this.TxName);
     //        this.Controls.Add(this.label1);
-    //        this.Name = "WholesaleClientDialog";
+    //        this.Name = "CustomerDialog";
     //        this.Text = "إضافة عميل جملة";
     //        this.ResumeLayout(false);
     //        this.PerformLayout();
@@ -722,14 +723,14 @@ namespace sweetSystem
     //    public NumericUpDown NumAmount;
     //    private Label label1;
 
-    //    public decimal Amount => NumAmount.Value;
+    //    public double Amount => NumAmount.Value;
 
     //    public DepositDialog()
     //    {
     //        InitializeComponent();
     //    }
 
-    //    public DepositDialog(WholesaleClient c) : this()
+    //    public DepositDialog(Customer c) : this()
     //    {
     //        Text = $"إيداع للعميل {c.Name}";
     //        if (c.RemainingBalance > 0)
@@ -764,12 +765,12 @@ namespace sweetSystem
     //        this.NumAmount.DecimalPlaces = 3;
     //        this.NumAmount.Font = Theme.FontBody;
     //        this.NumAmount.Location = new System.Drawing.Point(16, 42);
-    //        this.NumAmount.Maximum = new decimal(new int[] {
+    //        this.NumAmount.Maximum = new double(new int[] {
     //        999999,
     //        0,
     //        0,
     //        0});
-    //        this.NumAmount.Minimum = new decimal(new int[] {
+    //        this.NumAmount.Minimum = new double(new int[] {
     //        1,
     //        0,
     //        0,
@@ -777,7 +778,7 @@ namespace sweetSystem
     //        this.NumAmount.Name = "NumAmount";
     //        this.NumAmount.Size = new System.Drawing.Size(368, 23);
     //        this.NumAmount.TabIndex = 0;
-    //        this.NumAmount.Value = new decimal(new int[] {
+    //        this.NumAmount.Value = new double(new int[] {
     //        1,
     //        0,
     //        0,

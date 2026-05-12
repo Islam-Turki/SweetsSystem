@@ -1,4 +1,5 @@
-﻿using System;
+using sweetSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,14 +15,14 @@ namespace sweetSystem
     using System.Windows.Forms;
     using System.Xml.Linq;
 
-    public partial class WholesaleClientDialog : BaseDialog
+    public partial class CustomerDialog : BaseDialog
     {
-        public WholesaleClientDialog()
+        public CustomerDialog()
         {
             InitializeComponent();
         }
 
-        public WholesaleClientDialog(WholesaleClient? c = null) : this()
+        public CustomerDialog(Customer? c = null) : this()
         {
             if (c != null)
             {
@@ -29,7 +30,7 @@ namespace sweetSystem
 
                 TxName.Text = c.Name;
                 TxPhone.Text = c.Phone;
-                TxBalance.Text = c.RemainingBalance.ToString("N3");
+                TxBalance.Text = c.Balance.ToString("N3");
             }
             else
             {

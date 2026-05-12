@@ -1,3 +1,4 @@
+using sweetSystem;
 using System.Drawing;
 
 namespace sweetSystem
@@ -42,7 +43,7 @@ namespace sweetSystem
         public const int Padding       = 16;
 
         // ── Currency helper ───────────────────────────────────────────────────
-        /// <summary>Format a decimal as Libyan Dinar: "1,234.56 د.ل"</summary>
-        public static string LYD(decimal amount) => $"{amount:N2} د.ل";
+        /// <summary>Format a double as Libyan Dinar: "1,234.56 د.ل"</summary>
+        public static string LYD(double amount) => $"{amount:N2} د.ل";
     }
 }
