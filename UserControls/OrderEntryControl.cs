@@ -23,6 +23,9 @@ namespace sweetSystem.UserControls
             SetupCalendarLogic();
             LoadCatalog();
             BindComboBoxes();
+
+            _txCustomer.KeyPress += ValidationHelper.LettersOnly;
+            _txCustomerExtra.KeyPress += ValidationHelper.NumbersOnly;
         }
 
         // ══════════════════════════════════════════════════════════════════════
@@ -509,6 +512,20 @@ namespace sweetSystem.UserControls
             if (string.IsNullOrWhiteSpace(customer))
             {
                 MessageBox.Show("يرجى إدخال اسم العميل.", "تنبيه",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ws && _txCustomer.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تنبيه",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ws && !string.IsNullOrWhiteSpace(_txCustomerExtra.Text) && !_txCustomerExtra.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تنبيه",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
