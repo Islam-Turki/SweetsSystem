@@ -685,9 +685,12 @@ namespace sweetSystem.UserControls
                 cal.Parent?.Controls.Remove(cal);
                 this.Controls.Add(cal);
             }
-
-            btn.Click += (_, _) =>
+            try
             {
+                btn.Click += (_, _) =>
+            {
+                
+
                 if (cal.Visible)
                 {
                     cal.Visible = false;
@@ -707,7 +710,13 @@ namespace sweetSystem.UserControls
                 cal.Location = new Point(calX, calY);
                 cal.Visible = true;
                 cal.BringToFront();
+               
             };
+            }
+            catch
+            {
+                return;
+            }
 
             cal.DateSelected += (_, e) =>
             {
