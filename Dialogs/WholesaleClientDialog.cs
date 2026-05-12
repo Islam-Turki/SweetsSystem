@@ -1,4 +1,3 @@
-using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +19,9 @@ namespace sweetSystem
         public CustomerDialog()
         {
             InitializeComponent();
+            TxName.KeyPress += ValidationHelper.LettersOnly;
+            TxPhone.KeyPress += ValidationHelper.NumbersOnly;
+            TxBalance.KeyPress += ValidationHelper.DecimalsOnly;
         }
 
         public CustomerDialog(Customer? c = null) : this()
@@ -36,6 +38,29 @@ namespace sweetSystem
             {
                 Text = "إضافة عميل جملة";
             }
+        }
+
+        protected override void BtnSave_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxName.Text) || TxName.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(TxPhone.Text) && !TxPhone.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxBalance.Text) || !decimal.TryParse(TxBalance.Text, out _))
+            {
+                MessageBox.Show("الرجاء إدخال الرصيد كأرقام صحيحة.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            base.BtnSave_Click(sender, e);
         }
     }
 }

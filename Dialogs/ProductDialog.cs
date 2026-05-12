@@ -1,4 +1,3 @@
-using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +24,10 @@ public partial class ProductDialog : BaseDialog
         public ProductDialog()
         {
             InitializeComponent();
+            TxName.KeyPress += ValidationHelper.LettersOnly;
+            TxCategory.KeyPress += ValidationHelper.LettersOnly;
+            TxRetail.KeyPress += ValidationHelper.DecimalsOnly;
+            TxWholesale.KeyPress += ValidationHelper.DecimalsOnly;
         }
 
         public string? SelectedImageRelativePath { get; set; }
@@ -132,9 +135,27 @@ public partial class ProductDialog : BaseDialog
         protected override void BtnSave_Click(object sender, EventArgs e)
         {
             // validate simple fields
-            if (string.IsNullOrWhiteSpace(TxName.Text))
+            if (string.IsNullOrWhiteSpace(TxName.Text) || TxName.Text.Any(char.IsDigit))
             {
-                MessageBox.Show("الرجاء إدخال اسم المنتج.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("الرجاء إدخال اسم المنتج بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(TxCategory.Text) && TxCategory.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال فئة المنتج بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxRetail.Text) || !decimal.TryParse(TxRetail.Text, out _))
+            {
+                MessageBox.Show("الرجاء إدخال سعر القطاعي كأرقام صحيحة.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxWholesale.Text) || !decimal.TryParse(TxWholesale.Text, out _))
+            {
+                MessageBox.Show("الرجاء إدخال سعر الجملة كأرقام صحيحة.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

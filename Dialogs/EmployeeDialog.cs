@@ -1,4 +1,3 @@
-using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +20,7 @@ namespace sweetSystem
         public EmployeeDialog()
         {
             InitializeComponent();
+            TxName.KeyPress += ValidationHelper.LettersOnly;
 
             foreach (var prod in MockData.Products)
                 ClbSkills.Items.Add(prod);
@@ -55,6 +55,17 @@ namespace sweetSystem
         private void CbRole_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClbSkills.Enabled = CbRole.SelectedIndex == 0;
+        }
+
+        protected override void BtnSave_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxName.Text) || TxName.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال اسم الموظف بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            base.BtnSave_Click(sender, e);
         }
     }
 }
