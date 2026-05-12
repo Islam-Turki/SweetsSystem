@@ -66,7 +66,7 @@ namespace sweetSystem.UserControls
                 {
                     c.Name = dlg.TxName.Text;
                     c.Phone = dlg.TxPhone.Text;
-                    if (double.TryParse(dlg.TxBalance.Text, out var b)) c.Balance = b;
+                    if (double.TryParse(dlg.TxBalance.Text, out var b)) c.OpeningBalance = b;
                     LoadGrid();
                 }
             }
@@ -86,7 +86,16 @@ namespace sweetSystem.UserControls
                 var dlg = new DepositDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    c.Balance -= dlg.Amount;
+                    // Record a standalone payment (deposit)
+                    MockData.PaymentTransactions.Add(new PaymentTransaction
+                    {
+                        Id = MockData.PaymentTransactions.Count == 0 ? 1 : MockData.PaymentTransactions.Max(t => t.Id) + 1,
+                        CustomerId = c.Id,
+                        Amount = dlg.Amount,
+                        PaymentDate = DateTime.Now,
+                        Notes = "إيداع يدوي"
+                    });
+
                     MessageBox.Show($"تم إيداع {Theme.LYD(dlg.Amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadGrid();
                 }
@@ -104,7 +113,7 @@ namespace sweetSystem.UserControls
                     Id = MockData.NextCustomerId(),
                     Name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "عميل جديد" : dlg.TxName.Text,
                     Phone = dlg.TxPhone.Text,
-                    Balance = b
+                    OpeningBalance = b
                 });
                 LoadGrid();
             }

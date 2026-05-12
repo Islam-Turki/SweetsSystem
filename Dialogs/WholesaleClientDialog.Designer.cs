@@ -81,7 +81,7 @@ namespace sweetSystem
             label3.Name = "label3";
             label3.Size = new Size(95, 15);
             label3.TabIndex = 12;
-            label3.Text = "الرصيد المتبقي (د.ل)";
+            label3.Text = "الرصيد الافتتاحي (د.ل)";
 
             // TxBalance
             TxBalance.BorderStyle = BorderStyle.FixedSingle;

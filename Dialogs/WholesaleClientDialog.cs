@@ -32,7 +32,7 @@ namespace sweetSystem
 
                 TxName.Text = c.Name;
                 TxPhone.Text = c.Phone;
-                TxBalance.Text = c.Balance.ToString("N3");
+                TxBalance.Text = c.OpeningBalance.ToString("N3");
             }
             else
             {

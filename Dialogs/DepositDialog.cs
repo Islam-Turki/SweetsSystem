@@ -30,7 +30,7 @@ namespace sweetSystem
             if (c.Balance > 0)
             {
                 NumAmount.Maximum = (decimal)c.Balance;
-                NumAmount.Value = (decimal)c.Balance;
+                NumAmount.Value = 100.0m;
             }
         }
     }

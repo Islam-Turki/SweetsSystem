@@ -591,12 +591,6 @@ namespace sweetSystem.UserControls
             // If editing, clear old items first and REVERT balance change
             if (_editingOrder != null)
             {
-                if (_editingOrder.CustomerId != null && _editingOrder.Customer != null)
-                {
-                    // Revert: subtract what was added (Total - Paid)
-                    _editingOrder.Customer.Balance -= (_editingOrder.TotalPrice - _editingOrder.PaidAmount);
-                }
-
                 var oldItems = MockData.OrderItems.Where(x => x.OrderId == order.Id).ToList();
                 foreach (var item in oldItems) MockData.OrderItems.Remove(item);
             }
@@ -624,13 +618,6 @@ namespace sweetSystem.UserControls
             if (order.PaidAmount >= order.TotalPrice) order.PaymentStatus = PaymentStatus.Paid;
             else if (order.PaidAmount > 0) order.PaymentStatus = PaymentStatus.Partial;
             else order.PaymentStatus = PaymentStatus.None;
-
-            // Apply balance update for wholesale
-            if (ws && order.Customer != null)
-            {
-                double remaining = order.TotalPrice - order.PaidAmount;
-                order.Customer.Balance += remaining;
-            }
 
             if (_editingOrder == null)
             {
