@@ -665,19 +665,23 @@ namespace sweetSystem.UserControls
         }
 
         /// <summary>
-        /// Wires a delivery button to show/hide a MonthCalendar as a floating
-        /// popup anchored directly below the button, independent of panel nesting.
+        /// Wires a delivery trigger to show/hide a MonthCalendar as a floating
+        /// popup anchored directly below the trigger, independent of panel nesting.
         /// 
         /// Strategy:
         ///   1. Re-parent the calendar to THIS UserControl so it is never clipped
         ///      by an intermediate panel and sits on top of everything.
-        ///   2. Use PointToScreen / PointToClient to translate the button's
+        ///   2. Use PointToScreen / PointToClient to translate the trigger's
         ///      bottom-left corner into coordinates relative to THIS control.
         ///   3. Call BringToFront() every time the calendar is made visible.
         /// </summary>
         private void ConfigurePopupCalendar(
-            Control btn, MonthCalendar cal, Label displayLabel)
+            Control trigger, MonthCalendar cal, Label displayLabel)
         {
+            ArgumentNullException.ThrowIfNull(trigger);
+            ArgumentNullException.ThrowIfNull(cal);
+            ArgumentNullException.ThrowIfNull(displayLabel);
+
             // Re-parent the calendar to the root UserControl once
             cal.Visible = false;
             if (cal.Parent != this)
@@ -685,11 +689,14 @@ namespace sweetSystem.UserControls
                 cal.Parent?.Controls.Remove(cal);
                 this.Controls.Add(cal);
             }
-            try
+
+            trigger.Click += (_, _) =>
             {
-                btn.Click += (_, _) =>
-            {
-                
+                if (trigger is CheckBox { Checked: false })
+                {
+                    cal.Visible = false;
+                    return;
+                }
 
                 if (cal.Visible)
                 {
@@ -697,9 +704,9 @@ namespace sweetSystem.UserControls
                     return;
                 }
 
-                // Compute position: screen coords of button's bottom-left corner
+                // Compute position: screen coords of trigger's bottom-left corner
                 // then translate to THIS control's client coords.
-                Point screenPt = btn.PointToScreen(new Point(0, btn.Height));
+                Point screenPt = trigger.PointToScreen(new Point(0, trigger.Height));
                 Point clientPt = this.PointToClient(screenPt);
 
                 // Keep the calendar fully on-screen horizontally
@@ -710,13 +717,7 @@ namespace sweetSystem.UserControls
                 cal.Location = new Point(calX, calY);
                 cal.Visible = true;
                 cal.BringToFront();
-               
             };
-            }
-            catch
-            {
-                return;
-            }
 
             cal.DateSelected += (_, e) =>
             {

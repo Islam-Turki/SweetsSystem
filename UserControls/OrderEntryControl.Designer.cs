@@ -35,6 +35,7 @@ namespace sweetSystem.UserControls
             _cbClient = new ComboBox();
             wholesaleDateFlow = new FlowLayoutPanel();
             _chkIsDeliveryWholesale = new CheckBox();
+            _btnDeliveryWholesale = new FlatButton();
             _lblDeliveryWholesale = new Label();
             lblPaidWholesale = new Label();
             _txPaidWholesaleWrap = new Panel();
@@ -50,6 +51,7 @@ namespace sweetSystem.UserControls
             _txCustomerExtra = new TextBox();
             retailDateFlow = new FlowLayoutPanel();
             _chkIsDeliveryRetail = new CheckBox();
+            _btnDeliveryRetail = new FlatButton();
             _lblDeliveryRetail = new Label();
             lblPaidRetail = new Label();
             _txPaidRetailWrap = new Panel();
@@ -336,10 +338,12 @@ namespace sweetSystem.UserControls
             // 
             wholesaleDateFlow.AutoSize = true;
             wholesaleDateFlow.Controls.Add(_chkIsDeliveryWholesale);
+            wholesaleDateFlow.Controls.Add(_btnDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(_lblDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(lblPaidWholesale);
             wholesaleDateFlow.Controls.Add(_txPaidWholesaleWrap);
             wholesaleDateFlow.Dock = DockStyle.Fill;
+            wholesaleDateFlow.FlowDirection = FlowDirection.RightToLeft;
             wholesaleDateFlow.Location = new Point(0, 53);
             wholesaleDateFlow.Margin = new Padding(0);
             wholesaleDateFlow.Name = "wholesaleDateFlow";
@@ -350,19 +354,37 @@ namespace sweetSystem.UserControls
             // _chkIsDeliveryWholesale
             // 
             _chkIsDeliveryWholesale.AutoSize = true;
-            _chkIsDeliveryWholesale.Location = new Point(128, 4);
-            _chkIsDeliveryWholesale.Margin = new Padding(0, 4, 9, 0);
+            _chkIsDeliveryWholesale.Location = new Point(9, 6);
+            _chkIsDeliveryWholesale.Margin = new Padding(0, 6, 9, 0);
             _chkIsDeliveryWholesale.Name = "_chkIsDeliveryWholesale";
             _chkIsDeliveryWholesale.Size = new Size(88, 19);
             _chkIsDeliveryWholesale.TabIndex = 2;
             _chkIsDeliveryWholesale.Text = "طلب توصيل";
             _chkIsDeliveryWholesale.UseVisualStyleBackColor = true;
             // 
+            // _btnDeliveryWholesale
+            // 
+            _btnDeliveryWholesale.BackColor = Color.FromArgb(123, 174, 111);
+            _btnDeliveryWholesale.Cursor = Cursors.Hand;
+            _btnDeliveryWholesale.FlatAppearance.BorderSize = 0;
+            _btnDeliveryWholesale.FlatStyle = FlatStyle.Flat;
+            _btnDeliveryWholesale.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+            _btnDeliveryWholesale.ForeColor = Color.White;
+            _btnDeliveryWholesale.Location = new Point(104, 0);
+            _btnDeliveryWholesale.Margin = new Padding(0, 0, 7, 8);
+            _btnDeliveryWholesale.Name = "_btnDeliveryWholesale";
+            _btnDeliveryWholesale.Radius = 6;
+            _btnDeliveryWholesale.Size = new Size(73, 30);
+            _btnDeliveryWholesale.TabIndex = 5;
+            _btnDeliveryWholesale.Text = "التاريخ";
+            _btnDeliveryWholesale.UseVisualStyleBackColor = false;
+            // 
             // _lblDeliveryWholesale
             // 
             _lblDeliveryWholesale.AutoSize = true;
-            _lblDeliveryWholesale.Location = new Point(75, 4);
-            _lblDeliveryWholesale.Margin = new Padding(0, 4, 0, 0);
+            wholesaleDateFlow.SetFlowBreak(_lblDeliveryWholesale, true);
+            _lblDeliveryWholesale.Location = new Point(0, 45);
+            _lblDeliveryWholesale.Margin = new Padding(0, 7, 0, 0);
             _lblDeliveryWholesale.Name = "_lblDeliveryWholesale";
             _lblDeliveryWholesale.Size = new Size(44, 15);
             _lblDeliveryWholesale.TabIndex = 1;
@@ -371,8 +393,8 @@ namespace sweetSystem.UserControls
             // lblPaidWholesale
             // 
             lblPaidWholesale.AutoSize = true;
-            lblPaidWholesale.Location = new Point(26, 8);
-            lblPaidWholesale.Margin = new Padding(0, 8, 5, 0);
+            lblPaidWholesale.Location = new Point(5, 67);
+            lblPaidWholesale.Margin = new Padding(0, 7, 5, 0);
             lblPaidWholesale.Name = "lblPaidWholesale";
             lblPaidWholesale.Size = new Size(49, 15);
             lblPaidWholesale.TabIndex = 3;
@@ -382,7 +404,8 @@ namespace sweetSystem.UserControls
             // 
             _txPaidWholesaleWrap.BackColor = Color.White;
             _txPaidWholesaleWrap.Controls.Add(_txPaidWholesale);
-            _txPaidWholesaleWrap.Location = new Point(113, 26);
+            _txPaidWholesaleWrap.Location = new Point(61, 60);
+            _txPaidWholesaleWrap.Margin = new Padding(0, 0, 7, 0);
             _txPaidWholesaleWrap.Name = "_txPaidWholesaleWrap";
             _txPaidWholesaleWrap.Padding = new Padding(8, 4, 8, 4);
             _txPaidWholesaleWrap.Size = new Size(100, 30);
@@ -526,10 +549,12 @@ namespace sweetSystem.UserControls
             // 
             retailDateFlow.AutoSize = true;
             retailDateFlow.Controls.Add(_chkIsDeliveryRetail);
+            retailDateFlow.Controls.Add(_btnDeliveryRetail);
             retailDateFlow.Controls.Add(_lblDeliveryRetail);
             retailDateFlow.Controls.Add(lblPaidRetail);
             retailDateFlow.Controls.Add(_txPaidRetailWrap);
             retailDateFlow.Dock = DockStyle.Fill;
+            retailDateFlow.FlowDirection = FlowDirection.RightToLeft;
             retailDateFlow.Location = new Point(0, 100);
             retailDateFlow.Margin = new Padding(0);
             retailDateFlow.Name = "retailDateFlow";
@@ -540,19 +565,37 @@ namespace sweetSystem.UserControls
             // _chkIsDeliveryRetail
             // 
             _chkIsDeliveryRetail.AutoSize = true;
-            _chkIsDeliveryRetail.Location = new Point(128, 4);
-            _chkIsDeliveryRetail.Margin = new Padding(0, 4, 9, 0);
+            _chkIsDeliveryRetail.Location = new Point(9, 6);
+            _chkIsDeliveryRetail.Margin = new Padding(0, 6, 9, 0);
             _chkIsDeliveryRetail.Name = "_chkIsDeliveryRetail";
             _chkIsDeliveryRetail.Size = new Size(88, 19);
             _chkIsDeliveryRetail.TabIndex = 2;
             _chkIsDeliveryRetail.Text = "طلب توصيل";
             _chkIsDeliveryRetail.UseVisualStyleBackColor = true;
             // 
+            // _btnDeliveryRetail
+            // 
+            _btnDeliveryRetail.BackColor = Color.FromArgb(123, 174, 111);
+            _btnDeliveryRetail.Cursor = Cursors.Hand;
+            _btnDeliveryRetail.FlatAppearance.BorderSize = 0;
+            _btnDeliveryRetail.FlatStyle = FlatStyle.Flat;
+            _btnDeliveryRetail.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+            _btnDeliveryRetail.ForeColor = Color.White;
+            _btnDeliveryRetail.Location = new Point(104, 0);
+            _btnDeliveryRetail.Margin = new Padding(0, 0, 7, 8);
+            _btnDeliveryRetail.Name = "_btnDeliveryRetail";
+            _btnDeliveryRetail.Radius = 6;
+            _btnDeliveryRetail.Size = new Size(73, 30);
+            _btnDeliveryRetail.TabIndex = 5;
+            _btnDeliveryRetail.Text = "التاريخ";
+            _btnDeliveryRetail.UseVisualStyleBackColor = false;
+            // 
             // _lblDeliveryRetail
             // 
             _lblDeliveryRetail.AutoSize = true;
-            _lblDeliveryRetail.Location = new Point(75, 4);
-            _lblDeliveryRetail.Margin = new Padding(0, 4, 0, 0);
+            retailDateFlow.SetFlowBreak(_lblDeliveryRetail, true);
+            _lblDeliveryRetail.Location = new Point(0, 45);
+            _lblDeliveryRetail.Margin = new Padding(0, 7, 0, 0);
             _lblDeliveryRetail.Name = "_lblDeliveryRetail";
             _lblDeliveryRetail.Size = new Size(44, 15);
             _lblDeliveryRetail.TabIndex = 1;
@@ -561,8 +604,8 @@ namespace sweetSystem.UserControls
             // lblPaidRetail
             // 
             lblPaidRetail.AutoSize = true;
-            lblPaidRetail.Location = new Point(26, 8);
-            lblPaidRetail.Margin = new Padding(0, 8, 5, 0);
+            lblPaidRetail.Location = new Point(5, 67);
+            lblPaidRetail.Margin = new Padding(0, 7, 5, 0);
             lblPaidRetail.Name = "lblPaidRetail";
             lblPaidRetail.Size = new Size(49, 15);
             lblPaidRetail.TabIndex = 3;
@@ -572,7 +615,8 @@ namespace sweetSystem.UserControls
             // 
             _txPaidRetailWrap.BackColor = Color.White;
             _txPaidRetailWrap.Controls.Add(_txPaidRetail);
-            _txPaidRetailWrap.Location = new Point(113, 26);
+            _txPaidRetailWrap.Location = new Point(61, 60);
+            _txPaidRetailWrap.Margin = new Padding(0, 0, 7, 0);
             _txPaidRetailWrap.Name = "_txPaidRetailWrap";
             _txPaidRetailWrap.Padding = new Padding(8, 4, 8, 4);
             _txPaidRetailWrap.Size = new Size(100, 30);
