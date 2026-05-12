@@ -57,11 +57,28 @@ namespace sweetSystem.UserControls
 
         public void RefreshData()
         {
-            var today = MockData.Orders.Where(o => o.OrderDate.Date == DateTime.Today).ToList();
-            _cOrders.Update(today.Count.ToString());
-            _cPending.Update(today.Count(o => o.Status == OrderStatus.Pending).ToString());
-            _cRevenue.Update(Theme.LYD(today.Sum(o => o.TotalPrice)));
-            _cClients.Update(MockData.Customers.Count.ToString());
+            var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
+
+            // 1. Today's Orders (Created today)
+            int todayCount = MockData.Orders.Count(o => o.OrderDate.Date == today);
+            _cOrders.Update(todayCount.ToString());
+            _cOrders.SubText = "تم إدخالها اليوم";
+
+            // 2. Pending Orders (All orders still pending)
+            int pendingCount = MockData.Orders.Count(o => o.Status == OrderStatus.Pending);
+            _cPending.Update(pendingCount.ToString());
+            _cPending.SubText = "بانتظار التجهيز";
+
+            // 3. Delivery Orders (All orders marked for delivery)
+            int deliveryCount = MockData.Orders.Count(o => o.IsDelivery);
+            _cRevenue.Update(deliveryCount.ToString());
+            _cRevenue.SubText = "إجمالي طلبات التوصيل";
+
+            // 4. Tomorrow's Orders (Scheduled for delivery tomorrow)
+            int tomorrowCount = MockData.Orders.Count(o => o.DeliveryDate.Date == tomorrow);
+            _cClients.Update(tomorrowCount.ToString());
+            _cClients.SubText = "موعد تسليمها غداً";
 
             _grid.Rows.Clear();
             foreach (var o in MockData.Orders.OrderByDescending(x => x.Id).Take(25))
