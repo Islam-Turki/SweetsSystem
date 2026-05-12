@@ -73,8 +73,12 @@ namespace sweetSystem.UserControls
             }
         }
 
-        private void BtnAdd_Click(object? sender, EventArgs e) =>
-            MessageBox.Show("لإضافة طلب جديد، يرجى استخدام شاشة 'إدخال الطلبات' من القائمة الجانبية.",
-                "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void BtnAdd_Click(object? sender, EventArgs e)
+        {
+            if (this.FindForm() is MainForm mainForm)
+            {
+                mainForm.Navigate(1);
+            }
+        }
     }
 }
