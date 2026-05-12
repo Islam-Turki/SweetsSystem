@@ -37,6 +37,9 @@ namespace sweetSystem.UserControls
             _chkIsDeliveryWholesale = new CheckBox();
             _btnDeliveryWholesale = new FlatButton();
             _lblDeliveryWholesale = new Label();
+            lblPaidWholesale = new Label();
+            _txPaidWholesaleWrap = new Panel();
+            _txPaidWholesale = new TextBox();
             lblWholesaleClient = new Label();
             _calWholesale = new MonthCalendar();
             _retailPanel = new Panel();
@@ -50,6 +53,9 @@ namespace sweetSystem.UserControls
             _chkIsDeliveryRetail = new CheckBox();
             _btnDeliveryRetail = new FlatButton();
             _lblDeliveryRetail = new Label();
+            lblPaidRetail = new Label();
+            _txPaidRetailWrap = new Panel();
+            _txPaidRetail = new TextBox();
             _calRetail = new MonthCalendar();
             typeCard = new Panel();
             lblOrderType = new Label();
@@ -73,11 +79,13 @@ namespace sweetSystem.UserControls
             _wholesalePanel.SuspendLayout();
             wholesaleTable.SuspendLayout();
             wholesaleDateFlow.SuspendLayout();
+            _txPaidWholesaleWrap.SuspendLayout();
             _retailPanel.SuspendLayout();
             retailTable.SuspendLayout();
             _txCustomerWrap.SuspendLayout();
             _txCustomerExtraWrap.SuspendLayout();
             retailDateFlow.SuspendLayout();
+            _txPaidRetailWrap.SuspendLayout();
             typeCard.SuspendLayout();
             leftPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_linesGrid).BeginInit();
@@ -109,6 +117,7 @@ namespace sweetSystem.UserControls
             h1Label.TabIndex = 0;
             h1Label.Text = "\U0001f6d2  إدخال طلب جديد";
             h1Label.TextAlign = ContentAlignment.MiddleLeft;
+            h1Label.Click += h1Label_Click;
             // 
             // sepBar
             // 
@@ -334,6 +343,8 @@ namespace sweetSystem.UserControls
             wholesaleDateFlow.Controls.Add(_chkIsDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(_btnDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(_lblDeliveryWholesale);
+            wholesaleDateFlow.Controls.Add(lblPaidWholesale);
+            wholesaleDateFlow.Controls.Add(_txPaidWholesaleWrap);
             wholesaleDateFlow.Dock = DockStyle.Fill;
             wholesaleDateFlow.Location = new Point(0, 53);
             wholesaleDateFlow.Margin = new Padding(0);
@@ -378,6 +389,36 @@ namespace sweetSystem.UserControls
             _lblDeliveryWholesale.Size = new Size(44, 15);
             _lblDeliveryWholesale.TabIndex = 1;
             _lblDeliveryWholesale.Text = "لم يحدد";
+            // 
+            // lblPaidWholesale
+            // 
+            lblPaidWholesale.AutoSize = true;
+            lblPaidWholesale.Location = new Point(123, 34);
+            lblPaidWholesale.Margin = new Padding(0, 8, 5, 0);
+            lblPaidWholesale.Name = "lblPaidWholesale";
+            lblPaidWholesale.Size = new Size(49, 15);
+            lblPaidWholesale.TabIndex = 3;
+            lblPaidWholesale.Text = "المدفوع:";
+            // 
+            // _txPaidWholesaleWrap
+            // 
+            _txPaidWholesaleWrap.BackColor = Color.White;
+            _txPaidWholesaleWrap.Controls.Add(_txPaidWholesale);
+            _txPaidWholesaleWrap.Location = new Point(15, 29);
+            _txPaidWholesaleWrap.Name = "_txPaidWholesaleWrap";
+            _txPaidWholesaleWrap.Padding = new Padding(8, 4, 8, 4);
+            _txPaidWholesaleWrap.Size = new Size(100, 30);
+            _txPaidWholesaleWrap.TabIndex = 4;
+            // 
+            // _txPaidWholesale
+            // 
+            _txPaidWholesale.BorderStyle = BorderStyle.None;
+            _txPaidWholesale.Dock = DockStyle.Fill;
+            _txPaidWholesale.Location = new Point(8, 4);
+            _txPaidWholesale.Name = "_txPaidWholesale";
+            _txPaidWholesale.Size = new Size(84, 16);
+            _txPaidWholesale.TabIndex = 0;
+            _txPaidWholesale.Text = "0";
             // 
             // lblWholesaleClient
             // 
@@ -509,6 +550,8 @@ namespace sweetSystem.UserControls
             retailDateFlow.Controls.Add(_chkIsDeliveryRetail);
             retailDateFlow.Controls.Add(_btnDeliveryRetail);
             retailDateFlow.Controls.Add(_lblDeliveryRetail);
+            retailDateFlow.Controls.Add(lblPaidRetail);
+            retailDateFlow.Controls.Add(_txPaidRetailWrap);
             retailDateFlow.Dock = DockStyle.Fill;
             retailDateFlow.Location = new Point(0, 100);
             retailDateFlow.Margin = new Padding(0);
@@ -552,6 +595,36 @@ namespace sweetSystem.UserControls
             _lblDeliveryRetail.Size = new Size(44, 15);
             _lblDeliveryRetail.TabIndex = 1;
             _lblDeliveryRetail.Text = "لم يحدد";
+            // 
+            // lblPaidRetail
+            // 
+            lblPaidRetail.AutoSize = true;
+            lblPaidRetail.Location = new Point(123, 34);
+            lblPaidRetail.Margin = new Padding(0, 8, 5, 0);
+            lblPaidRetail.Name = "lblPaidRetail";
+            lblPaidRetail.Size = new Size(49, 15);
+            lblPaidRetail.TabIndex = 3;
+            lblPaidRetail.Text = "المدفوع:";
+            // 
+            // _txPaidRetailWrap
+            // 
+            _txPaidRetailWrap.BackColor = Color.White;
+            _txPaidRetailWrap.Controls.Add(_txPaidRetail);
+            _txPaidRetailWrap.Location = new Point(15, 29);
+            _txPaidRetailWrap.Name = "_txPaidRetailWrap";
+            _txPaidRetailWrap.Padding = new Padding(8, 4, 8, 4);
+            _txPaidRetailWrap.Size = new Size(100, 30);
+            _txPaidRetailWrap.TabIndex = 4;
+            // 
+            // _txPaidRetail
+            // 
+            _txPaidRetail.BorderStyle = BorderStyle.None;
+            _txPaidRetail.Dock = DockStyle.Fill;
+            _txPaidRetail.Location = new Point(8, 4);
+            _txPaidRetail.Name = "_txPaidRetail";
+            _txPaidRetail.Size = new Size(84, 16);
+            _txPaidRetail.TabIndex = 0;
+            _txPaidRetail.Text = "0";
             // 
             // _calRetail
             // 
@@ -775,6 +848,8 @@ namespace sweetSystem.UserControls
             wholesaleTable.PerformLayout();
             wholesaleDateFlow.ResumeLayout(false);
             wholesaleDateFlow.PerformLayout();
+            _txPaidWholesaleWrap.ResumeLayout(false);
+            _txPaidWholesaleWrap.PerformLayout();
             _retailPanel.ResumeLayout(false);
             _retailPanel.PerformLayout();
             retailTable.ResumeLayout(false);
@@ -785,6 +860,8 @@ namespace sweetSystem.UserControls
             _txCustomerExtraWrap.PerformLayout();
             retailDateFlow.ResumeLayout(false);
             retailDateFlow.PerformLayout();
+            _txPaidRetailWrap.ResumeLayout(false);
+            _txPaidRetailWrap.PerformLayout();
             typeCard.ResumeLayout(false);
             typeCard.PerformLayout();
             leftPanel.ResumeLayout(false);
@@ -822,6 +899,9 @@ namespace sweetSystem.UserControls
         private sweetSystem.FlatButton           _btnDeliveryRetail;
         private System.Windows.Forms.Label       _lblDeliveryRetail;
         private System.Windows.Forms.CheckBox     _chkIsDeliveryRetail;
+        private System.Windows.Forms.TextBox      _txPaidRetail;
+        private System.Windows.Forms.Panel        _txPaidRetailWrap;
+        private System.Windows.Forms.Label        lblPaidRetail;
         private System.Windows.Forms.MonthCalendar _calRetail;
 
         private System.Windows.Forms.Panel       _wholesalePanel;
@@ -832,6 +912,9 @@ namespace sweetSystem.UserControls
         private sweetSystem.FlatButton           _btnDeliveryWholesale;
         private System.Windows.Forms.Label       _lblDeliveryWholesale;
         private System.Windows.Forms.CheckBox     _chkIsDeliveryWholesale;
+        private System.Windows.Forms.TextBox      _txPaidWholesale;
+        private System.Windows.Forms.Panel        _txPaidWholesaleWrap;
+        private System.Windows.Forms.Label        lblPaidWholesale;
         private System.Windows.Forms.MonthCalendar _calWholesale;
 
         private System.Windows.Forms.Label       lblCartTitle;
