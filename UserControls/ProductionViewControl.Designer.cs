@@ -100,6 +100,7 @@ namespace sweetSystem.UserControls
             _btnPrint.TabIndex = 2;
             _btnPrint.Text = "🖨 طباعة ورقة الإنتاج";
             _btnPrint.UseVisualStyleBackColor = false;
+            _btnPrint.Click += BtnPrint_Click;
             // 
             // _btnTomorrow
             // 

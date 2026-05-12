@@ -40,6 +40,36 @@ namespace sweetSystem.UserControls
             RefreshGrid();
         }
 
+        private void BtnPrint_Click(object sender, EventArgs e)
+        {
+            if (_grid.Rows.Count == 0)
+            {
+                MessageBox.Show("لا توجد بيانات للطباعة", "طباعة",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var items = new System.Collections.Generic.List<(string ProductName, string Unit, double TotalQuantity)>();
+
+            foreach (DataGridViewRow row in _grid.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                string name = row.Cells["Product"].Value?.ToString() ?? "—";
+                double qty  = Convert.ToDouble(row.Cells["TotalQty"].Value ?? 0);
+
+                string unitRaw    = row.Cells["Unit"].Value?.ToString() ?? "";
+                string unitArabic = unitRaw;
+                if (Enum.TryParse<ProductUnit>(unitRaw, out var unitEnum))
+                    unitArabic = unitEnum.ToArabicString();
+
+                items.Add((name, unitArabic, qty));
+            }
+
+            string slip = paperBuilder.BuildDailyProductionSlip(_date, items);
+            RawPrinterHelper.PrintOut(slip);
+        }
+
         public void RefreshGrid()
         {
             bool isToday = _date.Date == DateTime.Today;

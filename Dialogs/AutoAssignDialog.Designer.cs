@@ -20,105 +20,105 @@ namespace sweetSystem
 
         private void InitializeComponent()
         {
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblPendingCount = new System.Windows.Forms.Label();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.chkSelectAll = new System.Windows.Forms.CheckBox();
-            this.ClbPackagers = new System.Windows.Forms.CheckedListBox();
-
-            this.bottomPanel.SuspendLayout();
-            this.SuspendLayout();
-
+            lblTitle = new Label();
+            lblPendingCount = new Label();
+            lblInfo = new Label();
+            chkSelectAll = new CheckBox();
+            ClbPackagers = new CheckedListBox();
+            bottomPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // BtnSave
             // 
-            this.BtnSave.Text = "✔ تكليف تلقائي";
-
+            BtnSave.FlatAppearance.BorderSize = 0;
+            BtnSave.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            BtnSave.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            BtnSave.Text = "✔ تكليف تلقائي";
             // 
-            // bottomPanel
+            // BtnCancel
             // 
-            this.bottomPanel.Location = new System.Drawing.Point(0, 355);
-
+            BtnCancel.FlatAppearance.BorderSize = 0;
+            BtnCancel.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            BtnCancel.FlatAppearance.MouseOverBackColor = Color.Transparent;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Cairo", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = Theme.TextPrimary;
-            this.lblTitle.Location = new System.Drawing.Point(16, 12);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(200, 30);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "📦 تكليف تلقائي للطلبات";
-
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Cairo", 12F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(31, 45, 47);
+            lblTitle.Location = new Point(16, 12);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(249, 37);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "📦 تكليف تلقائي للطلبات";
             // 
             // lblPendingCount
             // 
-            this.lblPendingCount.AutoSize = true;
-            this.lblPendingCount.Font = new System.Drawing.Font("Cairo", 9F, System.Drawing.FontStyle.Bold);
-            this.lblPendingCount.ForeColor = Theme.AccentGold;
-            this.lblPendingCount.Location = new System.Drawing.Point(16, 46);
-            this.lblPendingCount.Name = "lblPendingCount";
-            this.lblPendingCount.Size = new System.Drawing.Size(200, 22);
-            this.lblPendingCount.TabIndex = 1;
-            this.lblPendingCount.Text = "";
-
+            lblPendingCount.AutoSize = true;
+            lblPendingCount.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            lblPendingCount.ForeColor = Color.FromArgb(200, 160, 90);
+            lblPendingCount.Location = new Point(16, 46);
+            lblPendingCount.Name = "lblPendingCount";
+            lblPendingCount.Size = new Size(0, 29);
+            lblPendingCount.TabIndex = 1;
             // 
             // lblInfo
             // 
-            this.lblInfo.AutoSize = false;
-            this.lblInfo.Font = Theme.FontSmall;
-            this.lblInfo.ForeColor = Theme.TextSecondary;
-            this.lblInfo.Location = new System.Drawing.Point(16, 72);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(368, 36);
-            this.lblInfo.TabIndex = 2;
-            this.lblInfo.Text = "اختر موظفي التعبئة المتاحين، سيتم توزيع الطلبات عليهم بالتساوي:";
-
+            lblInfo.Font = new Font("Cairo", 8F);
+            lblInfo.ForeColor = Color.FromArgb(107, 124, 128);
+            lblInfo.Location = new Point(16, 72);
+            lblInfo.Name = "lblInfo";
+            lblInfo.Size = new Size(368, 36);
+            lblInfo.TabIndex = 2;
+            lblInfo.Text = "اختر موظفي التعبئة المتاحين، سيتم توزيع الطلبات عليهم بالتساوي:";
             // 
             // chkSelectAll
             // 
-            this.chkSelectAll.AutoSize = true;
-            this.chkSelectAll.Checked = true;
-            this.chkSelectAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSelectAll.Font = new System.Drawing.Font("Cairo", 9F, System.Drawing.FontStyle.Bold);
-            this.chkSelectAll.ForeColor = Theme.AccentGreen;
-            this.chkSelectAll.Location = new System.Drawing.Point(16, 112);
-            this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Size = new System.Drawing.Size(120, 26);
-            this.chkSelectAll.TabIndex = 3;
-            this.chkSelectAll.Text = "تحديد الكل";
-            this.chkSelectAll.UseVisualStyleBackColor = true;
-            this.chkSelectAll.CheckedChanged += new System.EventHandler(this.ChkSelectAll_CheckedChanged);
-
+            chkSelectAll.AutoSize = true;
+            chkSelectAll.Checked = true;
+            chkSelectAll.CheckState = CheckState.Checked;
+            chkSelectAll.Font = new Font("Cairo", 9F, FontStyle.Bold);
+            chkSelectAll.ForeColor = Color.FromArgb(53, 133, 142);
+            chkSelectAll.Location = new Point(16, 112);
+            chkSelectAll.Name = "chkSelectAll";
+            chkSelectAll.Size = new Size(107, 33);
+            chkSelectAll.TabIndex = 3;
+            chkSelectAll.Text = "تحديد الكل";
+            chkSelectAll.UseVisualStyleBackColor = true;
+            chkSelectAll.CheckedChanged += ChkSelectAll_CheckedChanged;
             // 
             // ClbPackagers
             // 
-            this.ClbPackagers.BackColor = System.Drawing.Color.White;
-            this.ClbPackagers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ClbPackagers.CheckOnClick = true;
-            this.ClbPackagers.Font = new System.Drawing.Font("Cairo", 10F);
-            this.ClbPackagers.FormattingEnabled = true;
-            this.ClbPackagers.Location = new System.Drawing.Point(16, 142);
-            this.ClbPackagers.Name = "ClbPackagers";
-            this.ClbPackagers.Size = new System.Drawing.Size(368, 196);
-            this.ClbPackagers.TabIndex = 4;
-
+            ClbPackagers.BackColor = Color.White;
+            ClbPackagers.BorderStyle = BorderStyle.FixedSingle;
+            ClbPackagers.CheckOnClick = true;
+            ClbPackagers.Font = new Font("Cairo", 10F);
+            ClbPackagers.FormattingEnabled = true;
+            ClbPackagers.Location = new Point(16, 151);
+            ClbPackagers.Name = "ClbPackagers";
+            ClbPackagers.Size = new Size(368, 172);
+            ClbPackagers.TabIndex = 4;
             // 
             // AutoAssignDialog
             // 
-            this.ClientSize = new System.Drawing.Size(400, 420);
-            this.Controls.Add(this.ClbPackagers);
-            this.Controls.Add(this.chkSelectAll);
-            this.Controls.Add(this.lblInfo);
-            this.Controls.Add(this.lblPendingCount);
-            this.Controls.Add(this.lblTitle);
-            this.Name = "AutoAssignDialog";
-            this.Text = "تكليف تلقائي";
-
-            this.bottomPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(8F, 29F);
+            ClientSize = new Size(400, 420);
+            Controls.Add(ClbPackagers);
+            Controls.Add(chkSelectAll);
+            Controls.Add(lblInfo);
+            Controls.Add(lblPendingCount);
+            Controls.Add(lblTitle);
+            Name = "AutoAssignDialog";
+            Text = "تكليف تلقائي";
+            Controls.SetChildIndex(lblTitle, 0);
+            Controls.SetChildIndex(lblPendingCount, 0);
+            Controls.SetChildIndex(lblInfo, 0);
+            Controls.SetChildIndex(chkSelectAll, 0);
+            Controls.SetChildIndex(ClbPackagers, 0);
+            Controls.SetChildIndex(bottomPanel, 0);
+            bottomPanel.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }
