@@ -354,16 +354,35 @@ namespace sweetSystem.UserControls
         // ── Helpers for card visuals ─────────────────────────────────────────
         private static Image BuildPlaceholderImage(int w, int h, string productName)
         {
-            var bmp = new Bitmap(w, h);
+            int safeWidth = w > 0 ? w : 100;
+            int safeHeight = h > 0 ? h : 100;
+
+            string textToDraw = string.IsNullOrWhiteSpace(productName) ? "بدون اسم" : productName;
+
+            var bmp = new Bitmap(safeWidth, safeHeight);
+
             using var g = Graphics.FromImage(bmp);
             g.Clear(Color.FromArgb(245, 239, 230));
+
             string emoji = "🍰";
-            using var font = Theme.FontH1;
-            var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-            g.DrawString(emoji, font, Brushes.Gray, new RectangleF(0, 0, w, h - 16), sf);
-            using var smallFont = Theme.FontSmall;
-            g.DrawString(productName, smallFont, new SolidBrush(Color.FromArgb(180, 140, 100)),
-                new RectangleF(2, h - 18, w - 4, 16), sf);
+
+            var font = Theme.FontH1;          // بدون using
+            var smallFont = Theme.FontSmall;  // بدون using
+
+            var sf = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            g.DrawString(emoji, font, Brushes.Gray,
+                new RectangleF(0, 0, safeWidth, safeHeight - 16), sf);
+
+            using var brush = new SolidBrush(Color.FromArgb(180, 140, 100));
+
+            g.DrawString(textToDraw, smallFont, brush,
+                new RectangleF(2, safeHeight - 18, safeWidth - 4, 16), sf);
+
             return bmp;
         }
 

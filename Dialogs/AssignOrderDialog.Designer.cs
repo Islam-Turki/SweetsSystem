@@ -70,7 +70,7 @@ namespace sweetSystem
             // 
             CbPackager.DropDownStyle = ComboBoxStyle.DropDownList;
             CbPackager.FlatStyle = FlatStyle.Flat;
-            CbPackager.Font = new Font("Microsoft Sans Serif", 9F);
+            CbPackager.Font = Theme.FontSmall;
             CbPackager.Location = new Point(18, 81);
             CbPackager.Margin = new Padding(3, 6, 3, 6);
             CbPackager.Name = "CbPackager";
@@ -92,18 +92,18 @@ namespace sweetSystem
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+            label1.Font = Theme.FontBodyB;
             label1.ForeColor = Color.FromArgb(107, 124, 128);
             label1.Location = new Point(18, 31);
             label1.Name = "label1";
             label1.Size = new Size(78, 18);
             label1.TabIndex = 4;
-            label1.Text = "اختر المعبّئ";
+            label1.Text = "اختر موظف التعبئة";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+            label2.Font = Theme.FontBodyB;
             label2.ForeColor = Color.FromArgb(107, 124, 128);
             label2.Location = new Point(18, 155);
             label2.Name = "label2";
@@ -115,7 +115,7 @@ namespace sweetSystem
             // 
             btnPrint.BackColor = Color.FromArgb(70, 140, 180);
             btnPrint.FlatStyle = FlatStyle.Flat;
-            btnPrint.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
+            btnPrint.Font = Theme.FontBodyB;
             btnPrint.ForeColor = Color.White;
             btnPrint.Location = new Point(320, 27);
             btnPrint.Margin = new Padding(3, 6, 3, 6);
