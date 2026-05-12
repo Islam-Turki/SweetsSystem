@@ -508,6 +508,7 @@ namespace sweetSystem.UserControls
 
         // ══════════════════════════════════════════════════════════════════════
         //  UI EVENTS
+        //  
         // ══════════════════════════════════════════════════════════════════════
         private void _rbType_CheckedChanged(object? sender, EventArgs e)
         {
