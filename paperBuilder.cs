@@ -234,6 +234,48 @@ namespace sweetSystem
 
             return sb.ToString();
         }
+
+        // ═══════════════════════════════════════════════════════════
+        // SLIP 4 — Deposit Receipt (wholesale client)
+        // ═══════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Builds a deposit receipt slip for a wholesale customer.
+        /// Shows balance before, deposit amount, and balance after.
+        /// </summary>
+        /// <param name="customerName">Name of the wholesale customer.</param>
+        /// <param name="balanceBefore">The customer's balance before the deposit.</param>
+        /// <param name="depositAmount">The amount deposited.</param>
+        /// <param name="balanceAfter">The customer's balance after the deposit.</param>
+        public static string BuildDepositReceipt(
+            string customerName,
+            double balanceBefore,
+            double depositAmount,
+            double balanceAfter)
+        {
+            var sb = new StringBuilder();
+
+            // ── Header ────────────────────────────────────────────
+            sb.AppendLine(C("إيصال إيداع"));
+            sb.AppendLine(Line(ThickSeparator));
+
+            // ── Customer ──────────────────────────────────────────
+            sb.AppendLine(R($"العميل: {customerName}"));
+            sb.AppendLine(Line());
+
+            // ── Amounts ───────────────────────────────────────────
+            sb.AppendLine(R($"الرصيد قبل الإيداع: {balanceBefore:0.00} د.ل"));
+            sb.AppendLine(R($"المبلغ المودع: {depositAmount:0.00} د.ل"));
+            sb.AppendLine(Line());
+            sb.AppendLine(R($"الرصيد بعد الإيداع: {balanceAfter:0.00} د.ل"));
+
+            sb.AppendLine(Line(ThickSeparator));
+
+            // ── Footer ────────────────────────────────────────────
+            sb.AppendLine(R($"طُبع: {DateTime.Now:yyyy/MM/dd  HH:mm}"));
+
+            return sb.ToString();
+        }
     }
 
     // ── Extension: unit enum to Arabic string ─────────────────────

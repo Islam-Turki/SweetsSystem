@@ -86,6 +86,9 @@ namespace sweetSystem.UserControls
                 var dlg = new DepositDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
+                    // Capture balance before the deposit is applied
+                    double balanceBefore = c.Balance;
+
                     // Record a standalone payment (deposit)
                     MockData.PaymentTransactions.Add(new PaymentTransaction
                     {
@@ -95,6 +98,13 @@ namespace sweetSystem.UserControls
                         PaymentDate = DateTime.Now,
                         Notes = "إيداع يدوي"
                     });
+
+                    double balanceAfter = c.Balance;
+
+                    // Build and print the deposit receipt
+                    string receipt = paperBuilder.BuildDepositReceipt(
+                        c.Name, balanceBefore, dlg.Amount, balanceAfter);
+                    RawPrinterHelper.PrintOut(receipt);
 
                     MessageBox.Show($"تم إيداع {Theme.LYD(dlg.Amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadGrid();
