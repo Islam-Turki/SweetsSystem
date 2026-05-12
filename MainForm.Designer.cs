@@ -337,6 +337,7 @@ namespace sweetSystem
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "نظام إدارة محل الحلويات";
+            WindowState = FormWindowState.Maximized;
             _sidebar.ResumeLayout(false);
             logoPanel.ResumeLayout(false);
             logoPanel.PerformLayout();

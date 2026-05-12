@@ -45,7 +45,7 @@ namespace sweetSystem.UserControls
             lblCustomerName.Font = Theme.FontBodyB;
             _txCustomer.Font     = Theme.FontBody;
             _txCustomerExtra.Font = Theme.FontBody;
-            lblCustomer.Font = Theme.FontBodyB;
+            //lblCustomer.Font = Theme.FontBodyB;
             _cbClient.Font       = Theme.FontBody;
 
             // Summary card
@@ -210,7 +210,7 @@ namespace sweetSystem.UserControls
                 Left      = 6,
                 Top       = 114,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font("Cairo", 8.5f, FontStyle.Bold),
+                Font      = Theme.FontH2,
                 ForeColor = Theme.TextPrimary,
                 BackColor = Color.Transparent,
                 Cursor    = Cursors.Hand,
@@ -227,7 +227,7 @@ namespace sweetSystem.UserControls
                 Left      = 6,
                 Top       = 150,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font("Cairo", 8f),
+                Font      = Theme.FontH2,
                 ForeColor = Theme.AccentGreen,
                 BackColor = Color.Transparent,
                 Cursor    = Cursors.Hand,
@@ -245,7 +245,7 @@ namespace sweetSystem.UserControls
                 Left      = 4,
                 Top       = 4,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font("Arial", 12f, FontStyle.Bold),
+                Font      = Theme.FontH2,
                 ForeColor = Color.White,
                 BackColor = Theme.AccentRed,
                 Cursor    = Cursors.Hand,
@@ -285,7 +285,7 @@ namespace sweetSystem.UserControls
                 Left      = 0,
                 Top       = CARD_H - 28,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font("Cairo", 8.5f, FontStyle.Bold),
+                Font      = Theme.FontH2,
                 ForeColor = Color.White,
                 BackColor = Theme.AccentGreen,
                 Cursor    = Cursors.Hand,
@@ -338,10 +338,10 @@ namespace sweetSystem.UserControls
             using var g = Graphics.FromImage(bmp);
             g.Clear(Color.FromArgb(245, 239, 230));
             string emoji = "🍰";
-            using var font = new Font("Segoe UI Emoji", 28f);
+            using var font = Theme.FontH1;
             var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
             g.DrawString(emoji, font, Brushes.Gray, new RectangleF(0, 0, w, h - 16), sf);
-            using var smallFont = new Font("Cairo", 6.5f);
+            using var smallFont = Theme.FontSmall;
             g.DrawString(productName, smallFont, new SolidBrush(Color.FromArgb(180, 140, 100)),
                 new RectangleF(2, h - 18, w - 4, 16), sf);
             return bmp;

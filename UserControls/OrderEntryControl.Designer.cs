@@ -18,34 +18,7 @@ namespace sweetSystem.UserControls
             h1Label = new Label();
             sepBar = new Panel();
             bodyTable = new TableLayoutPanel();
-            rightPanel = new Panel();
-            leftPanel = new Panel();
             infoPanel = new Panel();
-            _linesGrid = new DataGridView();
-            lblCartTitle = new Label();
-            typeCard = new Panel();
-            lblOrderType = new Label();
-            _rbRetail = new RadioButton();
-            _rbWholesale = new RadioButton();
-            _retailPanel = new Panel();
-            retailTable = new TableLayoutPanel();
-            lblCustomerName = new Label();
-            _txCustomerWrap = new Panel();
-            _txCustomer = new TextBox();
-            _txCustomerExtraWrap = new Panel();
-            _txCustomerExtra = new TextBox();
-            retailDateFlow = new FlowLayoutPanel();
-            _btnDeliveryRetail = new FlatButton();
-            _lblDeliveryRetail = new Label();
-            _calRetail = new MonthCalendar();
-            _wholesalePanel = new Panel();
-            wholesaleTable = new TableLayoutPanel();
-            _cbClient = new ComboBox();
-            wholesaleDateFlow = new FlowLayoutPanel();
-            _btnDeliveryWholesale = new FlatButton();
-            _lblDeliveryWholesale = new Label();
-            lblWholesaleClient = new Label();
-            _calWholesale = new MonthCalendar();
             sumCard = new Panel();
             lblSummary = new Label();
             sepBar1 = new Panel();
@@ -57,30 +30,57 @@ namespace sweetSystem.UserControls
             sepBar2 = new Panel();
             lblGrandTitle = new Label();
             _lblGrand = new Label();
+            _wholesalePanel = new Panel();
+            wholesaleTable = new TableLayoutPanel();
+            _cbClient = new ComboBox();
+            wholesaleDateFlow = new FlowLayoutPanel();
+            _btnDeliveryWholesale = new FlatButton();
+            _lblDeliveryWholesale = new Label();
+            lblWholesaleClient = new Label();
+            _calWholesale = new MonthCalendar();
+            _retailPanel = new Panel();
+            retailTable = new TableLayoutPanel();
+            lblCustomerName = new Label();
+            _txCustomerWrap = new Panel();
+            _txCustomer = new TextBox();
+            _txCustomerExtraWrap = new Panel();
+            _txCustomerExtra = new TextBox();
+            retailDateFlow = new FlowLayoutPanel();
+            _btnDeliveryRetail = new FlatButton();
+            _lblDeliveryRetail = new Label();
+            _calRetail = new MonthCalendar();
+            typeCard = new Panel();
+            lblOrderType = new Label();
+            _rbRetail = new RadioButton();
+            _rbWholesale = new RadioButton();
+            leftPanel = new Panel();
+            _linesGrid = new DataGridView();
             btnActFlow = new FlowLayoutPanel();
             _btnSave = new FlatButton();
             _btnClear = new FlatButton();
+            lblCartTitle = new Label();
+            rightPanel = new Panel();
             _catalogFlow = new FlowLayoutPanel();
             catalogSearch = new TextBox();
             lblCatalogTitle = new Label();
             headerPanel.SuspendLayout();
             bodyTable.SuspendLayout();
-            rightPanel.SuspendLayout();
-            leftPanel.SuspendLayout();
             infoPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)_linesGrid).BeginInit();
-            typeCard.SuspendLayout();
+            sumCard.SuspendLayout();
+            _balanceRow.SuspendLayout();
+            _wholesalePanel.SuspendLayout();
+            wholesaleTable.SuspendLayout();
+            wholesaleDateFlow.SuspendLayout();
             _retailPanel.SuspendLayout();
             retailTable.SuspendLayout();
             _txCustomerWrap.SuspendLayout();
             _txCustomerExtraWrap.SuspendLayout();
             retailDateFlow.SuspendLayout();
-            _wholesalePanel.SuspendLayout();
-            wholesaleTable.SuspendLayout();
-            wholesaleDateFlow.SuspendLayout();
-            sumCard.SuspendLayout();
-            _balanceRow.SuspendLayout();
+            typeCard.SuspendLayout();
+            leftPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)_linesGrid).BeginInit();
             btnActFlow.SuspendLayout();
+            rightPanel.SuspendLayout();
             SuspendLayout();
             // 
             // headerPanel
@@ -135,18 +135,6 @@ namespace sweetSystem.UserControls
             bodyTable.Size = new Size(1200, 736);
             bodyTable.TabIndex = 0;
             // 
-            // leftPanel
-            // 
-            leftPanel.Controls.Add(_linesGrid);
-            leftPanel.Controls.Add(btnActFlow);
-            leftPanel.Controls.Add(lblCartTitle);
-            leftPanel.Dock = DockStyle.Fill;
-            leftPanel.Location = new Point(315, 19);
-            leftPanel.Name = "leftPanel";
-            leftPanel.Padding = new Padding(10, 0, 10, 0);
-            leftPanel.Size = new Size(410, 702);
-            leftPanel.TabIndex = 1;
-            // 
             // infoPanel
             // 
             infoPanel.Controls.Add(sumCard);
@@ -154,343 +142,11 @@ namespace sweetSystem.UserControls
             infoPanel.Controls.Add(_retailPanel);
             infoPanel.Controls.Add(typeCard);
             infoPanel.Dock = DockStyle.Fill;
-            infoPanel.Location = new Point(15, 19);
+            infoPanel.Location = new Point(897, 19);
             infoPanel.Name = "infoPanel";
             infoPanel.Padding = new Padding(0, 0, 10, 0);
-            infoPanel.Size = new Size(294, 702);
+            infoPanel.Size = new Size(288, 702);
             infoPanel.TabIndex = 2;
-            // 
-            // _linesGrid
-            // 
-            _linesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            _linesGrid.Dock = DockStyle.Fill;
-            _linesGrid.Location = new Point(0, 744);
-            _linesGrid.Name = "_linesGrid";
-            _linesGrid.RowHeadersWidth = 51;
-            _linesGrid.Size = new Size(477, 0);
-            _linesGrid.TabIndex = 0;
-            // 
-            // lblCartTitle
-            // 
-            lblCartTitle.Dock = DockStyle.Top;
-            lblCartTitle.Font = new Font("Cairo", 11F, FontStyle.Bold);
-            lblCartTitle.ForeColor = Color.FromArgb(31, 45, 47);
-            lblCartTitle.Location = new Point(0, 714);
-            lblCartTitle.Name = "lblCartTitle";
-            lblCartTitle.Padding = new Padding(4, 0, 0, 0);
-            lblCartTitle.Size = new Size(477, 30);
-            lblCartTitle.TabIndex = 1;
-            lblCartTitle.Text = "\U0001f6d2  سلة الطلب";
-            lblCartTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // typeCard
-            // 
-            typeCard.BackColor = Color.White;
-            typeCard.Controls.Add(lblOrderType);
-            typeCard.Controls.Add(_rbRetail);
-            typeCard.Controls.Add(_rbWholesale);
-            typeCard.Dock = DockStyle.Top;
-            typeCard.Location = new Point(0, 658);
-            typeCard.Margin = new Padding(0, 0, 0, 6);
-            typeCard.Name = "typeCard";
-            typeCard.Padding = new Padding(10, 8, 10, 8);
-            typeCard.RightToLeft = RightToLeft.Yes;
-            typeCard.Size = new Size(477, 56);
-            typeCard.TabIndex = 2;
-            // 
-            // lblOrderType
-            // 
-            lblOrderType.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblOrderType.AutoSize = true;
-            lblOrderType.Location = new Point(388, 18);
-            lblOrderType.Name = "lblOrderType";
-            lblOrderType.Size = new Size(79, 20);
-            lblOrderType.TabIndex = 0;
-            lblOrderType.Text = "نوع الطلب:";
-            // 
-            // _rbRetail
-            // 
-            _rbRetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            _rbRetail.AutoSize = true;
-            _rbRetail.Checked = true;
-            _rbRetail.Cursor = Cursors.Hand;
-            _rbRetail.Location = new Point(220, 16);
-            _rbRetail.Name = "_rbRetail";
-            _rbRetail.RightToLeft = RightToLeft.Yes;
-            _rbRetail.Size = new Size(77, 24);
-            _rbRetail.TabIndex = 1;
-            _rbRetail.TabStop = true;
-            _rbRetail.Text = "قطاعي";
-            _rbRetail.CheckedChanged += _rbType_CheckedChanged;
-            // 
-            // _rbWholesale
-            // 
-            _rbWholesale.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            _rbWholesale.AutoSize = true;
-            _rbWholesale.Cursor = Cursors.Hand;
-            _rbWholesale.Location = new Point(303, 16);
-            _rbWholesale.Name = "_rbWholesale";
-            _rbWholesale.RightToLeft = RightToLeft.Yes;
-            _rbWholesale.Size = new Size(61, 24);
-            _rbWholesale.TabIndex = 2;
-            _rbWholesale.Text = "جملة";
-            _rbWholesale.CheckedChanged += _rbType_CheckedChanged;
-            // 
-            // _retailPanel
-            // 
-            _retailPanel.AutoSize = true;
-            _retailPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            _retailPanel.BackColor = Color.FromArgb(247, 246, 242);
-            _retailPanel.Controls.Add(retailTable);
-            _retailPanel.Controls.Add(_calRetail);
-            _retailPanel.Dock = DockStyle.Top;
-            _retailPanel.Location = new Point(0, 329);
-            _retailPanel.Name = "_retailPanel";
-            _retailPanel.Padding = new Padding(15);
-            _retailPanel.RightToLeft = RightToLeft.Yes;
-            _retailPanel.Size = new Size(477, 329);
-            _retailPanel.TabIndex = 3;
-            // 
-            // retailTable
-            // 
-            retailTable.AutoSize = true;
-            retailTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            retailTable.ColumnCount = 1;
-            retailTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            retailTable.Controls.Add(lblCustomerName, 0, 0);
-            retailTable.Controls.Add(_txCustomerWrap, 0, 1);
-            retailTable.Controls.Add(_txCustomerExtraWrap, 0, 2);
-            retailTable.Controls.Add(retailDateFlow, 0, 3);
-            retailTable.Dock = DockStyle.Fill;
-            retailTable.Location = new Point(15, 15);
-            retailTable.Margin = new Padding(0);
-            retailTable.Name = "retailTable";
-            retailTable.RightToLeft = RightToLeft.Yes;
-            retailTable.RowCount = 4;
-            retailTable.RowStyles.Add(new RowStyle());
-            retailTable.RowStyles.Add(new RowStyle());
-            retailTable.RowStyles.Add(new RowStyle());
-            retailTable.RowStyles.Add(new RowStyle());
-            retailTable.Size = new Size(447, 299);
-            retailTable.TabIndex = 0;
-            // 
-            // lblCustomerName
-            // 
-            lblCustomerName.AutoSize = true;
-            lblCustomerName.Dock = DockStyle.Left;
-            lblCustomerName.Location = new Point(355, 0);
-            lblCustomerName.Margin = new Padding(0, 0, 0, 8);
-            lblCustomerName.Name = "lblCustomerName";
-            lblCustomerName.RightToLeft = RightToLeft.No;
-            lblCustomerName.Size = new Size(92, 20);
-            lblCustomerName.TabIndex = 0;
-            lblCustomerName.Text = "بيانات العميل";
-            // 
-            // _txCustomerWrap
-            // 
-            _txCustomerWrap.BackColor = Color.White;
-            _txCustomerWrap.Controls.Add(_txCustomer);
-            _txCustomerWrap.Cursor = Cursors.IBeam;
-            _txCustomerWrap.Dock = DockStyle.Fill;
-            _txCustomerWrap.Location = new Point(0, 28);
-            _txCustomerWrap.Margin = new Padding(0, 0, 0, 8);
-            _txCustomerWrap.Name = "_txCustomerWrap";
-            _txCustomerWrap.Padding = new Padding(8);
-            _txCustomerWrap.Size = new Size(447, 43);
-            _txCustomerWrap.TabIndex = 1;
-            // 
-            // _txCustomer
-            // 
-            _txCustomer.BackColor = Color.White;
-            _txCustomer.BorderStyle = BorderStyle.None;
-            _txCustomer.Dock = DockStyle.Fill;
-            _txCustomer.Location = new Point(8, 8);
-            _txCustomer.Margin = new Padding(0);
-            _txCustomer.Name = "_txCustomer";
-            _txCustomer.PlaceholderText = "أدخل اسم العميل";
-            _txCustomer.Size = new Size(431, 20);
-            _txCustomer.TabIndex = 0;
-            _txCustomer.TextChanged += _txCustomer_TextChanged;
-            // 
-            // _txCustomerExtraWrap
-            // 
-            _txCustomerExtraWrap.BackColor = Color.White;
-            _txCustomerExtraWrap.Controls.Add(_txCustomerExtra);
-            _txCustomerExtraWrap.Cursor = Cursors.IBeam;
-            _txCustomerExtraWrap.Dock = DockStyle.Fill;
-            _txCustomerExtraWrap.Location = new Point(0, 79);
-            _txCustomerExtraWrap.Margin = new Padding(0, 0, 0, 12);
-            _txCustomerExtraWrap.Name = "_txCustomerExtraWrap";
-            _txCustomerExtraWrap.Padding = new Padding(8);
-            _txCustomerExtraWrap.Size = new Size(447, 43);
-            _txCustomerExtraWrap.TabIndex = 2;
-            // 
-            // _txCustomerExtra
-            // 
-            _txCustomerExtra.BackColor = Color.White;
-            _txCustomerExtra.BorderStyle = BorderStyle.None;
-            _txCustomerExtra.Dock = DockStyle.Fill;
-            _txCustomerExtra.Location = new Point(8, 8);
-            _txCustomerExtra.Margin = new Padding(0);
-            _txCustomerExtra.Name = "_txCustomerExtra";
-            _txCustomerExtra.PlaceholderText = "رقم الهاتف (اختياري)";
-            _txCustomerExtra.Size = new Size(431, 20);
-            _txCustomerExtra.TabIndex = 0;
-            // 
-            // retailDateFlow
-            // 
-            retailDateFlow.AutoSize = true;
-            retailDateFlow.Controls.Add(_btnDeliveryRetail);
-            retailDateFlow.Controls.Add(_lblDeliveryRetail);
-            retailDateFlow.Dock = DockStyle.Fill;
-            retailDateFlow.Location = new Point(0, 134);
-            retailDateFlow.Margin = new Padding(0);
-            retailDateFlow.Name = "retailDateFlow";
-            retailDateFlow.RightToLeft = RightToLeft.Yes;
-            retailDateFlow.Size = new Size(447, 165);
-            retailDateFlow.TabIndex = 3;
-            // 
-            // _btnDeliveryRetail
-            // 
-            _btnDeliveryRetail.BackColor = Color.FromArgb(90, 150, 170);
-            _btnDeliveryRetail.FlatStyle = FlatStyle.Flat;
-            _btnDeliveryRetail.Font = new Font("Cairo", 8.5F, FontStyle.Bold);
-            _btnDeliveryRetail.ForeColor = Color.White;
-            _btnDeliveryRetail.Location = new Point(337, 0);
-            _btnDeliveryRetail.Margin = new Padding(0, 0, 10, 0);
-            _btnDeliveryRetail.Name = "_btnDeliveryRetail";
-            _btnDeliveryRetail.Radius = 6;
-            _btnDeliveryRetail.Size = new Size(110, 35);
-            _btnDeliveryRetail.TabIndex = 0;
-            _btnDeliveryRetail.Text = "📅 التسليم";
-            _btnDeliveryRetail.UseVisualStyleBackColor = false;
-            // 
-            // _lblDeliveryRetail
-            // 
-            _lblDeliveryRetail.AutoSize = true;
-            _lblDeliveryRetail.Location = new Point(270, 5);
-            _lblDeliveryRetail.Margin = new Padding(0, 5, 0, 0);
-            _lblDeliveryRetail.Name = "_lblDeliveryRetail";
-            _lblDeliveryRetail.Size = new Size(57, 20);
-            _lblDeliveryRetail.TabIndex = 1;
-            _lblDeliveryRetail.Text = "لم يحدد";
-            // 
-            // _calRetail
-            // 
-            _calRetail.Location = new Point(10, 98);
-            _calRetail.MaxSelectionCount = 1;
-            _calRetail.Name = "_calRetail";
-            _calRetail.TabIndex = 5;
-            _calRetail.Visible = false;
-            // 
-            // _wholesalePanel
-            // 
-            _wholesalePanel.AutoSize = true;
-            _wholesalePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            _wholesalePanel.BackColor = Color.FromArgb(247, 246, 242);
-            _wholesalePanel.Controls.Add(wholesaleTable);
-            _wholesalePanel.Controls.Add(_calWholesale);
-            _wholesalePanel.Dock = DockStyle.Top;
-            _wholesalePanel.Location = new Point(0, 0);
-            _wholesalePanel.Name = "_wholesalePanel";
-            _wholesalePanel.Padding = new Padding(15);
-            _wholesalePanel.RightToLeft = RightToLeft.Yes;
-            _wholesalePanel.Size = new Size(477, 329);
-            _wholesalePanel.TabIndex = 4;
-            _wholesalePanel.Visible = false;
-            // 
-            // wholesaleTable
-            // 
-            wholesaleTable.AutoSize = true;
-            wholesaleTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            wholesaleTable.ColumnCount = 1;
-            wholesaleTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            wholesaleTable.Controls.Add(_cbClient, 0, 1);
-            wholesaleTable.Controls.Add(wholesaleDateFlow, 0, 2);
-            wholesaleTable.Controls.Add(lblWholesaleClient, 0, 0);
-            wholesaleTable.Dock = DockStyle.Fill;
-            wholesaleTable.Location = new Point(15, 15);
-            wholesaleTable.Margin = new Padding(0);
-            wholesaleTable.Name = "wholesaleTable";
-            wholesaleTable.RightToLeft = RightToLeft.Yes;
-            wholesaleTable.RowCount = 3;
-            wholesaleTable.RowStyles.Add(new RowStyle());
-            wholesaleTable.RowStyles.Add(new RowStyle());
-            wholesaleTable.RowStyles.Add(new RowStyle());
-            wholesaleTable.Size = new Size(447, 299);
-            wholesaleTable.TabIndex = 0;
-            // 
-            // _cbClient
-            // 
-            _cbClient.Dock = DockStyle.Fill;
-            _cbClient.DropDownStyle = ComboBoxStyle.DropDownList;
-            _cbClient.FlatStyle = FlatStyle.Flat;
-            _cbClient.Location = new Point(0, 28);
-            _cbClient.Margin = new Padding(0, 0, 0, 12);
-            _cbClient.Name = "_cbClient";
-            _cbClient.Size = new Size(447, 28);
-            _cbClient.TabIndex = 1;
-            _cbClient.SelectedIndexChanged += _cbClient_SelectedIndexChanged;
-            // 
-            // wholesaleDateFlow
-            // 
-            wholesaleDateFlow.AutoSize = true;
-            wholesaleDateFlow.Controls.Add(_btnDeliveryWholesale);
-            wholesaleDateFlow.Controls.Add(_lblDeliveryWholesale);
-            wholesaleDateFlow.Dock = DockStyle.Fill;
-            wholesaleDateFlow.Location = new Point(0, 68);
-            wholesaleDateFlow.Margin = new Padding(0);
-            wholesaleDateFlow.Name = "wholesaleDateFlow";
-            wholesaleDateFlow.RightToLeft = RightToLeft.Yes;
-            wholesaleDateFlow.Size = new Size(447, 231);
-            wholesaleDateFlow.TabIndex = 2;
-            // 
-            // _btnDeliveryWholesale
-            // 
-            _btnDeliveryWholesale.BackColor = Color.FromArgb(90, 150, 170);
-            _btnDeliveryWholesale.FlatStyle = FlatStyle.Flat;
-            _btnDeliveryWholesale.Font = new Font("Cairo", 8.5F, FontStyle.Bold);
-            _btnDeliveryWholesale.ForeColor = Color.White;
-            _btnDeliveryWholesale.Location = new Point(337, 0);
-            _btnDeliveryWholesale.Margin = new Padding(0, 0, 10, 0);
-            _btnDeliveryWholesale.Name = "_btnDeliveryWholesale";
-            _btnDeliveryWholesale.Padding = new Padding(15);
-            _btnDeliveryWholesale.Radius = 6;
-            _btnDeliveryWholesale.Size = new Size(110, 35);
-            _btnDeliveryWholesale.TabIndex = 0;
-            _btnDeliveryWholesale.Text = "📅 التسليم";
-            _btnDeliveryWholesale.UseVisualStyleBackColor = false;
-            // 
-            // _lblDeliveryWholesale
-            // 
-            _lblDeliveryWholesale.AutoSize = true;
-            _lblDeliveryWholesale.Location = new Point(270, 5);
-            _lblDeliveryWholesale.Margin = new Padding(0, 5, 0, 0);
-            _lblDeliveryWholesale.Name = "_lblDeliveryWholesale";
-            _lblDeliveryWholesale.Size = new Size(57, 20);
-            _lblDeliveryWholesale.TabIndex = 1;
-            _lblDeliveryWholesale.Text = "لم يحدد";
-            // 
-            // lblWholesaleClient
-            // 
-            lblWholesaleClient.AutoSize = true;
-            lblWholesaleClient.Dock = DockStyle.Left;
-            lblWholesaleClient.Location = new Point(361, 0);
-            lblWholesaleClient.Margin = new Padding(0, 0, 0, 8);
-            lblWholesaleClient.Name = "lblWholesaleClient";
-            lblWholesaleClient.RightToLeft = RightToLeft.Yes;
-            lblWholesaleClient.Size = new Size(86, 20);
-            lblWholesaleClient.TabIndex = 0;
-            lblWholesaleClient.Text = "عميل الجملة";
-            lblWholesaleClient.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // _calWholesale
-            // 
-            _calWholesale.Location = new Point(10, 98);
-            _calWholesale.MaxSelectionCount = 1;
-            _calWholesale.Name = "_calWholesale";
-            _calWholesale.TabIndex = 4;
-            _calWholesale.Visible = false;
             // 
             // sumCard
             // 
@@ -504,10 +160,10 @@ namespace sweetSystem.UserControls
             sumCard.Controls.Add(lblGrandTitle);
             sumCard.Controls.Add(_lblGrand);
             sumCard.Dock = DockStyle.Bottom;
-            sumCard.Location = new Point(0, 458);
+            sumCard.Location = new Point(0, 510);
             sumCard.Name = "sumCard";
             sumCard.Padding = new Padding(12, 8, 12, 8);
-            sumCard.Size = new Size(477, 192);
+            sumCard.Size = new Size(278, 192);
             sumCard.TabIndex = 5;
             // 
             // lblSummary
@@ -526,7 +182,7 @@ namespace sweetSystem.UserControls
             sepBar1.BackColor = Color.FromArgb(220, 220, 220);
             sepBar1.Location = new Point(12, 36);
             sepBar1.Name = "sepBar1";
-            sepBar1.Size = new Size(477, 1);
+            sepBar1.Size = new Size(278, 1);
             sepBar1.TabIndex = 1;
             // 
             // lblSubTitle
@@ -556,7 +212,7 @@ namespace sweetSystem.UserControls
             _balanceRow.Controls.Add(_lblBalance);
             _balanceRow.Location = new Point(12, 74);
             _balanceRow.Name = "_balanceRow";
-            _balanceRow.Size = new Size(477, 28);
+            _balanceRow.Size = new Size(278, 28);
             _balanceRow.TabIndex = 4;
             _balanceRow.Visible = false;
             // 
@@ -587,7 +243,7 @@ namespace sweetSystem.UserControls
             sepBar2.BackColor = Color.FromArgb(220, 220, 220);
             sepBar2.Location = new Point(12, 110);
             sepBar2.Name = "sepBar2";
-            sepBar2.Size = new Size(477, 1);
+            sepBar2.Size = new Size(278, 1);
             sepBar2.TabIndex = 5;
             // 
             // lblGrandTitle
@@ -612,16 +268,347 @@ namespace sweetSystem.UserControls
             _lblGrand.TabIndex = 7;
             _lblGrand.Text = "0.00 د.ل";
             // 
+            // _wholesalePanel
+            // 
+            _wholesalePanel.AutoSize = true;
+            _wholesalePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            _wholesalePanel.BackColor = Color.FromArgb(247, 246, 242);
+            _wholesalePanel.Controls.Add(wholesaleTable);
+            _wholesalePanel.Controls.Add(_calWholesale);
+            _wholesalePanel.Dock = DockStyle.Top;
+            _wholesalePanel.Location = new Point(0, 385);
+            _wholesalePanel.Name = "_wholesalePanel";
+            _wholesalePanel.Padding = new Padding(15);
+            _wholesalePanel.RightToLeft = RightToLeft.Yes;
+            _wholesalePanel.Size = new Size(278, 329);
+            _wholesalePanel.TabIndex = 4;
+            _wholesalePanel.Visible = false;
+            // 
+            // wholesaleTable
+            // 
+            wholesaleTable.AutoSize = true;
+            wholesaleTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            wholesaleTable.ColumnCount = 1;
+            wholesaleTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            wholesaleTable.Controls.Add(_cbClient, 0, 1);
+            wholesaleTable.Controls.Add(wholesaleDateFlow, 0, 2);
+            wholesaleTable.Controls.Add(lblWholesaleClient, 0, 0);
+            wholesaleTable.Dock = DockStyle.Fill;
+            wholesaleTable.Location = new Point(15, 15);
+            wholesaleTable.Margin = new Padding(0);
+            wholesaleTable.Name = "wholesaleTable";
+            wholesaleTable.RightToLeft = RightToLeft.Yes;
+            wholesaleTable.RowCount = 3;
+            wholesaleTable.RowStyles.Add(new RowStyle());
+            wholesaleTable.RowStyles.Add(new RowStyle());
+            wholesaleTable.RowStyles.Add(new RowStyle());
+            wholesaleTable.Size = new Size(248, 299);
+            wholesaleTable.TabIndex = 0;
+            // 
+            // _cbClient
+            // 
+            _cbClient.Dock = DockStyle.Fill;
+            _cbClient.DropDownStyle = ComboBoxStyle.DropDownList;
+            _cbClient.FlatStyle = FlatStyle.Flat;
+            _cbClient.Location = new Point(0, 28);
+            _cbClient.Margin = new Padding(0, 0, 0, 12);
+            _cbClient.Name = "_cbClient";
+            _cbClient.Size = new Size(248, 28);
+            _cbClient.TabIndex = 1;
+            _cbClient.SelectedIndexChanged += _cbClient_SelectedIndexChanged;
+            // 
+            // wholesaleDateFlow
+            // 
+            wholesaleDateFlow.AutoSize = true;
+            wholesaleDateFlow.Controls.Add(_btnDeliveryWholesale);
+            wholesaleDateFlow.Controls.Add(_lblDeliveryWholesale);
+            wholesaleDateFlow.Dock = DockStyle.Fill;
+            wholesaleDateFlow.Location = new Point(0, 68);
+            wholesaleDateFlow.Margin = new Padding(0);
+            wholesaleDateFlow.Name = "wholesaleDateFlow";
+            wholesaleDateFlow.RightToLeft = RightToLeft.Yes;
+            wholesaleDateFlow.Size = new Size(248, 231);
+            wholesaleDateFlow.TabIndex = 2;
+            // 
+            // _btnDeliveryWholesale
+            // 
+            _btnDeliveryWholesale.BackColor = Color.FromArgb(90, 150, 170);
+            _btnDeliveryWholesale.FlatStyle = FlatStyle.Flat;
+            _btnDeliveryWholesale.Font = new Font("Cairo", 8.5F, FontStyle.Bold);
+            _btnDeliveryWholesale.ForeColor = Color.White;
+            _btnDeliveryWholesale.Location = new Point(138, 0);
+            _btnDeliveryWholesale.Margin = new Padding(0, 0, 10, 0);
+            _btnDeliveryWholesale.Name = "_btnDeliveryWholesale";
+            _btnDeliveryWholesale.Padding = new Padding(15);
+            _btnDeliveryWholesale.Radius = 6;
+            _btnDeliveryWholesale.Size = new Size(110, 35);
+            _btnDeliveryWholesale.TabIndex = 0;
+            _btnDeliveryWholesale.Text = "📅 التسليم";
+            _btnDeliveryWholesale.UseVisualStyleBackColor = false;
+            // 
+            // _lblDeliveryWholesale
+            // 
+            _lblDeliveryWholesale.AutoSize = true;
+            _lblDeliveryWholesale.Location = new Point(71, 5);
+            _lblDeliveryWholesale.Margin = new Padding(0, 5, 0, 0);
+            _lblDeliveryWholesale.Name = "_lblDeliveryWholesale";
+            _lblDeliveryWholesale.Size = new Size(57, 20);
+            _lblDeliveryWholesale.TabIndex = 1;
+            _lblDeliveryWholesale.Text = "لم يحدد";
+            // 
+            // lblWholesaleClient
+            // 
+            lblWholesaleClient.AutoSize = true;
+            lblWholesaleClient.Dock = DockStyle.Left;
+            lblWholesaleClient.Location = new Point(162, 0);
+            lblWholesaleClient.Margin = new Padding(0, 0, 0, 8);
+            lblWholesaleClient.Name = "lblWholesaleClient";
+            lblWholesaleClient.RightToLeft = RightToLeft.Yes;
+            lblWholesaleClient.Size = new Size(86, 20);
+            lblWholesaleClient.TabIndex = 0;
+            lblWholesaleClient.Text = "عميل الجملة";
+            lblWholesaleClient.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // _calWholesale
+            // 
+            _calWholesale.Location = new Point(10, 98);
+            _calWholesale.MaxSelectionCount = 1;
+            _calWholesale.Name = "_calWholesale";
+            _calWholesale.TabIndex = 4;
+            _calWholesale.Visible = false;
+            // 
+            // _retailPanel
+            // 
+            _retailPanel.AutoSize = true;
+            _retailPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            _retailPanel.BackColor = Color.FromArgb(247, 246, 242);
+            _retailPanel.Controls.Add(retailTable);
+            _retailPanel.Controls.Add(_calRetail);
+            _retailPanel.Dock = DockStyle.Top;
+            _retailPanel.Location = new Point(0, 56);
+            _retailPanel.Name = "_retailPanel";
+            _retailPanel.Padding = new Padding(15);
+            _retailPanel.RightToLeft = RightToLeft.Yes;
+            _retailPanel.Size = new Size(278, 329);
+            _retailPanel.TabIndex = 3;
+            // 
+            // retailTable
+            // 
+            retailTable.AutoSize = true;
+            retailTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            retailTable.ColumnCount = 1;
+            retailTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            retailTable.Controls.Add(lblCustomerName, 0, 0);
+            retailTable.Controls.Add(_txCustomerWrap, 0, 1);
+            retailTable.Controls.Add(_txCustomerExtraWrap, 0, 2);
+            retailTable.Controls.Add(retailDateFlow, 0, 3);
+            retailTable.Dock = DockStyle.Fill;
+            retailTable.Location = new Point(15, 15);
+            retailTable.Margin = new Padding(0);
+            retailTable.Name = "retailTable";
+            retailTable.RightToLeft = RightToLeft.Yes;
+            retailTable.RowCount = 4;
+            retailTable.RowStyles.Add(new RowStyle());
+            retailTable.RowStyles.Add(new RowStyle());
+            retailTable.RowStyles.Add(new RowStyle());
+            retailTable.RowStyles.Add(new RowStyle());
+            retailTable.Size = new Size(248, 299);
+            retailTable.TabIndex = 0;
+            // 
+            // lblCustomerName
+            // 
+            lblCustomerName.AutoSize = true;
+            lblCustomerName.Dock = DockStyle.Left;
+            lblCustomerName.Location = new Point(156, 0);
+            lblCustomerName.Margin = new Padding(0, 0, 0, 8);
+            lblCustomerName.Name = "lblCustomerName";
+            lblCustomerName.RightToLeft = RightToLeft.No;
+            lblCustomerName.Size = new Size(92, 20);
+            lblCustomerName.TabIndex = 0;
+            lblCustomerName.Text = "بيانات العميل";
+            // 
+            // _txCustomerWrap
+            // 
+            _txCustomerWrap.BackColor = Color.White;
+            _txCustomerWrap.Controls.Add(_txCustomer);
+            _txCustomerWrap.Cursor = Cursors.IBeam;
+            _txCustomerWrap.Dock = DockStyle.Fill;
+            _txCustomerWrap.Location = new Point(0, 28);
+            _txCustomerWrap.Margin = new Padding(0, 0, 0, 8);
+            _txCustomerWrap.Name = "_txCustomerWrap";
+            _txCustomerWrap.Padding = new Padding(8);
+            _txCustomerWrap.Size = new Size(248, 43);
+            _txCustomerWrap.TabIndex = 1;
+            // 
+            // _txCustomer
+            // 
+            _txCustomer.BackColor = Color.White;
+            _txCustomer.BorderStyle = BorderStyle.None;
+            _txCustomer.Dock = DockStyle.Fill;
+            _txCustomer.Location = new Point(8, 8);
+            _txCustomer.Margin = new Padding(0);
+            _txCustomer.Name = "_txCustomer";
+            _txCustomer.PlaceholderText = "أدخل اسم العميل";
+            _txCustomer.Size = new Size(232, 20);
+            _txCustomer.TabIndex = 0;
+            _txCustomer.TextChanged += _txCustomer_TextChanged;
+            // 
+            // _txCustomerExtraWrap
+            // 
+            _txCustomerExtraWrap.BackColor = Color.White;
+            _txCustomerExtraWrap.Controls.Add(_txCustomerExtra);
+            _txCustomerExtraWrap.Cursor = Cursors.IBeam;
+            _txCustomerExtraWrap.Dock = DockStyle.Fill;
+            _txCustomerExtraWrap.Location = new Point(0, 79);
+            _txCustomerExtraWrap.Margin = new Padding(0, 0, 0, 12);
+            _txCustomerExtraWrap.Name = "_txCustomerExtraWrap";
+            _txCustomerExtraWrap.Padding = new Padding(8);
+            _txCustomerExtraWrap.Size = new Size(248, 43);
+            _txCustomerExtraWrap.TabIndex = 2;
+            // 
+            // _txCustomerExtra
+            // 
+            _txCustomerExtra.BackColor = Color.White;
+            _txCustomerExtra.BorderStyle = BorderStyle.None;
+            _txCustomerExtra.Dock = DockStyle.Fill;
+            _txCustomerExtra.Location = new Point(8, 8);
+            _txCustomerExtra.Margin = new Padding(0);
+            _txCustomerExtra.Name = "_txCustomerExtra";
+            _txCustomerExtra.PlaceholderText = "رقم الهاتف (اختياري)";
+            _txCustomerExtra.Size = new Size(232, 20);
+            _txCustomerExtra.TabIndex = 0;
+            // 
+            // retailDateFlow
+            // 
+            retailDateFlow.AutoSize = true;
+            retailDateFlow.Controls.Add(_btnDeliveryRetail);
+            retailDateFlow.Controls.Add(_lblDeliveryRetail);
+            retailDateFlow.Dock = DockStyle.Fill;
+            retailDateFlow.Location = new Point(0, 134);
+            retailDateFlow.Margin = new Padding(0);
+            retailDateFlow.Name = "retailDateFlow";
+            retailDateFlow.RightToLeft = RightToLeft.Yes;
+            retailDateFlow.Size = new Size(248, 165);
+            retailDateFlow.TabIndex = 3;
+            // 
+            // _btnDeliveryRetail
+            // 
+            _btnDeliveryRetail.BackColor = Color.FromArgb(90, 150, 170);
+            _btnDeliveryRetail.FlatStyle = FlatStyle.Flat;
+            _btnDeliveryRetail.Font = new Font("Cairo", 8.5F, FontStyle.Bold);
+            _btnDeliveryRetail.ForeColor = Color.White;
+            _btnDeliveryRetail.Location = new Point(138, 0);
+            _btnDeliveryRetail.Margin = new Padding(0, 0, 10, 0);
+            _btnDeliveryRetail.Name = "_btnDeliveryRetail";
+            _btnDeliveryRetail.Radius = 6;
+            _btnDeliveryRetail.Size = new Size(110, 35);
+            _btnDeliveryRetail.TabIndex = 0;
+            _btnDeliveryRetail.Text = "📅 التسليم";
+            _btnDeliveryRetail.UseVisualStyleBackColor = false;
+            // 
+            // _lblDeliveryRetail
+            // 
+            _lblDeliveryRetail.AutoSize = true;
+            _lblDeliveryRetail.Location = new Point(71, 5);
+            _lblDeliveryRetail.Margin = new Padding(0, 5, 0, 0);
+            _lblDeliveryRetail.Name = "_lblDeliveryRetail";
+            _lblDeliveryRetail.Size = new Size(57, 20);
+            _lblDeliveryRetail.TabIndex = 1;
+            _lblDeliveryRetail.Text = "لم يحدد";
+            // 
+            // _calRetail
+            // 
+            _calRetail.Location = new Point(10, 98);
+            _calRetail.MaxSelectionCount = 1;
+            _calRetail.Name = "_calRetail";
+            _calRetail.TabIndex = 5;
+            _calRetail.Visible = false;
+            // 
+            // typeCard
+            // 
+            typeCard.BackColor = Color.White;
+            typeCard.Controls.Add(lblOrderType);
+            typeCard.Controls.Add(_rbRetail);
+            typeCard.Controls.Add(_rbWholesale);
+            typeCard.Dock = DockStyle.Top;
+            typeCard.Location = new Point(0, 0);
+            typeCard.Margin = new Padding(0, 0, 0, 6);
+            typeCard.Name = "typeCard";
+            typeCard.Padding = new Padding(10, 8, 10, 8);
+            typeCard.RightToLeft = RightToLeft.Yes;
+            typeCard.Size = new Size(278, 56);
+            typeCard.TabIndex = 2;
+            // 
+            // lblOrderType
+            // 
+            lblOrderType.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblOrderType.AutoSize = true;
+            lblOrderType.Location = new Point(189, 18);
+            lblOrderType.Name = "lblOrderType";
+            lblOrderType.Size = new Size(79, 20);
+            lblOrderType.TabIndex = 0;
+            lblOrderType.Text = "نوع الطلب:";
+            // 
+            // _rbRetail
+            // 
+            _rbRetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            _rbRetail.AutoSize = true;
+            _rbRetail.Checked = true;
+            _rbRetail.Cursor = Cursors.Hand;
+            _rbRetail.Location = new Point(21, 16);
+            _rbRetail.Name = "_rbRetail";
+            _rbRetail.RightToLeft = RightToLeft.Yes;
+            _rbRetail.Size = new Size(77, 24);
+            _rbRetail.TabIndex = 1;
+            _rbRetail.TabStop = true;
+            _rbRetail.Text = "قطاعي";
+            _rbRetail.CheckedChanged += _rbType_CheckedChanged;
+            // 
+            // _rbWholesale
+            // 
+            _rbWholesale.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            _rbWholesale.AutoSize = true;
+            _rbWholesale.Cursor = Cursors.Hand;
+            _rbWholesale.Location = new Point(104, 16);
+            _rbWholesale.Name = "_rbWholesale";
+            _rbWholesale.RightToLeft = RightToLeft.Yes;
+            _rbWholesale.Size = new Size(61, 24);
+            _rbWholesale.TabIndex = 2;
+            _rbWholesale.Text = "جملة";
+            _rbWholesale.CheckedChanged += _rbType_CheckedChanged;
+            // 
+            // leftPanel
+            // 
+            leftPanel.Controls.Add(_linesGrid);
+            leftPanel.Controls.Add(btnActFlow);
+            leftPanel.Controls.Add(lblCartTitle);
+            leftPanel.Dock = DockStyle.Fill;
+            leftPanel.Location = new Point(486, 19);
+            leftPanel.Name = "leftPanel";
+            leftPanel.Padding = new Padding(10, 0, 10, 0);
+            leftPanel.Size = new Size(405, 702);
+            leftPanel.TabIndex = 1;
+            // 
+            // _linesGrid
+            // 
+            _linesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            _linesGrid.Dock = DockStyle.Fill;
+            _linesGrid.Location = new Point(10, 30);
+            _linesGrid.Name = "_linesGrid";
+            _linesGrid.RowHeadersWidth = 51;
+            _linesGrid.Size = new Size(385, 620);
+            _linesGrid.TabIndex = 0;
+            // 
             // btnActFlow
             // 
             btnActFlow.BackColor = Color.FromArgb(247, 246, 242);
             btnActFlow.Controls.Add(_btnSave);
             btnActFlow.Controls.Add(_btnClear);
             btnActFlow.Dock = DockStyle.Bottom;
-            btnActFlow.Location = new Point(0, 650);
+            btnActFlow.Location = new Point(10, 650);
             btnActFlow.Name = "btnActFlow";
             btnActFlow.Padding = new Padding(0, 8, 0, 0);
-            btnActFlow.Size = new Size(477, 52);
+            btnActFlow.Size = new Size(385, 52);
             btnActFlow.TabIndex = 6;
             // 
             // _btnSave
@@ -630,7 +617,7 @@ namespace sweetSystem.UserControls
             _btnSave.FlatStyle = FlatStyle.Flat;
             _btnSave.Font = new Font("Cairo", 9.5F, FontStyle.Bold);
             _btnSave.ForeColor = Color.White;
-            _btnSave.Location = new Point(307, 8);
+            _btnSave.Location = new Point(215, 8);
             _btnSave.Margin = new Padding(0, 0, 8, 0);
             _btnSave.Name = "_btnSave";
             _btnSave.Radius = 8;
@@ -646,7 +633,7 @@ namespace sweetSystem.UserControls
             _btnClear.FlatStyle = FlatStyle.Flat;
             _btnClear.Font = new Font("Cairo", 9.5F, FontStyle.Bold);
             _btnClear.ForeColor = Color.White;
-            _btnClear.Location = new Point(196, 11);
+            _btnClear.Location = new Point(104, 11);
             _btnClear.Name = "_btnClear";
             _btnClear.Radius = 8;
             _btnClear.Size = new Size(100, 34);
@@ -655,16 +642,29 @@ namespace sweetSystem.UserControls
             _btnClear.UseVisualStyleBackColor = false;
             _btnClear.Click += BtnClear_Click;
             // 
+            // lblCartTitle
+            // 
+            lblCartTitle.Dock = DockStyle.Top;
+            lblCartTitle.Font = new Font("Cairo", 11F, FontStyle.Bold);
+            lblCartTitle.ForeColor = Color.FromArgb(31, 45, 47);
+            lblCartTitle.Location = new Point(10, 0);
+            lblCartTitle.Name = "lblCartTitle";
+            lblCartTitle.Padding = new Padding(4, 0, 0, 0);
+            lblCartTitle.Size = new Size(385, 30);
+            lblCartTitle.TabIndex = 1;
+            lblCartTitle.Text = "\U0001f6d2  سلة الطلب";
+            lblCartTitle.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // rightPanel
             // 
             rightPanel.Controls.Add(_catalogFlow);
             rightPanel.Controls.Add(catalogSearch);
             rightPanel.Controls.Add(lblCatalogTitle);
             rightPanel.Dock = DockStyle.Fill;
-            rightPanel.Location = new Point(731, 19);
+            rightPanel.Location = new Point(15, 19);
             rightPanel.Name = "rightPanel";
             rightPanel.Padding = new Padding(10, 0, 0, 0);
-            rightPanel.Size = new Size(454, 702);
+            rightPanel.Size = new Size(465, 702);
             rightPanel.TabIndex = 0;
             // 
             // _catalogFlow
@@ -675,7 +675,7 @@ namespace sweetSystem.UserControls
             _catalogFlow.Location = new Point(10, 67);
             _catalogFlow.Name = "_catalogFlow";
             _catalogFlow.Padding = new Padding(4);
-            _catalogFlow.Size = new Size(667, 635);
+            _catalogFlow.Size = new Size(455, 635);
             _catalogFlow.TabIndex = 0;
             // 
             // catalogSearch
@@ -687,7 +687,7 @@ namespace sweetSystem.UserControls
             catalogSearch.Margin = new Padding(0, 0, 0, 6);
             catalogSearch.Name = "catalogSearch";
             catalogSearch.PlaceholderText = "🔍  ابحث عن منتج...";
-            catalogSearch.Size = new Size(667, 37);
+            catalogSearch.Size = new Size(455, 37);
             catalogSearch.TabIndex = 1;
             catalogSearch.TextChanged += CatalogSearch_TextChanged;
             // 
@@ -699,7 +699,7 @@ namespace sweetSystem.UserControls
             lblCatalogTitle.Location = new Point(10, 0);
             lblCatalogTitle.Name = "lblCatalogTitle";
             lblCatalogTitle.Padding = new Padding(4, 0, 0, 0);
-            lblCatalogTitle.Size = new Size(667, 30);
+            lblCatalogTitle.Size = new Size(455, 30);
             lblCatalogTitle.TabIndex = 2;
             lblCatalogTitle.Text = "🏪  المنتجات";
             lblCatalogTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -717,15 +717,18 @@ namespace sweetSystem.UserControls
             Size = new Size(1200, 820);
             headerPanel.ResumeLayout(false);
             bodyTable.ResumeLayout(false);
-            rightPanel.ResumeLayout(false);
-            rightPanel.PerformLayout();
-            leftPanel.ResumeLayout(false);
-            leftPanel.PerformLayout();
             infoPanel.ResumeLayout(false);
             infoPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)_linesGrid).EndInit();
-            typeCard.ResumeLayout(false);
-            typeCard.PerformLayout();
+            sumCard.ResumeLayout(false);
+            sumCard.PerformLayout();
+            _balanceRow.ResumeLayout(false);
+            _balanceRow.PerformLayout();
+            _wholesalePanel.ResumeLayout(false);
+            _wholesalePanel.PerformLayout();
+            wholesaleTable.ResumeLayout(false);
+            wholesaleTable.PerformLayout();
+            wholesaleDateFlow.ResumeLayout(false);
+            wholesaleDateFlow.PerformLayout();
             _retailPanel.ResumeLayout(false);
             _retailPanel.PerformLayout();
             retailTable.ResumeLayout(false);
@@ -736,17 +739,13 @@ namespace sweetSystem.UserControls
             _txCustomerExtraWrap.PerformLayout();
             retailDateFlow.ResumeLayout(false);
             retailDateFlow.PerformLayout();
-            _wholesalePanel.ResumeLayout(false);
-            _wholesalePanel.PerformLayout();
-            wholesaleTable.ResumeLayout(false);
-            wholesaleTable.PerformLayout();
-            wholesaleDateFlow.ResumeLayout(false);
-            wholesaleDateFlow.PerformLayout();
-            sumCard.ResumeLayout(false);
-            sumCard.PerformLayout();
-            _balanceRow.ResumeLayout(false);
-            _balanceRow.PerformLayout();
+            typeCard.ResumeLayout(false);
+            typeCard.PerformLayout();
+            leftPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)_linesGrid).EndInit();
             btnActFlow.ResumeLayout(false);
+            rightPanel.ResumeLayout(false);
+            rightPanel.PerformLayout();
             ResumeLayout(false);
         }
         #endregion

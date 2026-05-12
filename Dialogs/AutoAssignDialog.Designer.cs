@@ -67,13 +67,13 @@ namespace sweetSystem
             // lblInfo
             // 
             this.lblInfo.AutoSize = false;
-            this.lblInfo.Font = new System.Drawing.Font("Cairo", 8.5F);
+            this.lblInfo.Font = Theme.FontSmall;
             this.lblInfo.ForeColor = Theme.TextSecondary;
             this.lblInfo.Location = new System.Drawing.Point(16, 72);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(368, 36);
             this.lblInfo.TabIndex = 2;
-            this.lblInfo.Text = "اختر المعبّئين المتاحين، سيتم توزيع الطلبات عليهم بالتساوي:";
+            this.lblInfo.Text = "اختر موظفي التعبئة المتاحين، سيتم توزيع الطلبات عليهم بالتساوي:";
 
             // 
             // chkSelectAll
