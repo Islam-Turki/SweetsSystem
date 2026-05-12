@@ -8,6 +8,8 @@ namespace sweetSystem.UserControls
 {
     public partial class DashboardControl : UserControl
     {
+        private DateTime _selectedDate = DateTime.Today;
+
         public DashboardControl()
         {
             InitializeComponent();
@@ -18,6 +20,9 @@ namespace sweetSystem.UserControls
             _grid.EnableHeadersVisualStyles = false;
             _grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             SetupGridColumns();
+
+            _btnToday.Click += (s, e) => { _selectedDate = DateTime.Today; RefreshData(); };
+            _btnTomorrow.Click += (s, e) => { _selectedDate = DateTime.Today.AddDays(1); RefreshData(); };
         }
 
         public void loadCards()
@@ -80,8 +85,26 @@ namespace sweetSystem.UserControls
             _cClients.Update(tomorrowCount.ToString());
             _cClients.SubText = "موعد تسليمها غداً";
 
+            // Update section title based on selection
+            if (_selectedDate.Date == today)
+            {
+                secLabel.Text = "طلبات التسليم اليوم";
+                _btnToday.BackColor = Theme.AccentGreen;
+                _btnTomorrow.BackColor = Color.FromArgb(180, 180, 180);
+            }
+            else
+            {
+                secLabel.Text = "طلبات التسليم غداً";
+                _btnToday.BackColor = Color.FromArgb(180, 180, 180);
+                _btnTomorrow.BackColor = Theme.AccentGreen;
+            }
+
             _grid.Rows.Clear();
-            foreach (var o in MockData.Orders.OrderByDescending(x => x.Id).Take(25))
+            var deliveries = MockData.Orders
+                .Where(o => o.DeliveryDate.Date == _selectedDate.Date)
+                .OrderByDescending(x => x.Id);
+
+            foreach (var o in deliveries)
             {
                 Color rowBg = o.Status switch
                 {
@@ -97,7 +120,7 @@ namespace sweetSystem.UserControls
                     orderItems.Sum(l => l.Quantity),
                     Theme.LYD(o.TotalPrice),
                     MockData.OrderStatusAr(o.Status),
-                    o.OrderDate.ToString("dd/MM"));
+                    o.DeliveryDate.ToString("dd/MM/yyyy"));
                 _grid.Rows[i].DefaultCellStyle.BackColor = rowBg;
             }
         }

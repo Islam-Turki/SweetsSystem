@@ -23,6 +23,8 @@ namespace sweetSystem.UserControls
             _cPending = new StatCard();
             _cRevenue = new StatCard();
             _cClients = new StatCard();
+            _btnToday = new FlatButton();
+            _btnTomorrow = new FlatButton();
             bodyPanel = new Panel();
             _grid = new DataGridView();
             secLabel = new SectionHeader();
@@ -177,6 +179,37 @@ namespace sweetSystem.UserControls
             secLabel.Text = "آخر الطلبات";
             secLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // _btnToday
+            // 
+            _btnToday.BackColor = Theme.AccentGreen;
+            _btnToday.Font = new Font("Cairo", 8F, FontStyle.Bold);
+            _btnToday.ForeColor = Color.White;
+            _btnToday.Location = new Point(5, 2);
+            _btnToday.Name = "_btnToday";
+            _btnToday.Radius = 6;
+            _btnToday.Size = new Size(80, 26);
+            _btnToday.TabIndex = 0;
+            _btnToday.Text = "اليوم";
+            _btnToday.UseVisualStyleBackColor = false;
+            // 
+            // _btnTomorrow
+            // 
+            _btnTomorrow.BackColor = Color.FromArgb(180, 180, 180);
+            _btnTomorrow.Font = new Font("Cairo", 8F, FontStyle.Bold);
+            _btnTomorrow.ForeColor = Color.White;
+            _btnTomorrow.Location = new Point(90, 2);
+            _btnTomorrow.Name = "_btnTomorrow";
+            _btnTomorrow.Radius = 6;
+            _btnTomorrow.Size = new Size(80, 26);
+            _btnTomorrow.TabIndex = 1;
+            _btnTomorrow.Text = "الغد";
+            _btnTomorrow.UseVisualStyleBackColor = false;
+            //
+            // Add buttons to secLabel
+            //
+            secLabel.Controls.Add(_btnToday);
+            secLabel.Controls.Add(_btnTomorrow);
+            // 
             // DashboardControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -208,6 +241,8 @@ namespace sweetSystem.UserControls
         private sweetSystem.StatCard _cRevenue;
         private sweetSystem.StatCard _cClients;
         private sweetSystem.SectionHeader secLabel;
+        private sweetSystem.FlatButton _btnToday;
+        private sweetSystem.FlatButton _btnTomorrow;
         private System.Windows.Forms.Panel bodyPanel;
         private System.Windows.Forms.DataGridView _grid;
     }
