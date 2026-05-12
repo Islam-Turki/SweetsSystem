@@ -97,6 +97,7 @@ namespace sweetSystem.UserControls
             _cOrders.Title = "العنوان";
             _cOrders.Value = "—";
             _cOrders.Paint += _cOrders_Paint;
+            _cOrders.Font = Theme.FontH2;
             // 
             // _cPending
             // 
@@ -110,6 +111,7 @@ namespace sweetSystem.UserControls
             _cPending.TabIndex = 1;
             _cPending.Title = "العنوان";
             _cPending.Value = "—";
+            _cPending.Font = Theme.FontH2;
             // 
             // _cRevenue
             // 
@@ -123,6 +125,7 @@ namespace sweetSystem.UserControls
             _cRevenue.TabIndex = 2;
             _cRevenue.Title = "العنوان";
             _cRevenue.Value = "—";
+            _cRevenue.Font = Theme.FontH2;
             // 
             // _cClients
             // 
@@ -136,6 +139,7 @@ namespace sweetSystem.UserControls
             _cClients.TabIndex = 3;
             _cClients.Title = "العنوان";
             _cClients.Value = "—";
+            _cClients.Font = Theme.FontH2;
             // 
             // _btnToday
             // 
