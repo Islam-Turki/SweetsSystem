@@ -54,7 +54,7 @@ namespace sweetSystem
         private void btnWholesale_Click(object sender, EventArgs e) => Navigate(7);
 
         // ── Navigation (panel-swap — no TabControl) ────────────────────────────
-        public void Navigate(int idx)
+        public UserControl Navigate(int idx)
         {
             if (!_controlCache.TryGetValue(idx, out UserControl target))
             {
@@ -99,6 +99,8 @@ namespace sweetSystem
             // Update nav-button states
             for (int i = 0; i < _navBtns.Count; i++)
                 _navBtns[i].Active = (i == idx);
+
+            return target;
         }
     }
 }

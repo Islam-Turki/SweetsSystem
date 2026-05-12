@@ -15,6 +15,7 @@ namespace sweetSystem.UserControls
         private readonly List<OrderItem> _cart = new();
         // productId → card panel (so we can update badges)
         private readonly Dictionary<int, Panel> _cardMap = new();
+        private Order? _editingOrder;
 
         // ── Constructor ───────────────────────────────────────────────────────
         public OrderEntryControl()
@@ -47,6 +48,8 @@ namespace sweetSystem.UserControls
             _txCustomerExtra.Font = Theme.FontBody;
             //lblCustomer.Font = Theme.FontBodyB;
             _cbClient.Font       = Theme.FontBody;
+            _chkIsDeliveryRetail.Font = Theme.FontBody;
+            _chkIsDeliveryWholesale.Font = Theme.FontBody;
 
             // Summary card
             lblSummary.Font      = Theme.FontH2;
@@ -485,12 +488,18 @@ namespace sweetSystem.UserControls
 
         private void BtnClear_Click(object? s, EventArgs e)
         {
+            _editingOrder = null;
+            h1Label.Text = "🛒  إدخال طلب جديد";
             _cart.Clear();
             _linesGrid.Rows.Clear();
             _txCustomer.Text    = "";
             _txCustomerExtra.Text = "";
             _cbClient.SelectedIndex = -1;
             _rbRetail.Checked   = true;
+            _chkIsDeliveryRetail.Checked = false;
+            _chkIsDeliveryWholesale.Checked = false;
+            _lblDeliveryRetail.Text = "لم يحدد";
+            _lblDeliveryWholesale.Text = "لم يحدد";
             RecalcTotals();
 
             // Reset all badges
@@ -532,15 +541,35 @@ namespace sweetSystem.UserControls
                 return;
             }
 
-            var order = new Order
+            var order = _editingOrder ?? new Order { Id = MockData.NextOrderId() };
+            
+            order.OrderDate       = DateTime.Today;
+            order.CustomerName    = customer;
+            order.CustomerPhone   = ws ? "" : _txCustomerExtra.Text.Trim();
+            order.Customer = ws ? _cbClient.SelectedItem as Customer : null;
+            order.CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null;
+            order.IsDelivery = ws ? _chkIsDeliveryWholesale.Checked : _chkIsDeliveryRetail.Checked;
+            order.Status = order.Status; // Keep existing status if editing
+            if (_editingOrder == null) order.Status = OrderStatus.Pending;
+
+
+            // Parse delivery date if specified
+            string dateStr = ws ? _lblDeliveryWholesale.Text : _lblDeliveryRetail.Text;
+            if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dDate))
             {
-                Id              = MockData.NextOrderId(),
-                OrderDate       = DateTime.Today,
-                CustomerName    = ws ? "" : customer,
-                Customer = ws ? _cbClient.SelectedItem as Customer : null,
-                CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null,
-                Status = OrderStatus.Pending
-            };
+                order.DeliveryDate = dDate;
+            }
+            else
+            {
+                order.DeliveryDate = DateTime.Today; // Fallback
+            }
+
+            // If editing, clear old items first
+            if (_editingOrder != null)
+            {
+                var oldItems = MockData.OrderItems.Where(x => x.OrderId == order.Id).ToList();
+                foreach (var item in oldItems) MockData.OrderItems.Remove(item);
+            }
 
             // Compute total and add order items
             double total = 0;
@@ -561,10 +590,17 @@ namespace sweetSystem.UserControls
             }
             order.TotalPrice = total;
 
-            MockData.Orders.Add(order);
-
-            MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (_editingOrder == null)
+            {
+                MockData.Orders.Add(order);
+                MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show($"تم تحديث الطلب #{order.Id} بنجاح!", "تم",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             BtnClear_Click(null, EventArgs.Empty);
         }
@@ -680,6 +716,48 @@ namespace sweetSystem.UserControls
                 LoadCatalog();
                 BindComboBoxes();
             }
+        }
+
+        public void LoadOrder(Order o)
+        {
+            BtnClear_Click(null, EventArgs.Empty);
+            _editingOrder = o;
+            h1Label.Text = $"📝 تعديل الطلب #{o.Id}";
+
+            bool ws = o.CustomerId != null;
+            if (ws)
+            {
+                _rbWholesale.Checked = true;
+                _cbClient.SelectedItem = MockData.Customers.FirstOrDefault(c => c.Id == o.CustomerId);
+                _chkIsDeliveryWholesale.Checked = o.IsDelivery;
+                _lblDeliveryWholesale.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                _rbRetail.Checked = true;
+                _txCustomer.Text = o.CustomerName;
+                // Note: Phone isn't explicitly in Order model but we use CustomerPhone
+                _txCustomerExtra.Text = o.CustomerPhone; 
+                _chkIsDeliveryRetail.Checked = o.IsDelivery;
+                _lblDeliveryRetail.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
+            }
+
+            // Load items
+            _cart.Clear();
+            var items = MockData.OrderItems.Where(i => i.OrderId == o.Id);
+            foreach (var i in items)
+            {
+                _cart.Add(new OrderItem
+                {
+                    Product = i.Product,
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    TotalPrice = i.TotalPrice
+                });
+            }
+
+            RefreshCart();
+            foreach (var p in MockData.Products) UpdateCardBadge(p);
         }
 
     }
