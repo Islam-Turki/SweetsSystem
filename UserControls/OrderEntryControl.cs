@@ -15,6 +15,7 @@ namespace sweetSystem.UserControls
         private readonly List<OrderItem> _cart = new();
         // productId → card panel (so we can update badges)
         private readonly Dictionary<int, Panel> _cardMap = new();
+        private Order? _editingOrder;
 
         // ── Constructor ───────────────────────────────────────────────────────
         public OrderEntryControl()
@@ -39,25 +40,36 @@ namespace sweetSystem.UserControls
             h1Label.ForeColor = Theme.TextPrimary;
 
             // Customer panels
-            lblOrderType.Font    = Theme.FontBodyB;
-            _rbRetail.Font       = Theme.FontBody;
-            _rbWholesale.Font    = Theme.FontBody;
+            lblOrderType.Font = Theme.FontBodyB;
+            _rbRetail.Font = Theme.FontBody;
+            _rbWholesale.Font = Theme.FontBody;
             lblCustomerName.Font = Theme.FontBodyB;
-            _txCustomer.Font     = Theme.FontBody;
+            _txCustomer.Font = Theme.FontBody;
             _txCustomerExtra.Font = Theme.FontBody;
             //lblCustomer.Font = Theme.FontBodyB;
-            _cbClient.Font       = Theme.FontBody;
+            _cbClient.Font = Theme.FontBody;
+            _chkIsDeliveryRetail.Font = Theme.FontBody;
+            _chkIsDeliveryWholesale.Font = Theme.FontBody;
+            _txPaidRetail.Font = Theme.FontBody;
+            _txPaidWholesale.Font = Theme.FontBody;
+            lblPaidRetail.Font = Theme.FontBodyB;
+            lblPaidWholesale.Font = Theme.FontBodyB;
+
+            AttachInputWrapperEvents(_txPaidRetailWrap, _txPaidRetail);
+            AttachInputWrapperEvents(_txPaidWholesaleWrap, _txPaidWholesale);
+            _txPaidRetail.KeyPress += ValidationHelper.DecimalsOnly;
+            _txPaidWholesale.KeyPress += ValidationHelper.DecimalsOnly;
 
             // Summary card
-            lblSummary.Font      = Theme.FontH2;
-            lblSubTitle.Font     = Theme.FontBodyB;
-            _lblSub.Font         = Theme.FontBodyB;
+            lblSummary.Font = Theme.FontH2;
+            lblSubTitle.Font = Theme.FontBodyB;
+            _lblSub.Font = Theme.FontBodyB;
             lblBalanceTitle.Font = Theme.FontBodyB;
-            _lblBalance.Font     = Theme.FontBodyB;
-            lblGrandTitle.Font   = Theme.FontBodyB;
+            _lblBalance.Font = Theme.FontBodyB;
+            lblGrandTitle.Font = Theme.FontBodyB;
 
             // Cart section label
-            lblCartTitle.Font    = Theme.FontH2;
+            lblCartTitle.Font = Theme.FontH2;
             lblCartTitle.ForeColor = Theme.TextPrimary;
 
             // Catalog section label
@@ -71,19 +83,19 @@ namespace sweetSystem.UserControls
             // Style the cart DataGridView
             GridHelper.Style(_linesGrid, readOnly: true, rtl: true);
             _linesGrid.Columns.Clear();
-            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Product", HeaderText = "المنتج",   FillWeight = 38 });
-            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qty",     HeaderText = "الكمية",   FillWeight = 12 });
-            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Price",   HeaderText = "السعر",    FillWeight = 20 });
-            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Total",   HeaderText = "الإجمالي", FillWeight = 20 });
+            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Product", HeaderText = "المنتج", FillWeight = 38 });
+            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qty", HeaderText = "الكمية", FillWeight = 12 });
+            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Price", HeaderText = "السعر", FillWeight = 20 });
+            _linesGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Total", HeaderText = "الإجمالي", FillWeight = 20 });
             // Remove-row button column
             var removeCol = new DataGridViewButtonColumn
             {
-                Name     = "Remove",
+                Name = "Remove",
                 HeaderText = "",
-                Text     = "✕",
+                Text = "✕",
                 UseColumnTextForButtonValue = true,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
-                Width    = 36,
+                Width = 36,
                 FillWeight = 10
             };
             _linesGrid.Columns.Add(removeCol);
@@ -98,7 +110,7 @@ namespace sweetSystem.UserControls
         private void AttachInputWrapperEvents(Panel wrap, TextBox tx, int radius = 8)
         {
             Color normalBorder = Color.FromArgb(200, 200, 200);
-            Color focusBorder  = Color.FromArgb(53, 133, 142);
+            Color focusBorder = Color.FromArgb(53, 133, 142);
             bool focused = false;
 
             void ApplyRegion() =>
@@ -113,11 +125,11 @@ namespace sweetSystem.UserControls
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 var r = new Rectangle(0, 0, wrap.Width - 1, wrap.Height - 1);
                 using var path = RoundedPanel.RoundRect(r, radius);
-                using var pen  = new Pen(focused ? focusBorder : normalBorder, focused ? 2f : 1.5f);
+                using var pen = new Pen(focused ? focusBorder : normalBorder, focused ? 2f : 1.5f);
                 e.Graphics.DrawPath(pen, path);
             };
 
-            tx.Enter += (_, _) => { focused = true;  wrap.Invalidate(); };
+            tx.Enter += (_, _) => { focused = true; wrap.Invalidate(); };
             tx.Leave += (_, _) => { focused = false; wrap.Invalidate(); };
             wrap.Click += (_, _) => tx.Focus();
         }
@@ -127,10 +139,18 @@ namespace sweetSystem.UserControls
             // Clear the list first so we don't get duplicates when refreshing!
             _cbClient.Items.Clear();
 
+            _cbClient.DisplayMember = "Name";
+            _cbClient.ValueMember = "Id";
+
             foreach (var c in MockData.Customers)
             {
                 _cbClient.Items.Add(c);
             }
+
+            //foreach (var c in MockData.Customers)
+            //{
+            //    _cbClient.Items.Add(c);
+            //}
         }
 
         // ══════════════════════════════════════════════════════════════════════
@@ -162,22 +182,22 @@ namespace sweetSystem.UserControls
 
             var card = new Panel
             {
-                Width     = CARD_W,
-                Height    = CARD_H,
-                Cursor    = Cursors.Hand,
-                Margin    = new Padding(10),
-                Tag       = p
+                Width = CARD_W,
+                Height = CARD_H,
+                Cursor = Cursors.Hand,
+                Margin = new Padding(10),
+                Tag = p
             };
 
             // ── Image area ──────────────────────────────────────────────────
             var picBox = new PictureBox
             {
-                Width    = CARD_W,
-                Height   = 110,
+                Width = CARD_W,
+                Height = 110,
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.FromArgb(245, 239, 230),
-                Cursor   = Cursors.Hand,
-                Tag      = p
+                Cursor = Cursors.Hand,
+                Tag = p
             };
 
             string imgPath = GetAbsoluteImagePath(p.ImagePath);
@@ -203,94 +223,94 @@ namespace sweetSystem.UserControls
             // ── Product name label ───────────────────────────────────────────
             var nameLabel = new Label
             {
-                Text      = p.Name,
-                AutoSize  = false,
-                Width     = CARD_W - 12,
-                Height    = 36,
-                Left      = 6,
-                Top       = 114,
+                Text = p.Name,
+                AutoSize = false,
+                Width = CARD_W - 12,
+                Height = 36,
+                Left = 6,
+                Top = 114,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = Theme.FontH2,
+                Font = new Font("Cairo", 8.5f, FontStyle.Bold),
                 ForeColor = Theme.TextPrimary,
                 BackColor = Color.Transparent,
-                Cursor    = Cursors.Hand,
-                Tag       = p
+                Cursor = Cursors.Hand,
+                Tag = p
             };
 
             // ── Price label ──────────────────────────────────────────────────
             var priceLabel = new Label
             {
-                Text      = Theme.LYD(_rbWholesale.Checked ? p.WholesalePrice : p.Price),
-                AutoSize  = false,
-                Width     = CARD_W - 12,
-                Height    = 20,
-                Left      = 6,
-                Top       = 150,
+                Text = Theme.LYD(_rbWholesale.Checked ? p.WholesalePrice : p.Price),
+                AutoSize = false,
+                Width = CARD_W - 12,
+                Height = 20,
+                Left = 6,
+                Top = 150,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = Theme.FontH2,
+                Font = new Font("Cairo", 8f),
                 ForeColor = Theme.AccentGreen,
                 BackColor = Color.Transparent,
-                Cursor    = Cursors.Hand,
-                Tag       = p,
-                Name      = $"price_{p.Id}"
+                Cursor = Cursors.Hand,
+                Tag = p,
+                Name = $"price_{p.Id}"
             };
 
             // ── Minus button (hidden until qty > 0) ─────────────────────────
             var minusBtn = new Label
             {
-                Text      = "−",
-                AutoSize  = false,
-                Width     = 26,
-                Height    = 26,
-                Left      = 4,
-                Top       = 4,
+                Text = "−",
+                AutoSize = false,
+                Width = 26,
+                Height = 26,
+                Left = 4,
+                Top = 4,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = Theme.FontH2,
+                Font = new Font("Arial", 12f, FontStyle.Bold),
                 ForeColor = Color.White,
                 BackColor = Theme.AccentRed,
-                Cursor    = Cursors.Hand,
-                Visible   = false,
-                Tag       = p,
-                Name      = $"minus_{p.Id}"
+                Cursor = Cursors.Hand,
+                Visible = false,
+                Tag = p,
+                Name = $"minus_{p.Id}"
             };
             MakeRound(minusBtn, 13);
 
             // ── Quantity badge ───────────────────────────────────────────────
             var badge = new Label
             {
-                Text      = "",
-                AutoSize  = false,
-                Width     = 26,
-                Height    = 26,
-                Left      = CARD_W - 30,
-                Top       = 4,
+                Text = "",
+                AutoSize = false,
+                Width = 26,
+                Height = 26,
+                Left = CARD_W - 30,
+                Top = 4,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = Theme.FontBadge,
+                Font = Theme.FontBadge,
                 ForeColor = Color.White,
                 BackColor = Theme.AccentGreen,
-                Cursor    = Cursors.Hand,
-                Visible   = false,
-                Tag       = p,
-                Name      = $"badge_{p.Id}"
+                Cursor = Cursors.Hand,
+                Visible = false,
+                Tag = p,
+                Name = $"badge_{p.Id}"
             };
             MakeRound(badge, 13);
 
             // ── Add-to-cart area at bottom ───────────────────────────────────
             var addBtn = new Label
             {
-                Text      = "+ أضف",
-                AutoSize  = false,
-                Width     = CARD_W,
-                Height    = 28,
-                Left      = 0,
-                Top       = CARD_H - 28,
+                Text = "+ أضف",
+                AutoSize = false,
+                Width = CARD_W,
+                Height = 28,
+                Left = 0,
+                Top = CARD_H - 28,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = Theme.FontH2,
+                Font = new Font("Cairo", 8.5f, FontStyle.Bold),
                 ForeColor = Color.White,
                 BackColor = Theme.AccentGreen,
-                Cursor    = Cursors.Hand,
-                Tag       = p,
-                Name      = $"add_{p.Id}"
+                Cursor = Cursors.Hand,
+                Tag = p,
+                Name = $"add_{p.Id}"
             };
 
             card.Controls.AddRange(new Control[] { picBox, nameLabel, priceLabel, addBtn, badge, minusBtn });
@@ -309,7 +329,7 @@ namespace sweetSystem.UserControls
                 using var pen = new Pen(borderColor, hovered ? 2f : 1f);
                 e.Graphics.DrawPath(pen, path);
             };
-            card.MouseEnter += (_, _) => { hovered = true;  card.Invalidate(); };
+            card.MouseEnter += (_, _) => { hovered = true; card.Invalidate(); };
             card.MouseLeave += (_, _) => { hovered = false; card.Invalidate(); };
 
             // ── Clip card to rounded rect ────────────────────────────────────
@@ -318,15 +338,15 @@ namespace sweetSystem.UserControls
 
             // ── Wire click events ────────────────────────────────────────────
             void OnAddClick(object? _, EventArgs __) => AddToCart(p);
-            card.Click        += OnAddClick;
-            picBox.Click      += OnAddClick;
-            nameLabel.Click   += OnAddClick;
-            priceLabel.Click  += OnAddClick;
-            addBtn.Click      += OnAddClick;
-            badge.Click       += OnAddClick;
+            card.Click += OnAddClick;
+            picBox.Click += OnAddClick;
+            nameLabel.Click += OnAddClick;
+            priceLabel.Click += OnAddClick;
+            addBtn.Click += OnAddClick;
+            badge.Click += OnAddClick;
 
             void OnMinusClick(object? _, EventArgs __) => RemoveFromCart(p);
-            minusBtn.Click    += OnMinusClick;
+            minusBtn.Click += OnMinusClick;
 
             return card;
         }
@@ -372,7 +392,7 @@ namespace sweetSystem.UserControls
         // ══════════════════════════════════════════════════════════════════════
         private void AddToCart(Product p)
         {
-            bool ws    = _rbWholesale.Checked;
+            bool ws = _rbWholesale.Checked;
             double pr = ws ? p.WholesalePrice : p.Price;
             var ex = _cart.FirstOrDefault(l => l.Product.Id == p.Id);
 
@@ -426,26 +446,26 @@ namespace sweetSystem.UserControls
         private void RecalcTotals()
         {
             bool ws = _rbWholesale.Checked;
-            double sub  = _cart.Sum(l => l.TotalPrice);
+            double sub = _cart.Sum(l => l.TotalPrice);
             double prev = ws && _cbClient.SelectedItem is Customer wc ? wc.Balance : 0;
 
-            _lblSub.Text     = Theme.LYD(sub);
+            _lblSub.Text = Theme.LYD(sub);
             _lblBalance.Text = Theme.LYD(prev);
-            _lblGrand.Text   = Theme.LYD(sub + prev);
+            _lblGrand.Text = Theme.LYD(sub + prev);
         }
 
         private void UpdateCardBadge(Product p)
         {
             if (!_cardMap.TryGetValue(p.Id, out var card)) return;
 
-            Label? badge   = card.Controls.Find($"badge_{p.Id}",   false).FirstOrDefault() as Label;
-            Label? minusLbl = card.Controls.Find($"minus_{p.Id}",  false).FirstOrDefault() as Label;
+            Label? badge = card.Controls.Find($"badge_{p.Id}", false).FirstOrDefault() as Label;
+            Label? minusLbl = card.Controls.Find($"minus_{p.Id}", false).FirstOrDefault() as Label;
 
             var qty = _cart.FirstOrDefault(l => l.Product.Id == p.Id)?.Quantity ?? 0;
 
             if (badge != null)
             {
-                badge.Text    = qty > 0 ? qty.ToString() : "";
+                badge.Text = qty > 0 ? qty.ToString() : "";
                 badge.Visible = qty > 0;
             }
             if (minusLbl != null)
@@ -473,24 +493,32 @@ namespace sweetSystem.UserControls
         private void _rbType_CheckedChanged(object? sender, EventArgs e)
         {
             bool ws = _rbWholesale.Checked;
-            _retailPanel.Visible    = !ws;
+            _retailPanel.Visible = !ws;
             _wholesalePanel.Visible = ws;
-            _balanceRow.Visible     = ws;
+            _balanceRow.Visible = ws;
             RefreshCatalogPrices();
             RefreshCart();
         }
 
         private void _cbClient_SelectedIndexChanged(object? sender, EventArgs e) => RecalcTotals();
-        private void _txCustomer_TextChanged(object? sender, EventArgs e)         => RecalcTotals();
+        private void _txCustomer_TextChanged(object? sender, EventArgs e) => RecalcTotals();
 
         private void BtnClear_Click(object? s, EventArgs e)
         {
+            _editingOrder = null;
+            h1Label.Text = "🛒  إدخال طلب جديد";
             _cart.Clear();
             _linesGrid.Rows.Clear();
-            _txCustomer.Text    = "";
+            _txCustomer.Text = "";
             _txCustomerExtra.Text = "";
             _cbClient.SelectedIndex = -1;
-            _rbRetail.Checked   = true;
+            _rbRetail.Checked = true;
+            _chkIsDeliveryRetail.Checked = false;
+            _chkIsDeliveryWholesale.Checked = false;
+            _lblDeliveryRetail.Text = "لم يحدد";
+            _lblDeliveryWholesale.Text = "لم يحدد";
+            _txPaidRetail.Text = "0";
+            _txPaidWholesale.Text = "0";
             RecalcTotals();
 
             // Reset all badges
@@ -532,15 +560,46 @@ namespace sweetSystem.UserControls
                 return;
             }
 
-            var order = new Order
+            var order = _editingOrder ?? new Order { Id = MockData.NextOrderId() };
+
+            order.OrderDate = DateTime.Today;
+            order.CustomerName = customer;
+            order.CustomerPhone = ws ? "" : _txCustomerExtra.Text.Trim();
+            order.Customer = ws ? _cbClient.SelectedItem as Customer : null;
+            order.CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null;
+            order.IsDelivery = ws ? _chkIsDeliveryWholesale.Checked : _chkIsDeliveryRetail.Checked;
+            order.Status = order.Status; // Keep existing status if editing
+            if (_editingOrder == null) order.Status = OrderStatus.Pending;
+
+
+            // Parse delivery date if specified
+            string dateStr = ws ? _lblDeliveryWholesale.Text : _lblDeliveryRetail.Text;
+            if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dDate))
             {
-                Id              = MockData.NextOrderId(),
-                OrderDate       = DateTime.Today,
-                CustomerName    = ws ? "" : customer,
-                Customer = ws ? _cbClient.SelectedItem as Customer : null,
-                CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null,
-                Status = OrderStatus.Pending
-            };
+                order.DeliveryDate = dDate;
+            }
+            else
+            {
+                order.DeliveryDate = DateTime.Today; // Fallback
+            }
+
+            // Payment logic
+            double paid = 0;
+            double.TryParse(ws ? _txPaidWholesale.Text : _txPaidRetail.Text, out paid);
+            order.PaidAmount = paid;
+
+            // If editing, clear old items first and REVERT balance change
+            if (_editingOrder != null)
+            {
+                if (_editingOrder.CustomerId != null && _editingOrder.Customer != null)
+                {
+                    // Revert: subtract what was added (Total - Paid)
+                    _editingOrder.Customer.Balance -= (_editingOrder.TotalPrice - _editingOrder.PaidAmount);
+                }
+
+                var oldItems = MockData.OrderItems.Where(x => x.OrderId == order.Id).ToList();
+                foreach (var item in oldItems) MockData.OrderItems.Remove(item);
+            }
 
             // Compute total and add order items
             double total = 0;
@@ -549,22 +608,41 @@ namespace sweetSystem.UserControls
                 double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
                 var oi = new OrderItem
                 {
-                    OrderId  = order.Id,
+                    OrderId = order.Id,
                     ProductId = l.Product.Id,
-                    Product  = l.Product,
+                    Product = l.Product,
                     Quantity = l.Quantity,
                     TotalPrice = unitPrice * l.Quantity,
-                    Order    = order
+                    Order = order
                 };
                 MockData.OrderItems.Add(oi);
                 total += oi.TotalPrice;
             }
             order.TotalPrice = total;
 
-            MockData.Orders.Add(order);
+            // Finalize payment status
+            if (order.PaidAmount >= order.TotalPrice) order.PaymentStatus = PaymentStatus.Paid;
+            else if (order.PaidAmount > 0) order.PaymentStatus = PaymentStatus.Partial;
+            else order.PaymentStatus = PaymentStatus.None;
 
-            MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Apply balance update for wholesale
+            if (ws && order.Customer != null)
+            {
+                double remaining = order.TotalPrice - order.PaidAmount;
+                order.Customer.Balance += remaining;
+            }
+
+            if (_editingOrder == null)
+            {
+                MockData.Orders.Add(order);
+                MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show($"تم تحديث الطلب #{order.Id} بنجاح!", "تم",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             BtnClear_Click(null, EventArgs.Empty);
         }
@@ -576,7 +654,7 @@ namespace sweetSystem.UserControls
         // ══════════════════════════════════════════════════════════════════════
         private void SetupCalendarLogic()
         {
-            ConfigurePopupCalendar(_btnDeliveryRetail,   _calRetail,   _lblDeliveryRetail);
+            ConfigurePopupCalendar(_btnDeliveryRetail, _calRetail, _lblDeliveryRetail);
             ConfigurePopupCalendar(_btnDeliveryWholesale, _calWholesale, _lblDeliveryWholesale);
         }
 
@@ -621,7 +699,7 @@ namespace sweetSystem.UserControls
                 int calY = clientPt.Y + 4;   // 4 px gap below the button
 
                 cal.Location = new Point(calX, calY);
-                cal.Visible  = true;
+                cal.Visible = true;
                 cal.BringToFront();
             };
 
@@ -682,5 +760,57 @@ namespace sweetSystem.UserControls
             }
         }
 
+        public void LoadOrder(Order o)
+        {
+            BtnClear_Click(null, EventArgs.Empty);
+            _editingOrder = o;
+            h1Label.Text = $"📝 تعديل الطلب #{o.Id}";
+
+            bool ws = o.CustomerId != null;
+            if (ws)
+            {
+                _rbWholesale.Checked = true;
+                _cbClient.SelectedItem = MockData.Customers.FirstOrDefault(c => c.Id == o.CustomerId);
+                _chkIsDeliveryWholesale.Checked = o.IsDelivery;
+                _lblDeliveryWholesale.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                _rbRetail.Checked = true;
+                _txCustomer.Text = o.CustomerName;
+                // Note: Phone isn't explicitly in Order model but we use CustomerPhone
+                _txCustomerExtra.Text = o.CustomerPhone;
+                _chkIsDeliveryRetail.Checked = o.IsDelivery;
+                _lblDeliveryRetail.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
+                _txPaidRetail.Text = o.PaidAmount.ToString();
+            }
+
+            // Load items
+            _cart.Clear();
+            var items = MockData.OrderItems.Where(i => i.OrderId == o.Id);
+            foreach (var i in items)
+            {
+                _cart.Add(new OrderItem
+                {
+                    Product = i.Product,
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    TotalPrice = i.TotalPrice
+                });
+            }
+
+            if (ws)
+            {
+                _txPaidWholesale.Text = o.PaidAmount.ToString();
+            }
+
+            RefreshCart();
+            foreach (var p in MockData.Products) UpdateCardBadge(p);
+        }
+
+        private void h1Label_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

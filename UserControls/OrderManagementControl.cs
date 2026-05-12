@@ -58,11 +58,10 @@ namespace sweetSystem.UserControls
             var o  = MockData.Orders.First(x => x.Id == id);
             if (col == "Edit")
             {
-                var dlg = new OrderDialog(o);
-                if (dlg.ShowDialog(this) == DialogResult.OK)
+                if (this.FindForm() is MainForm mainForm)
                 {
-                    o.Status = (OrderStatus)dlg.CbStatus.SelectedIndex;
-                    LoadGrid();
+                    var ctrl = mainForm.Navigate(1) as OrderEntryControl;
+                    ctrl?.LoadOrder(o);
                 }
             }
             else
@@ -73,8 +72,12 @@ namespace sweetSystem.UserControls
             }
         }
 
-        private void BtnAdd_Click(object? sender, EventArgs e) =>
-            MessageBox.Show("لإضافة طلب جديد، يرجى استخدام شاشة 'إدخال الطلبات' من القائمة الجانبية.",
-                "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void BtnAdd_Click(object? sender, EventArgs e)
+        {
+            if (this.FindForm() is MainForm mainForm)
+            {
+                mainForm.Navigate(1);
+            }
+        }
     }
 }
