@@ -37,11 +37,11 @@ namespace sweetSystem
             Employees.Add(new Employee { Id=6, Name="ليلى إبراهيم",Role=EmployeeRole.Packager, Phone="0910000006", IsAvailable=true });
 
             // Customers
-            Customers.Add(new Customer { Id=1, Number="C001", Name="محل النور",            Phone="0913234567", Balance=250.00, Location="طرابلس" });
-            Customers.Add(new Customer { Id=2, Number="C002", Name="كافيه السويت كورنر",   Phone="0922876543", Balance=0, Location="بنغازي" });
-            Customers.Add(new Customer { Id=3, Number="C003", Name="حلويات فندق الواحة",   Phone="0933111222", Balance=1500.00, Location="مصراتة" });
-            Customers.Add(new Customer { Id=4, Number="C004", Name="سوبرماركت النجمة",     Phone="0944333444", Balance=80.00, Location="مصراتة" });
-            Customers.Add(new Customer { Id=5, Number="C005", Name="كافتيريا الجامعة",     Phone="0955555666", Balance=320.00, Location="طرابلس" });
+            Customers.Add(new Customer { Id=1, Number="C001", Name="محل النور",            Phone="0913234567", OpeningBalance=250.00, Location="طرابلس" });
+            Customers.Add(new Customer { Id=2, Number="C002", Name="كافيه السويت كورنر",   Phone="0922876543", OpeningBalance=0, Location="بنغازي" });
+            Customers.Add(new Customer { Id=3, Number="C003", Name="حلويات فندق الواحة",   Phone="0933111222", OpeningBalance=1500.00, Location="مصراتة" });
+            Customers.Add(new Customer { Id=4, Number="C004", Name="سوبرماركت النجمة",     Phone="0944333444", OpeningBalance=80.00, Location="مصراتة" });
+            Customers.Add(new Customer { Id=5, Number="C005", Name="كافتيريا الجامعة",     Phone="0955555666", OpeningBalance=320.00, Location="طرابلس" });
 
             // Products
             Products.Add(new Product { Id=1,  Name="كعك الشوكولاتة",        Category=ProductCategory.Other,      Price=4.50,  WholesalePrice=3.00, Unit=ProductUnit.Piece, MakerId=1, Maker=Employees[0] });
