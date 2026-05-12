@@ -35,7 +35,6 @@ namespace sweetSystem.UserControls
             _cbClient = new ComboBox();
             wholesaleDateFlow = new FlowLayoutPanel();
             _chkIsDeliveryWholesale = new CheckBox();
-            _btnDeliveryWholesale = new FlatButton();
             _lblDeliveryWholesale = new Label();
             lblPaidWholesale = new Label();
             _txPaidWholesaleWrap = new Panel();
@@ -51,7 +50,6 @@ namespace sweetSystem.UserControls
             _txCustomerExtra = new TextBox();
             retailDateFlow = new FlowLayoutPanel();
             _chkIsDeliveryRetail = new CheckBox();
-            _btnDeliveryRetail = new FlatButton();
             _lblDeliveryRetail = new Label();
             lblPaidRetail = new Label();
             _txPaidRetailWrap = new Panel();
@@ -64,8 +62,6 @@ namespace sweetSystem.UserControls
             leftPanel = new Panel();
             _linesGrid = new DataGridView();
             btnActFlow = new FlowLayoutPanel();
-            _btnSave = new FlatButton();
-            _btnClear = new FlatButton();
             lblCartTitle = new Label();
             rightPanel = new Panel();
             _catalogFlow = new FlowLayoutPanel();
@@ -89,7 +85,6 @@ namespace sweetSystem.UserControls
             typeCard.SuspendLayout();
             leftPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_linesGrid).BeginInit();
-            btnActFlow.SuspendLayout();
             rightPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -341,7 +336,6 @@ namespace sweetSystem.UserControls
             // 
             wholesaleDateFlow.AutoSize = true;
             wholesaleDateFlow.Controls.Add(_chkIsDeliveryWholesale);
-            wholesaleDateFlow.Controls.Add(_btnDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(_lblDeliveryWholesale);
             wholesaleDateFlow.Controls.Add(lblPaidWholesale);
             wholesaleDateFlow.Controls.Add(_txPaidWholesaleWrap);
@@ -364,26 +358,10 @@ namespace sweetSystem.UserControls
             _chkIsDeliveryWholesale.Text = "طلب توصيل";
             _chkIsDeliveryWholesale.UseVisualStyleBackColor = true;
             // 
-            // _btnDeliveryWholesale
-            // 
-            _btnDeliveryWholesale.BackColor = Color.FromArgb(90, 150, 170);
-            _btnDeliveryWholesale.FlatStyle = FlatStyle.Flat;
-            _btnDeliveryWholesale.Font = new Font("Microsoft Sans Serif", 8.5F, FontStyle.Bold);
-            _btnDeliveryWholesale.ForeColor = Color.White;
-            _btnDeliveryWholesale.Location = new Point(23, 0);
-            _btnDeliveryWholesale.Margin = new Padding(0, 0, 9, 0);
-            _btnDeliveryWholesale.Name = "_btnDeliveryWholesale";
-            _btnDeliveryWholesale.Padding = new Padding(13, 11, 13, 11);
-            _btnDeliveryWholesale.Radius = 6;
-            _btnDeliveryWholesale.Size = new Size(96, 26);
-            _btnDeliveryWholesale.TabIndex = 0;
-            _btnDeliveryWholesale.Text = "📅 التسليم";
-            _btnDeliveryWholesale.UseVisualStyleBackColor = false;
-            // 
             // _lblDeliveryWholesale
             // 
             _lblDeliveryWholesale.AutoSize = true;
-            _lblDeliveryWholesale.Location = new Point(172, 30);
+            _lblDeliveryWholesale.Location = new Point(75, 4);
             _lblDeliveryWholesale.Margin = new Padding(0, 4, 0, 0);
             _lblDeliveryWholesale.Name = "_lblDeliveryWholesale";
             _lblDeliveryWholesale.Size = new Size(44, 15);
@@ -393,7 +371,7 @@ namespace sweetSystem.UserControls
             // lblPaidWholesale
             // 
             lblPaidWholesale.AutoSize = true;
-            lblPaidWholesale.Location = new Point(123, 34);
+            lblPaidWholesale.Location = new Point(26, 8);
             lblPaidWholesale.Margin = new Padding(0, 8, 5, 0);
             lblPaidWholesale.Name = "lblPaidWholesale";
             lblPaidWholesale.Size = new Size(49, 15);
@@ -404,7 +382,7 @@ namespace sweetSystem.UserControls
             // 
             _txPaidWholesaleWrap.BackColor = Color.White;
             _txPaidWholesaleWrap.Controls.Add(_txPaidWholesale);
-            _txPaidWholesaleWrap.Location = new Point(15, 29);
+            _txPaidWholesaleWrap.Location = new Point(113, 26);
             _txPaidWholesaleWrap.Name = "_txPaidWholesaleWrap";
             _txPaidWholesaleWrap.Padding = new Padding(8, 4, 8, 4);
             _txPaidWholesaleWrap.Size = new Size(100, 30);
@@ -548,7 +526,6 @@ namespace sweetSystem.UserControls
             // 
             retailDateFlow.AutoSize = true;
             retailDateFlow.Controls.Add(_chkIsDeliveryRetail);
-            retailDateFlow.Controls.Add(_btnDeliveryRetail);
             retailDateFlow.Controls.Add(_lblDeliveryRetail);
             retailDateFlow.Controls.Add(lblPaidRetail);
             retailDateFlow.Controls.Add(_txPaidRetailWrap);
@@ -571,25 +548,10 @@ namespace sweetSystem.UserControls
             _chkIsDeliveryRetail.Text = "طلب توصيل";
             _chkIsDeliveryRetail.UseVisualStyleBackColor = true;
             // 
-            // _btnDeliveryRetail
-            // 
-            _btnDeliveryRetail.BackColor = Color.FromArgb(90, 150, 170);
-            _btnDeliveryRetail.FlatStyle = FlatStyle.Flat;
-            _btnDeliveryRetail.Font = new Font("Microsoft Sans Serif", 8.5F, FontStyle.Bold);
-            _btnDeliveryRetail.ForeColor = Color.White;
-            _btnDeliveryRetail.Location = new Point(23, 0);
-            _btnDeliveryRetail.Margin = new Padding(0, 0, 9, 0);
-            _btnDeliveryRetail.Name = "_btnDeliveryRetail";
-            _btnDeliveryRetail.Radius = 6;
-            _btnDeliveryRetail.Size = new Size(96, 26);
-            _btnDeliveryRetail.TabIndex = 0;
-            _btnDeliveryRetail.Text = "📅 التسليم";
-            _btnDeliveryRetail.UseVisualStyleBackColor = false;
-            // 
             // _lblDeliveryRetail
             // 
             _lblDeliveryRetail.AutoSize = true;
-            _lblDeliveryRetail.Location = new Point(172, 30);
+            _lblDeliveryRetail.Location = new Point(75, 4);
             _lblDeliveryRetail.Margin = new Padding(0, 4, 0, 0);
             _lblDeliveryRetail.Name = "_lblDeliveryRetail";
             _lblDeliveryRetail.Size = new Size(44, 15);
@@ -599,7 +561,7 @@ namespace sweetSystem.UserControls
             // lblPaidRetail
             // 
             lblPaidRetail.AutoSize = true;
-            lblPaidRetail.Location = new Point(123, 34);
+            lblPaidRetail.Location = new Point(26, 8);
             lblPaidRetail.Margin = new Padding(0, 8, 5, 0);
             lblPaidRetail.Name = "lblPaidRetail";
             lblPaidRetail.Size = new Size(49, 15);
@@ -610,7 +572,7 @@ namespace sweetSystem.UserControls
             // 
             _txPaidRetailWrap.BackColor = Color.White;
             _txPaidRetailWrap.Controls.Add(_txPaidRetail);
-            _txPaidRetailWrap.Location = new Point(15, 29);
+            _txPaidRetailWrap.Location = new Point(113, 26);
             _txPaidRetailWrap.Name = "_txPaidRetailWrap";
             _txPaidRetailWrap.Padding = new Padding(8, 4, 8, 4);
             _txPaidRetailWrap.Size = new Size(100, 30);
@@ -717,8 +679,6 @@ namespace sweetSystem.UserControls
             // btnActFlow
             // 
             btnActFlow.BackColor = Color.FromArgb(247, 246, 242);
-            btnActFlow.Controls.Add(_btnSave);
-            btnActFlow.Controls.Add(_btnClear);
             btnActFlow.Dock = DockStyle.Bottom;
             btnActFlow.Location = new Point(9, 488);
             btnActFlow.Margin = new Padding(3, 2, 3, 2);
@@ -726,38 +686,6 @@ namespace sweetSystem.UserControls
             btnActFlow.Padding = new Padding(0, 6, 0, 0);
             btnActFlow.Size = new Size(336, 39);
             btnActFlow.TabIndex = 6;
-            // 
-            // _btnSave
-            // 
-            _btnSave.BackColor = Color.FromArgb(43, 150, 90);
-            _btnSave.FlatStyle = FlatStyle.Flat;
-            _btnSave.Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Bold);
-            _btnSave.ForeColor = Color.White;
-            _btnSave.Location = new Point(187, 6);
-            _btnSave.Margin = new Padding(0, 0, 7, 0);
-            _btnSave.Name = "_btnSave";
-            _btnSave.Radius = 8;
-            _btnSave.Size = new Size(149, 26);
-            _btnSave.TabIndex = 0;
-            _btnSave.Text = "✔  تأكيد الطلب";
-            _btnSave.UseVisualStyleBackColor = false;
-            _btnSave.Click += BtnSave_Click;
-            // 
-            // _btnClear
-            // 
-            _btnClear.BackColor = Color.FromArgb(150, 150, 150);
-            _btnClear.FlatStyle = FlatStyle.Flat;
-            _btnClear.Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Bold);
-            _btnClear.ForeColor = Color.White;
-            _btnClear.Location = new Point(89, 8);
-            _btnClear.Margin = new Padding(3, 2, 3, 2);
-            _btnClear.Name = "_btnClear";
-            _btnClear.Radius = 8;
-            _btnClear.Size = new Size(88, 26);
-            _btnClear.TabIndex = 1;
-            _btnClear.Text = "✕  مسح";
-            _btnClear.UseVisualStyleBackColor = false;
-            _btnClear.Click += BtnClear_Click;
             // 
             // lblCartTitle
             // 
@@ -866,7 +794,6 @@ namespace sweetSystem.UserControls
             typeCard.PerformLayout();
             leftPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)_linesGrid).EndInit();
-            btnActFlow.ResumeLayout(false);
             rightPanel.ResumeLayout(false);
             rightPanel.PerformLayout();
             ResumeLayout(false);

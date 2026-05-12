@@ -1,10 +1,9 @@
-using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 
-namespace sweetSystem
+namespace sweetSystem.printerUrils
 {
     public static class paperBuilder
     {

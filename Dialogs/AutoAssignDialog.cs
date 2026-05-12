@@ -1,4 +1,3 @@
-using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +10,7 @@ using System.Windows.Forms;
 
 namespace sweetSystem
 {
+    using sweetSystem.printerUrils;
     using System;
     using System.Collections.Generic;
     using System.Linq;
