@@ -45,7 +45,7 @@ namespace sweetSystem.UserControls
             lblCustomerName.Font = Theme.FontBodyB;
             _txCustomer.Font     = Theme.FontBody;
             _txCustomerExtra.Font = Theme.FontBody;
-            lblCustomer.Font = Theme.FontBodyB;
+            //lblCustomer.Font = Theme.FontBodyB;
             _cbClient.Font       = Theme.FontBody;
 
             // Summary card

@@ -30,14 +30,15 @@ namespace sweetSystem
         private void InitializeComponent()
         {
             _sidebar = new Panel();
-            btnWholesale = new NavButton();
             btnHR = new NavButton();
-            btnProdMgmt = new NavButton();
-            btnProdView = new NavButton();
-            breakLine = new Panel();
+            btnWholesale = new NavButton();
             btnOrderMgmt = new NavButton();
+            btnProdMgmt = new NavButton();
+            breakLine2 = new Panel();
+            btnProdView = new NavButton();
             btnDelegation = new NavButton();
             btnOrderEntry = new NavButton();
+            breakLine = new Panel();
             btnDashboard = new NavButton();
             sep = new Panel();
             navLabel = new Label();
@@ -56,14 +57,15 @@ namespace sweetSystem
             // _sidebar
             // 
             _sidebar.BackColor = Color.FromArgb(53, 133, 142);
-            _sidebar.Controls.Add(btnWholesale);
             _sidebar.Controls.Add(btnHR);
-            _sidebar.Controls.Add(btnProdMgmt);
-            _sidebar.Controls.Add(btnProdView);
-            _sidebar.Controls.Add(breakLine);
+            _sidebar.Controls.Add(btnWholesale);
             _sidebar.Controls.Add(btnOrderMgmt);
+            _sidebar.Controls.Add(btnProdMgmt);
+            _sidebar.Controls.Add(breakLine2);
+            _sidebar.Controls.Add(btnProdView);
             _sidebar.Controls.Add(btnDelegation);
             _sidebar.Controls.Add(btnOrderEntry);
+            _sidebar.Controls.Add(breakLine);
             _sidebar.Controls.Add(btnDashboard);
             _sidebar.Controls.Add(sep);
             _sidebar.Controls.Add(navLabel);
@@ -88,7 +90,7 @@ namespace sweetSystem
             btnWholesale.Name = "btnWholesale";
             btnWholesale.Size = new Size(347, 71);
             btnWholesale.TabIndex = 11;
-            btnWholesale.Text = "عملاء الجملة";
+            btnWholesale.Text = "ادارة العملاء";
             btnWholesale.TextAlignment = ContentAlignment.MiddleRight;
             btnWholesale.Click += btnWholesale_Click;
             // 
@@ -104,7 +106,7 @@ namespace sweetSystem
             btnHR.Name = "btnHR";
             btnHR.Size = new Size(347, 71);
             btnHR.TabIndex = 10;
-            btnHR.Text = "الموارد البشرية";
+            btnHR.Text = "ادارة الموظفين";
             btnHR.TextAlignment = ContentAlignment.MiddleRight;
             btnHR.Click += btnHR_Click;
             // 
@@ -140,11 +142,21 @@ namespace sweetSystem
             btnProdView.TextAlignment = ContentAlignment.MiddleRight;
             btnProdView.Click += btnProdView_Click;
             // 
+            // breakLine2
+            // 
+            breakLine2.BackColor = Color.FromArgb(150, 195, 150);
+            breakLine2.Dock = DockStyle.Top;
+            breakLine2.Location = new Point(0, 497);
+            breakLine2.Margin = new Padding(4, 5, 4, 5);
+            breakLine2.Name = "breakLine2";
+            breakLine2.Size = new Size(347, 2);
+            breakLine2.TabIndex = 12;
+            // 
             // breakLine
             // 
             breakLine.BackColor = Color.FromArgb(150, 195, 150);
             breakLine.Dock = DockStyle.Top;
-            breakLine.Location = new Point(0, 497);
+            breakLine.Location = new Point(0, 284);
             breakLine.Margin = new Padding(4, 5, 4, 5);
             breakLine.Name = "breakLine";
             breakLine.Size = new Size(347, 2);
@@ -178,7 +190,7 @@ namespace sweetSystem
             btnDelegation.Name = "btnDelegation";
             btnDelegation.Size = new Size(347, 71);
             btnDelegation.TabIndex = 5;
-            btnDelegation.Text = "مركز التوزيع";
+            btnDelegation.Text = "مركز التوسيع";
             btnDelegation.TextAlignment = ContentAlignment.MiddleRight;
             btnDelegation.Click += btnDelegation_Click;
             // 
@@ -359,6 +371,7 @@ namespace sweetSystem
         private sweetSystem.NavButton btnDelegation;
         private sweetSystem.NavButton btnOrderMgmt;
         private System.Windows.Forms.Panel breakLine;
+        private System.Windows.Forms.Panel breakLine2;
         private sweetSystem.NavButton btnProdView;
         private sweetSystem.NavButton btnProdMgmt;
         private sweetSystem.NavButton btnHR;
