@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -66,7 +67,7 @@ namespace sweetSystem
                     4 => new ProductionViewControl(),
                     5 => new ProductManagementControl(),
                     6 => new EmployeeHRControl(),
-                    7 => new WholesaleClientsControl(),
+                    7 => new CustomersControl(),
                     _ => new DashboardControl()
                 };
                 

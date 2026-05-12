@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -5,9 +6,9 @@ using System.Windows.Forms;
 
 namespace sweetSystem.UserControls
 {
-    public partial class WholesaleClientsControl : UserControl
+    public partial class CustomersControl : UserControl
     {
-        public WholesaleClientsControl()
+        public CustomersControl()
         {
             InitializeComponent();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
@@ -33,19 +34,19 @@ namespace sweetSystem.UserControls
             var q = _txSearch.Text.Trim().ToLower();
             var f = _cbFilter.SelectedIndex;
 
-            var list = MockData.WholesaleClients.Where(c =>
+            var list = MockData.Customers.Where(c =>
                 (string.IsNullOrEmpty(q) || c.Name.ToLower().Contains(q) || c.Phone.Contains(q)) &&
-                (f == 0 || (f == 1 && c.RemainingBalance > 0) || (f == 2 && c.RemainingBalance == 0)));
+                (f == 0 || (f == 1 && c.Balance > 0) || (f == 2 && c.Balance == 0)));
 
             foreach (var c in list)
             {
-                string status = c.RemainingBalance == 0 ? "✅ مسدد" : "⚠ عليه رصيد";
-                int i = _grid.Rows.Add(c.Id, c.Name, c.Phone, Theme.LYD(c.RemainingBalance), status);
-                if (c.RemainingBalance > 0)
+                string status = c.Balance == 0 ? "✅ مسدد" : "⚠ عليه رصيد";
+                int i = _grid.Rows.Add(c.Id, c.Name, c.Phone, Theme.LYD(c.Balance), status);
+                if (c.Balance > 0)
                     _grid.Rows[i].DefaultCellStyle.ForeColor = Theme.AccentRed;
             }
 
-            decimal totalDebt = MockData.WholesaleClients.Sum(c => c.RemainingBalance);
+            double totalDebt = MockData.Customers.Sum(c => c.Balance);
             _lblTotalBal.Text = $"إجمالي الديون في السوق: {Theme.LYD(totalDebt)}";
         }
 
@@ -56,16 +57,16 @@ namespace sweetSystem.UserControls
             if (col != "Edit" && col != "Delete" && col != "Deposit") return;
 
             int id = Convert.ToInt32(_grid.Rows[e.RowIndex].Cells["ID"].Value);
-            var c  = MockData.WholesaleClients.First(x => x.Id == id);
+            var c  = MockData.Customers.First(x => x.Id == id);
 
             if (col == "Edit")
             {
-                var dlg = new WholesaleClientDialog(c);
+                var dlg = new CustomerDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     c.Name = dlg.TxName.Text;
                     c.Phone = dlg.TxPhone.Text;
-                    if (decimal.TryParse(dlg.TxBalance.Text, out var b)) c.RemainingBalance = b;
+                    if (double.TryParse(dlg.TxBalance.Text, out var b)) c.Balance = b;
                     LoadGrid();
                 }
             }
@@ -73,11 +74,11 @@ namespace sweetSystem.UserControls
             {
                 if (MessageBox.Show($"هل تريد بالتأكيد حذف العميل '{c.Name}'؟", "تأكيد الحذف",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                { MockData.WholesaleClients.Remove(c); LoadGrid(); }
+                { MockData.Customers.Remove(c); LoadGrid(); }
             }
             else if (col == "Deposit")
             {
-                if (c.RemainingBalance <= 0)
+                if (c.Balance <= 0)
                 {
                     MessageBox.Show("هذا العميل ليس عليه ديون.", "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -85,7 +86,7 @@ namespace sweetSystem.UserControls
                 var dlg = new DepositDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    c.RemainingBalance -= dlg.Amount;
+                    c.Balance -= dlg.Amount;
                     MessageBox.Show($"تم إيداع {Theme.LYD(dlg.Amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadGrid();
                 }
@@ -94,16 +95,16 @@ namespace sweetSystem.UserControls
 
         private void BtnAdd_Click(object? sender, EventArgs e)
         {
-            var dlg = new WholesaleClientDialog();
+            var dlg = new CustomerDialog();
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                decimal.TryParse(dlg.TxBalance.Text, out var b);
-                MockData.WholesaleClients.Add(new WholesaleClient
+                double.TryParse(dlg.TxBalance.Text, out var b);
+                MockData.Customers.Add(new Customer
                 {
-                    Id = MockData.NextClientId(),
+                    Id = MockData.NextCustomerId(),
                     Name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "عميل جديد" : dlg.TxName.Text,
                     Phone = dlg.TxPhone.Text,
-                    RemainingBalance = b
+                    Balance = b
                 });
                 LoadGrid();
             }

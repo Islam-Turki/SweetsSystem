@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -36,10 +37,10 @@ namespace sweetSystem.UserControls
 
             var list = MockData.Products.Where(p =>
                 (string.IsNullOrEmpty(q) || p.Name.ToLower().Contains(q)) &&
-                (f == "الكل" || p.Category == f));
+                (f == "الكل" || p.Category.ToString() == f));
 
             foreach (var p in list)
-                _grid.Rows.Add(p.Id, p.Name, p.Category, Theme.LYD(p.RetailPrice), Theme.LYD(p.WholesalePrice), p.Unit);
+                _grid.Rows.Add(p.Id, p.Name, p.Category.ToString(), Theme.LYD(p.Price), Theme.LYD(p.WholesalePrice), p.Unit.ToString());
         }
 
         private void Grid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
@@ -62,10 +63,10 @@ namespace sweetSystem.UserControls
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     p.Name = dlg.TxName.Text;
-                    p.Category = string.IsNullOrWhiteSpace(dlg.TxCategory.Text) ? "عام" : dlg.TxCategory.Text;
-                    if (decimal.TryParse(dlg.TxRetail.Text, out var r)) p.RetailPrice = r;
-                    if (decimal.TryParse(dlg.TxWholesale.Text, out var w)) p.WholesalePrice = w;
-                    p.Unit = dlg.TxUnit.Text;
+                    if (Enum.TryParse<ProductCategory>(dlg.TxCategory.Text, out var cat)) p.Category = cat;
+                    if (double.TryParse(dlg.TxRetail.Text, out var r)) p.Price = r;
+                    if (double.TryParse(dlg.TxWholesale.Text, out var w)) p.WholesalePrice = w;
+                    if (Enum.TryParse<ProductUnit>(dlg.TxUnit.Text, out var u)) p.Unit = u;
 
                     // Pass dlg.SelectedImageRelativePath safely
                     if (!string.IsNullOrWhiteSpace(dlg.SelectedImageRelativePath))
@@ -90,8 +91,8 @@ namespace sweetSystem.UserControls
             var dlg = new ProductDialog();
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                decimal.TryParse(dlg.TxRetail.Text, out var r);
-                decimal.TryParse(dlg.TxWholesale.Text, out var w);
+                double.TryParse(dlg.TxRetail.Text, out var r);
+                double.TryParse(dlg.TxWholesale.Text, out var w);
 
                 int newId = MockData.NextProductId();
 
@@ -102,10 +103,10 @@ namespace sweetSystem.UserControls
                 {
                     Id = newId,
                     Name = dlg.TxName.Text,
-                    Category = string.IsNullOrWhiteSpace(dlg.TxCategory.Text) ? "عام" : dlg.TxCategory.Text,
-                    RetailPrice = r,
+                    Category = Enum.TryParse<ProductCategory>(dlg.TxCategory.Text, out var c2) ? c2 : ProductCategory.Other,
+                    Price = r,
                     WholesalePrice = w,
-                    Unit = string.IsNullOrWhiteSpace(dlg.TxUnit.Text) ? "قطعة" : dlg.TxUnit.Text,
+                    Unit = Enum.TryParse<ProductUnit>(dlg.TxUnit.Text, out var u2) ? u2 : ProductUnit.Piece,
                     ImagePath = imgPath
                 });
                 LoadGrid();

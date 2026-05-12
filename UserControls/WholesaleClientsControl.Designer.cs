@@ -1,6 +1,7 @@
+using sweetSystem;
 namespace sweetSystem.UserControls
 {
-    partial class WholesaleClientsControl
+    partial class CustomersControl
     {
         private System.ComponentModel.IContainer components = null;
         protected override void Dispose(bool disposing)
@@ -175,7 +176,7 @@ namespace sweetSystem.UserControls
             _grid.Size = new Size(554, 305);
             _grid.TabIndex = 0;
             // 
-            // WholesaleClientsControl
+            // CustomersControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -184,7 +185,7 @@ namespace sweetSystem.UserControls
             Controls.Add(sumBar);
             Controls.Add(topBar);
             Controls.Add(headerPanel);
-            Name = "WholesaleClientsControl";
+            Name = "CustomersControl";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(586, 518);
             headerPanel.ResumeLayout(false);

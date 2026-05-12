@@ -1,3 +1,4 @@
+using sweetSystem;
 namespace sweetSystem.UserControls
 {
     partial class ProductManagementControl

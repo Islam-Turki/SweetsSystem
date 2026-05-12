@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -76,13 +77,16 @@ namespace sweetSystem.UserControls
         {
             _pendingGrid.Rows.Clear();
             DateTime targetDate = _showTodayOrders ? DateTime.Today : DateTime.Today.AddDays(1);
-            foreach (var o in MockData.Orders.Where(o => o.Date.Date == targetDate && o.Status == OrderStatus.Pending))
-                _pendingGrid.Rows.Add(o.Id, o.DisplayCustomer, MockData.OrderTypeAr(o.Type), o.Lines.Sum(l => l.Quantity), Theme.LYD(o.Subtotal));
+            foreach (var o in MockData.Orders.Where(o => o.OrderDate.Date == targetDate && o.Status == OrderStatus.Pending))
+            {
+                var items = MockData.OrderItems.Where(oi => oi.OrderId == o.Id);
+                _pendingGrid.Rows.Add(o.Id, o.CustomerName, o.CustomerId != null ? "جملة" : "قطاعي", items.Sum(l => l.Quantity), Theme.LYD(o.TotalPrice));
+            }
 
             _packagerGrid.Rows.Clear();
             foreach (var p in MockData.Employees.Where(e => e.Role == EmployeeRole.Packager))
             {
-                int cnt = MockData.Orders.Count(o => o.Date.Date == DateTime.Today && o.AssignedPackager?.Id == p.Id);
+                int cnt = MockData.Orders.Count(o => o.OrderDate.Date == DateTime.Today && o.Packager?.Id == p.Id);
                 string load = cnt <= 2 ? "🟢 خفيف" : cnt <= 5 ? "🟡 متوسط" : "🔴 ثقيل";
                 _packagerGrid.Rows.Add(p.Name, $"{cnt} طلبات", load);
             }
@@ -99,22 +103,65 @@ namespace sweetSystem.UserControls
         }
 
         private void BtnAuto_Click(object? sender, EventArgs e)
-            => MessageBox.Show("وظيفة التكليف التلقائي قيد التطوير.", "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        {
+            DateTime targetDate = _showTodayOrders ? DateTime.Today : DateTime.Today.AddDays(1);
+
+            using var dlg = new AutoAssignDialog(targetDate);
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadData();
+
+                if (dlg.Assignments.Count > 0)
+                    MessageBox.Show(
+                        $"تم تكليف {dlg.Assignments.Count} طلب تلقائياً وطباعة الفواتير.",
+                        "تم", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
         private void BtnManualAll_Click(object? sender, EventArgs e)
-            => MessageBox.Show("وظيفة تكليف الكل يدوياً قيد التطوير.", "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        {
+            DateTime targetDate = _showTodayOrders ? DateTime.Today : DateTime.Today.AddDays(1);
+            var pendingOrders = MockData.Orders
+                .Where(o => o.OrderDate.Date == targetDate && o.Status == OrderStatus.Pending)
+                .ToList();
+
+            if (pendingOrders.Count == 0)
+            {
+                MessageBox.Show("لا توجد طلبات معلقة لتكليفها.", "معلومة",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            int assigned = 0;
+            foreach (var order in pendingOrders)
+            {
+                using var dlg = new AssignOrderDialog(order);
+                var result = dlg.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                    assigned++;
+                else
+                    break; // user cancelled — stop the loop
+            }
+
+            LoadData();
+
+            if (assigned > 0)
+                MessageBox.Show($"تم تكليف {assigned} من أصل {pendingOrders.Count} طلب بنجاح.",
+                    "تم", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         private void _btnToday_Click(object sender, EventArgs e)
         {
             _showTodayOrders = true;
             SetTabStyle(true);
-            // LoadData(); // (Make sure you have a LoadData method, or comment this out for now)
+             LoadData(); // (Make sure you have a LoadData method, or comment this out for now)
         }
 
         private void _btnTomorrow_Click(object sender, EventArgs e)
         {
             _showTodayOrders = false;
             SetTabStyle(false);
-            // LoadData();
+             LoadData();
         }
         private void SetTabStyle(bool todayActive)
         {
@@ -147,5 +194,9 @@ namespace sweetSystem.UserControls
             _packagerGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Load", HeaderText = "الحمل", FillWeight = 25 });
         }
 
+        private void _pendingGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

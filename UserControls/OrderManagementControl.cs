@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace sweetSystem.UserControls
             var f = _cbFilter.SelectedIndex;
             var list = MockData.Orders
                 .Where(o =>
-                    (string.IsNullOrEmpty(q) || o.DisplayCustomer.ToLower().Contains(q) || o.Id.ToString() == q) &&
+                    (string.IsNullOrEmpty(q) || o.CustomerName.ToLower().Contains(q) || o.Id.ToString() == q) &&
                     (f == 0 || (int)o.Status == f - 1))
                 .OrderByDescending(o => o.Id);
             foreach (var o in list)
@@ -40,8 +41,8 @@ namespace sweetSystem.UserControls
                     OrderStatus.Completed => Color.FromArgb(220, 238, 255),
                     _                     => Theme.Surface
                 };
-                int i = _grid.Rows.Add(o.Id, o.Date.ToString("dd/MM/yyyy"), o.DisplayCustomer,
-                    MockData.OrderTypeAr(o.Type), Theme.LYD(o.Subtotal), MockData.OrderStatusAr(o.Status));
+                int i = _grid.Rows.Add(o.Id, o.OrderDate.ToString("dd/MM/yyyy"), o.CustomerName,
+                    o.CustomerId != null ? "جملة" : "قطاعي", Theme.LYD(o.TotalPrice), MockData.OrderStatusAr(o.Status));
                 _grid.Rows[i].DefaultCellStyle.BackColor = rowBg;
             }
         }

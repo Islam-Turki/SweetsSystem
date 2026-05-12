@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace sweetSystem.UserControls
             foreach (var emp in list)
             {
                 string skills = emp.Role == EmployeeRole.Cook
-                    ? string.Join("، ", emp.SkillProductIds.Select(id => MockData.Products.FirstOrDefault(p => p.Id == id)?.Name ?? "؟"))
+                    ? string.Join("، ", MockData.Products.Where(p => p.MakerId == emp.Id).Select(p => p.Name))
                     : "—";
                 int i = _grid.Rows.Add(emp.Id, emp.Name, MockData.RoleAr(emp.Role), skills);
                 _grid.Rows[i].DefaultCellStyle.BackColor = emp.Role == EmployeeRole.Cook
@@ -59,7 +60,7 @@ namespace sweetSystem.UserControls
                 {
                     emp.Name = dlg.TxName.Text;
                     emp.Role = dlg.CbRole.SelectedIndex == 0 ? EmployeeRole.Cook : EmployeeRole.Packager;
-                    emp.SkillProductIds = dlg.ClbSkills.CheckedItems.OfType<Product>().Select(p => p.Id).ToList();
+                    // SkillProductIds removed — skills are now tracked via Product.MakerId
                     LoadGrid();
                 }
             }
@@ -81,7 +82,7 @@ namespace sweetSystem.UserControls
                     Id = MockData.NextEmployeeId(),
                     Name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "موظف جديد" : dlg.TxName.Text,
                     Role = dlg.CbRole.SelectedIndex == 0 ? EmployeeRole.Cook : EmployeeRole.Packager,
-                    SkillProductIds = dlg.ClbSkills.CheckedItems.OfType<Product>().Select(p => p.Id).ToList()
+                    // SkillProductIds removed — skills are now tracked via Product.MakerId
                 });
                 LoadGrid();
             }
