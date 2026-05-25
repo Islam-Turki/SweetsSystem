@@ -48,7 +48,7 @@ namespace sweetSystem.UserControls
             // h1Label
             // 
             h1Label.Dock = DockStyle.Right;
-            h1Label.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold);
+            h1Label.Font = new Font("Cairo", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             h1Label.ForeColor = Color.FromArgb(36, 36, 36);
             h1Label.Location = new Point(0, 0);
             h1Label.Name = "h1Label";
@@ -88,6 +88,7 @@ namespace sweetSystem.UserControls
             // 
             _cOrders.AccentColor = Color.FromArgb(100, 158, 100);
             _cOrders.BackColor = Color.FromArgb(255, 255, 255);
+            _cOrders.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cOrders.Location = new Point(909, 11);
             _cOrders.Margin = new Padding(0, 0, 10, 0);
             _cOrders.Name = "_cOrders";
@@ -97,12 +98,12 @@ namespace sweetSystem.UserControls
             _cOrders.Title = "العنوان";
             _cOrders.Value = "—";
             _cOrders.Paint += _cOrders_Paint;
-            _cOrders.Font = Theme.FontH2;
             // 
             // _cPending
             // 
             _cPending.AccentColor = Color.FromArgb(100, 158, 100);
             _cPending.BackColor = Color.FromArgb(255, 255, 255);
+            _cPending.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cPending.Location = new Point(704, 11);
             _cPending.Margin = new Padding(0, 0, 10, 0);
             _cPending.Name = "_cPending";
@@ -111,12 +112,12 @@ namespace sweetSystem.UserControls
             _cPending.TabIndex = 1;
             _cPending.Title = "العنوان";
             _cPending.Value = "—";
-            _cPending.Font = Theme.FontH2;
             // 
             // _cRevenue
             // 
             _cRevenue.AccentColor = Color.FromArgb(100, 158, 100);
             _cRevenue.BackColor = Color.FromArgb(255, 255, 255);
+            _cRevenue.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cRevenue.Location = new Point(499, 11);
             _cRevenue.Margin = new Padding(0, 0, 10, 0);
             _cRevenue.Name = "_cRevenue";
@@ -125,12 +126,12 @@ namespace sweetSystem.UserControls
             _cRevenue.TabIndex = 2;
             _cRevenue.Title = "العنوان";
             _cRevenue.Value = "—";
-            _cRevenue.Font = Theme.FontH2;
             // 
             // _cClients
             // 
             _cClients.AccentColor = Color.FromArgb(100, 158, 100);
             _cClients.BackColor = Color.FromArgb(255, 255, 255);
+            _cClients.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cClients.Location = new Point(294, 11);
             _cClients.Margin = new Padding(0, 0, 10, 0);
             _cClients.Name = "_cClients";
@@ -139,7 +140,6 @@ namespace sweetSystem.UserControls
             _cClients.TabIndex = 3;
             _cClients.Title = "العنوان";
             _cClients.Value = "—";
-            _cClients.Font = Theme.FontH2;
             // 
             // _btnToday
             // 
@@ -197,7 +197,7 @@ namespace sweetSystem.UserControls
             // secLabel
             // 
             secLabel.Dock = DockStyle.Top;
-            secLabel.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold);
+            secLabel.Font = new Font("Cairo", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             secLabel.ForeColor = Color.FromArgb(36, 36, 36);
             secLabel.Location = new Point(0, 214);
             secLabel.Name = "secLabel";

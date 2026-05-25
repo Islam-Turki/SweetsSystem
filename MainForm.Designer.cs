@@ -190,7 +190,7 @@ namespace sweetSystem
             btnDelegation.Name = "btnDelegation";
             btnDelegation.Size = new Size(347, 71);
             btnDelegation.TabIndex = 5;
-            btnDelegation.Text = "مركز التوسيع";
+            btnDelegation.Text = "مركز التوزيع";
             btnDelegation.TextAlignment = ContentAlignment.MiddleRight;
             btnDelegation.Click += btnDelegation_Click;
             // 
