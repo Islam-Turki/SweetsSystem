@@ -1,4 +1,4 @@
-# SweetsSystem
+# sweetSystem
 
 
 --  pre midterm

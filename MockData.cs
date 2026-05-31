@@ -1,145 +1,138 @@
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using sweetSystem;
 
 namespace sweetSystem
 {
     public static class MockData
     {
         // ── المنتجات (Products) ───────────────────────────────────────────────
-        public static List<Product> Products { get; set; } = new()
-        {
-            new Product { Id=1,  Name="كعك الشوكولاتة",        Category="كعك",      RetailPrice=4.50m,  WholesalePrice=3.00m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=2,  Name="كعك بالجلاسير",          Category="كعك",      RetailPrice=3.50m,  WholesalePrice=2.20m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=3,  Name="بقلاوة بالفستق",         Category="بقلاوة",   RetailPrice=8.00m,  WholesalePrice=5.50m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=4,  Name="بقلاوة بالعسل",          Category="بقلاوة",   RetailPrice=7.50m,  WholesalePrice=5.00m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=5,  Name="كنافة",                  Category="كنافة",    RetailPrice=6.00m,  WholesalePrice=4.00m, Unit="شريحة", ImagePath = ""},
-            new Product { Id=6,  Name="كريم بف",                Category="معجنات",   RetailPrice=5.00m,  WholesalePrice=3.50m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=7,  Name="كرواسون",                 Category="معجنات",   RetailPrice=4.00m,  WholesalePrice=2.50m, Unit="قطعة", ImagePath = "" },
-            new Product { Id=8,  Name="ماكارون (علبة 6 قطع)",    Category="ماكارون",  RetailPrice=12.00m, WholesalePrice=8.00m, Unit="علبة", ImagePath = "" },
-            new Product { Id=9,  Name="شريحة تشيزكيك",          Category="كيك",      RetailPrice=9.00m,  WholesalePrice=6.50m, Unit="شريحة", ImagePath = ""},
-            new Product { Id=10, Name="كعكة الشوكولاتة الكاملة", Category="كيك",      RetailPrice=35.00m, WholesalePrice=25.00m,Unit="كعكة", ImagePath = "" },
-        };
+        public static List<Product> Products { get; set; } = new();
 
         // ── الموظفون (Employees) ──────────────────────────────────────────────
-        public static List<Employee> Employees { get; set; } = new()
-        {
-            new Employee { Id=1, Name="أحمد حسن",    Role=EmployeeRole.Cook,     SkillProductIds=new(){1,2,6,7}, TodayAssignments=0 },
-            new Employee { Id=2, Name="فاطمة علي",   Role=EmployeeRole.Cook,     SkillProductIds=new(){3,4,5},   TodayAssignments=0 },
-            new Employee { Id=3, Name="خالد عمر",    Role=EmployeeRole.Cook,     SkillProductIds=new(){8,9,10},  TodayAssignments=0 },
-            new Employee { Id=4, Name="سارة محمود",  Role=EmployeeRole.Packager, SkillProductIds=new(),          TodayAssignments=3 },
-            new Employee { Id=5, Name="عمر الفارسي", Role=EmployeeRole.Packager, SkillProductIds=new(),          TodayAssignments=4 },
-            new Employee { Id=6, Name="ليلى إبراهيم",Role=EmployeeRole.Packager, SkillProductIds=new(),          TodayAssignments=2 },
-        };
+        public static List<Employee> Employees { get; set; } = new();
 
-        // ── عملاء الجملة (Wholesale Clients) ─────────────────────────────────
-        public static List<WholesaleClient> WholesaleClients { get; set; } = new()
-        {
-            new WholesaleClient { Id=1, Name="محل النور",            Phone="0913-234-5678", RemainingBalance=250.00m  },
-            new WholesaleClient { Id=2, Name="كافيه السويت كورنر",   Phone="0922-876-5432", RemainingBalance=0m       },
-            new WholesaleClient { Id=3, Name="حلويات فندق الواحة",   Phone="0933-111-2222", RemainingBalance=1500.00m },
-            new WholesaleClient { Id=4, Name="سوبرماركت النجمة",     Phone="0944-333-4444", RemainingBalance=80.00m   },
-            new WholesaleClient { Id=5, Name="كافتيريا الجامعة",     Phone="0955-555-6666", RemainingBalance=320.00m  },
-        };
+        // ── العملاء (Customers) ───────────────────────────────────────────────
+        public static List<Customer> Customers { get; set; } = new();
 
         // ── الطلبات (Orders) ──────────────────────────────────────────────────
         public static List<Order> Orders { get; set; } = new();
+        
+        // ── تفاصيل الطلبات (Order Items) ──────────────────────────────────────
+        public static List<OrderItem> OrderItems { get; set; } = new();
+
+        // ── معاملات الدفع (Payment Transactions) ──────────────────────────────
+        public static List<PaymentTransaction> PaymentTransactions { get; set; } = new();
 
         static MockData()
         {
-            // اليوم — Today
+            // Employees
+            Employees.Add(new Employee { Id=1, Name="أحمد حسن",    Role=EmployeeRole.Cook,     Phone="0910000001", IsAvailable=true });
+            Employees.Add(new Employee { Id=2, Name="فاطمة علي",   Role=EmployeeRole.Cook,     Phone="0910000002", IsAvailable=true });
+            Employees.Add(new Employee { Id=3, Name="خالد عمر",    Role=EmployeeRole.Cook,     Phone="0910000003", IsAvailable=true });
+            Employees.Add(new Employee { Id=4, Name="سارة محمود",  Role=EmployeeRole.Packager, Phone="0910000004", IsAvailable=true });
+            Employees.Add(new Employee { Id=5, Name="عمر الفارسي", Role=EmployeeRole.Packager, Phone="0910000005", IsAvailable=false });
+            Employees.Add(new Employee { Id=6, Name="ليلى إبراهيم",Role=EmployeeRole.Packager, Phone="0910000006", IsAvailable=true });
+
+            // Customers
+            Customers.Add(new Customer { Id=1, Number="C001", Name="محل النور",            Phone="0913234567", Balance=250.00, Location="طرابلس" });
+            Customers.Add(new Customer { Id=2, Number="C002", Name="كافيه السويت كورنر",   Phone="0922876543", Balance=0, Location="بنغازي" });
+            Customers.Add(new Customer { Id=3, Number="C003", Name="حلويات فندق الواحة",   Phone="0933111222", Balance=1500.00, Location="مصراتة" });
+            Customers.Add(new Customer { Id=4, Number="C004", Name="سوبرماركت النجمة",     Phone="0944333444", Balance=80.00, Location="مصراتة" });
+            Customers.Add(new Customer { Id=5, Number="C005", Name="كافتيريا الجامعة",     Phone="0955555666", Balance=320.00, Location="طرابلس" });
+
+            // Products
+            Products.Add(new Product { Id=1,  Name="كعك الشوكولاتة",        Category=ProductCategory.Other,      Price=4.50,  WholesalePrice=3.00, Unit=ProductUnit.Piece, MakerId=1, Maker=Employees[0] });
+            Products.Add(new Product { Id=2,  Name="كعك بالجلاسير",          Category=ProductCategory.Other,      Price=3.50,  WholesalePrice=2.20, Unit=ProductUnit.Piece, MakerId=1, Maker=Employees[0] });
+            Products.Add(new Product { Id=3,  Name="عسل طبيعي خام",         Category=ProductCategory.RawHoney,   Price=8.00,  WholesalePrice=5.50, Unit=ProductUnit.Kg, MakerId=2, Maker=Employees[1] });
+            Products.Add(new Product { Id=4,  Name="عسل كريمي",             Category=ProductCategory.CreamedHoney,Price=7.50, WholesalePrice=5.00, Unit=ProductUnit.Kg, MakerId=2, Maker=Employees[1] });
+            Products.Add(new Product { Id=5,  Name="شهد العسل",             Category=ProductCategory.Honeycomb,  Price=6.00,  WholesalePrice=4.00, Unit=ProductUnit.Piece, MakerId=3, Maker=Employees[2] });
+            Products.Add(new Product { Id=6,  Name="عسل بالزعفران",         Category=ProductCategory.InfusedHoney,Price=12.00, WholesalePrice=8.50, Unit=ProductUnit.Kg, MakerId=3, Maker=Employees[2] });
+            Products.Add(new Product { Id=7,  Name="كرواسون بالعسل",         Category=ProductCategory.Other,      Price=4.00,  WholesalePrice=2.50, Unit=ProductUnit.Piece, MakerId=1, Maker=Employees[0] });
+
+            // Orders
+            Orders.Add(new Order    
+            {
+                Id=1, orderNumberInDay=1, OrderDate=DateTime.Today, DeliveryDate=DateTime.Today.AddDays(1), 
+                CustomerName="منى سامر", CustomerPhone="0921111111", Status=OrderStatus.Pending,
+                PaymentStatus=PaymentStatus.None, TotalPrice = (12 * 4.50) + (6 * 12.00), IsDelivery=false
+            });
+            OrderItems.Add(new OrderItem { OrderId=1, ProductId=1, Quantity=12, TotalPrice=12 * 4.50, Order=Orders[0], Product=Products[0] });
+            OrderItems.Add(new OrderItem { OrderId=1, ProductId=6, Quantity=6, TotalPrice=6 * 12.00, Order=Orders[0], Product=Products[5] });
+
             Orders.Add(new Order
             {
-                Id=1, Date=DateTime.Today, Type=OrderType.Retail,
-                CustomerName="منى سامر", Status=OrderStatus.Pending,
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[0], Quantity=12, UnitPrice=Products[0].RetailPrice },
-                    new OrderLine { Product=Products[5], Quantity=6,  UnitPrice=Products[5].RetailPrice },
-                }
+                Id=2, orderNumberInDay=2, OrderDate=DateTime.Today, DeliveryDate=DateTime.Today, 
+                CustomerId=1, Customer=Customers[0], CustomerName=Customers[0].Name, CustomerPhone=Customers[0].Phone,
+                Status=OrderStatus.InProduction, PackagerId=4, Packager=Employees[3],
+                PaymentStatus=PaymentStatus.Partial, TotalPrice = (50 * 3.00) + (30 * 2.20), IsDelivery=true
             });
+            OrderItems.Add(new OrderItem { OrderId=2, ProductId=1, Quantity=50, TotalPrice=50 * 3.00, Order=Orders[1], Product=Products[0] });
+            OrderItems.Add(new OrderItem { OrderId=2, ProductId=2, Quantity=30, TotalPrice=30 * 2.20, Order=Orders[1], Product=Products[1] });
+
             Orders.Add(new Order
             {
-                Id=2, Date=DateTime.Today, Type=OrderType.Wholesale,
-                WholesaleClient=WholesaleClients[0], Status=OrderStatus.Assigned,
-                AssignedPackager=Employees[3],
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[0], Quantity=50, UnitPrice=Products[0].WholesalePrice },
-                    new OrderLine { Product=Products[1], Quantity=30, UnitPrice=Products[1].WholesalePrice },
-                }
+                Id=3, orderNumberInDay=3, OrderDate=DateTime.Today, DeliveryDate=DateTime.Today, 
+                CustomerName="حسن كمال", CustomerPhone="0932222222", Status=OrderStatus.Pending,
+                PaymentStatus=PaymentStatus.Paid, TotalPrice = (4 * 8.00) + (4 * 7.50), IsDelivery=false
             });
+            OrderItems.Add(new OrderItem { OrderId=3, ProductId=3, Quantity=4, TotalPrice=4 * 8.00, Order=Orders[2], Product=Products[2] });
+            OrderItems.Add(new OrderItem { OrderId=3, ProductId=4, Quantity=4, TotalPrice=4 * 7.50, Order=Orders[2], Product=Products[3] });
+
             Orders.Add(new Order
             {
-                Id=3, Date=DateTime.Today, Type=OrderType.Retail,
-                CustomerName="حسن كمال", Status=OrderStatus.Pending,
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[2], Quantity=4, UnitPrice=Products[2].RetailPrice },
-                    new OrderLine { Product=Products[3], Quantity=4, UnitPrice=Products[3].RetailPrice },
-                }
+                Id=4, orderNumberInDay=4, OrderDate=DateTime.Today, DeliveryDate=DateTime.Today.AddDays(2), 
+                CustomerId=3, Customer=Customers[2], CustomerName=Customers[2].Name, CustomerPhone=Customers[2].Phone,
+                Status=OrderStatus.Pending, PaymentStatus=PaymentStatus.None,
+                TotalPrice = (60 * 3.00) + (20 * 2.50), IsDelivery=true
             });
+            OrderItems.Add(new OrderItem { OrderId=4, ProductId=1, Quantity=60, TotalPrice=60 * 3.00, Order=Orders[3], Product=Products[0] });
+            OrderItems.Add(new OrderItem { OrderId=4, ProductId=7, Quantity=20, TotalPrice=20 * 2.50, Order=Orders[3], Product=Products[6] });
+
             Orders.Add(new Order
             {
-                Id=4, Date=DateTime.Today, Type=OrderType.Wholesale,
-                WholesaleClient=WholesaleClients[2], Status=OrderStatus.Pending,
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[0], Quantity=60, UnitPrice=Products[0].WholesalePrice },
-                    new OrderLine { Product=Products[7], Quantity=20, UnitPrice=Products[7].WholesalePrice },
-                    new OrderLine { Product=Products[8], Quantity=15, UnitPrice=Products[8].WholesalePrice },
-                }
+                Id=5, orderNumberInDay=5, OrderDate=DateTime.Today, DeliveryDate=DateTime.Today, 
+                CustomerName="نادية يوسف", CustomerPhone="0913333333", Status=OrderStatus.Completed,
+                PackagerId=5, Packager=Employees[4],
+                PaymentStatus=PaymentStatus.Paid, TotalPrice = (3 * 12.00) + (2 * 4.50), IsDelivery=true
             });
-            Orders.Add(new Order
-            {
-                Id=5, Date=DateTime.Today, Type=OrderType.Retail,
-                CustomerName="نادية يوسف", Status=OrderStatus.Assigned,
-                AssignedPackager=Employees[4],
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[6], Quantity=3, UnitPrice=Products[6].RetailPrice },
-                    new OrderLine { Product=Products[9], Quantity=1, UnitPrice=Products[9].RetailPrice },
-                }
-            });
+            OrderItems.Add(new OrderItem { OrderId=5, ProductId=6, Quantity=3, TotalPrice=3 * 12.00, Order=Orders[4], Product=Products[5] });
+            OrderItems.Add(new OrderItem { OrderId=5, ProductId=1, Quantity=2, TotalPrice=2 * 4.50, Order=Orders[4], Product=Products[0] });
+
             // غداً — Tomorrow
             Orders.Add(new Order
             {
-                Id=6, Date=DateTime.Today.AddDays(1), Type=OrderType.Retail,
-                CustomerName="حفل عيد ميلاد", Status=OrderStatus.Pending,
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[9], Quantity=2,  UnitPrice=Products[9].RetailPrice },
-                    new OrderLine { Product=Products[7], Quantity=5,  UnitPrice=Products[7].RetailPrice },
-                }
+                Id=6, orderNumberInDay=1, OrderDate=DateTime.Today.AddDays(1), DeliveryDate=DateTime.Today.AddDays(2), 
+                CustomerName="حفل عيد ميلاد", CustomerPhone="0924444444", Status=OrderStatus.Pending,
+                PaymentStatus=PaymentStatus.None, TotalPrice = (2 * 8.00) + (5 * 4.00), IsDelivery=false
             });
-            Orders.Add(new Order
-            {
-                Id=7, Date=DateTime.Today.AddDays(1), Type=OrderType.Wholesale,
-                WholesaleClient=WholesaleClients[4], Status=OrderStatus.Pending,
-                Lines = new()
-                {
-                    new OrderLine { Product=Products[0], Quantity=80, UnitPrice=Products[0].WholesalePrice },
-                    new OrderLine { Product=Products[1], Quantity=50, UnitPrice=Products[1].WholesalePrice },
-                    new OrderLine { Product=Products[4], Quantity=40, UnitPrice=Products[4].WholesalePrice },
-                }
-            });
+            OrderItems.Add(new OrderItem { OrderId=6, ProductId=3, Quantity=2, TotalPrice=2 * 8.00, Order=Orders[5], Product=Products[2] });
+            OrderItems.Add(new OrderItem { OrderId=6, ProductId=7, Quantity=5, TotalPrice=5 * 4.00, Order=Orders[5], Product=Products[6] });
         }
 
         public static int NextOrderId()   => Orders.Count   == 0 ? 1 : Orders.Max(o => o.Id)   + 1;
         public static int NextProductId() => Products.Count == 0 ? 1 : Products.Max(p => p.Id) + 1;
         public static int NextEmployeeId()=> Employees.Count== 0 ? 1 : Employees.Max(e => e.Id)+ 1;
-        public static int NextClientId()  => WholesaleClients.Count==0 ? 1 : WholesaleClients.Max(c=>c.Id)+1;
+        public static int NextCustomerId()=> Customers.Count== 0 ? 1 : Customers.Max(c => c.Id)+ 1;
 
-        public static string OrderTypeAr(OrderType t)     => t == OrderType.Retail ? "قطاعي" : "جملة";
         public static string OrderStatusAr(OrderStatus s) => s switch
         {
-            OrderStatus.Pending   => "قيد الانتظار",
-            OrderStatus.Assigned  => "تم التكليف",
-            OrderStatus.Completed => "مكتمل",
+            OrderStatus.Pending      => "قيد الانتظار",
+            OrderStatus.InProduction => "قيد الإنتاج",
+            OrderStatus.Completed    => "مكتمل",
+            OrderStatus.Delivered    => "تم التوصيل",
+            OrderStatus.Assigned     => "تم التكليف",
             _ => ""
         };
-        public static string RoleAr(EmployeeRole r) => r == EmployeeRole.Cook ? "طباخ" : "معبّئ";
+
+        public static string RoleAr(EmployeeRole r) => r == EmployeeRole.Cook ? "طباخ" : "موظف تعبئة";
 
         public static Employee? GetCookForProduct(Product p)
-            => Employees.FirstOrDefault(e => e.Role == EmployeeRole.Cook && e.SkillProductIds.Contains(p.Id));
+        {
+            if (p.Maker != null) return p.Maker;
+            return Employees.FirstOrDefault(e => e.Role == EmployeeRole.Cook);
+        }
     }
 }

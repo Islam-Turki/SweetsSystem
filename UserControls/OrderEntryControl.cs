@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -53,7 +54,7 @@ namespace sweetSystem.UserControls
             lblCustomerName.Font = Theme.FontBodyB;
             _txCustomer.Font     = Theme.FontBody;
             _txCustomerExtra.Font = Theme.FontBody;
-            lblWholesaleClient.Font = Theme.FontBodyB;
+            lblCustomer.Font = Theme.FontBodyB;
             _cbClient.Font       = Theme.FontBody;
 
             // Summary card
@@ -151,7 +152,7 @@ namespace sweetSystem.UserControls
             // Clear the list first so we don't get duplicates when refreshing!
             _cbClient.Items.Clear();
 
-            foreach (var c in MockData.WholesaleClients)
+            foreach (var c in MockData.Customers)
             {
                 _cbClient.Items.Add(c);
             }
@@ -224,9 +225,10 @@ namespace sweetSystem.UserControls
             _linesGrid.Rows.Clear();
             foreach (var l in _cart)
             {
-                l.UnitPrice = ws ? l.Product.WholesalePrice : l.Product.RetailPrice;
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                l.TotalPrice = unitPrice * l.Quantity;
                 _linesGrid.Rows.Add(l.Product.Name, l.Quantity,
-                    Theme.LYD(l.UnitPrice), Theme.LYD(l.LineTotal), "✕");
+                    Theme.LYD(unitPrice), Theme.LYD(l.TotalPrice), "✕");
             }
 
             RecalcTotals();
@@ -235,8 +237,8 @@ namespace sweetSystem.UserControls
         private void RecalcTotals()
         {
             bool ws = _rbWholesale.Checked;
-            decimal sub  = _cart.Sum(l => l.LineTotal);
-            decimal prev = ws && _cbClient.SelectedItem is WholesaleClient wc ? wc.RemainingBalance : 0m;
+            double sub  = _cart.Sum(l => l.TotalPrice);
+            double prev = ws && _cbClient.SelectedItem is Customer wc ? wc.Balance : 0;
 
             _lblSub.Text     = Theme.LYD(sub);
             _lblBalance.Text = Theme.LYD(prev);
@@ -282,7 +284,7 @@ namespace sweetSystem.UserControls
 
             bool ws = _rbWholesale.Checked;
             string customer = ws
-                ? (_cbClient.SelectedItem as WholesaleClient)?.Name ?? ""
+                ? (_cbClient.SelectedItem as Customer)?.Name ?? ""
                 : _txCustomer.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(customer))
@@ -292,21 +294,48 @@ namespace sweetSystem.UserControls
                 return;
             }
 
+            if (!ws && _txCustomer.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تنبيه",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ws && !string.IsNullOrWhiteSpace(_txCustomerExtra.Text) && !_txCustomerExtra.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تنبيه",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var order = new Order
             {
                 Id              = MockData.NextOrderId(),
-                Date            = DateTime.Today,
-                Type            = ws ? OrderType.Wholesale : OrderType.Retail,
+                OrderDate       = DateTime.Today,
                 CustomerName    = ws ? "" : customer,
-                WholesaleClient = ws ? _cbClient.SelectedItem as WholesaleClient : null,
-                Lines           = _cart.Select(l => new OrderLine
-                {
-                    Product  = l.Product,
-                    Quantity = l.Quantity,
-                    UnitPrice = l.UnitPrice
-                }).ToList(),
+                Customer = ws ? _cbClient.SelectedItem as Customer : null,
+                CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null,
                 Status = OrderStatus.Pending
             };
+
+            // Compute total and add order items
+            double total = 0;
+            foreach (var l in _cart)
+            {
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                var oi = new OrderItem
+                {
+                    OrderId  = order.Id,
+                    ProductId = l.Product.Id,
+                    Product  = l.Product,
+                    Quantity = l.Quantity,
+                    TotalPrice = unitPrice * l.Quantity,
+                    Order    = order
+                };
+                MockData.OrderItems.Add(oi);
+                total += oi.TotalPrice;
+            }
+            order.TotalPrice = total;
 
             MockData.Orders.Add(order);
 

@@ -1,4 +1,5 @@
-﻿namespace sweetSystem.Custom
+using sweetSystem;
+namespace sweetSystem.Custom
 {
     partial class test_Button
     {

@@ -1,10 +1,11 @@
-﻿namespace sweetSystem
+using sweetSystem;
+namespace sweetSystem
 {
     using System.ComponentModel;
     using System.Drawing;
     using System.Windows.Forms;
 
-    partial class WholesaleClientDialog
+    partial class CustomerDialog
     {
         private IContainer components = null;
 
@@ -90,7 +91,7 @@
             TxBalance.Size = new Size(368, 23);
             TxBalance.TabIndex = 2;
 
-            // WholesaleClientDialog
+            // CustomerDialog
             this.ClientSize = new Size(400, 300);
 
             this.Controls.Add(TxBalance);
@@ -102,7 +103,7 @@
             this.Controls.Add(TxName);
             this.Controls.Add(label1);
 
-            this.Name = "WholesaleClientDialog";
+            this.Name = "CustomerDialog";
             this.Text = "إضافة عميل جملة";
 
             this.ResumeLayout(false);

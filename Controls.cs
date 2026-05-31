@@ -1,3 +1,4 @@
+using sweetSystem;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -431,6 +432,43 @@ namespace sweetSystem
             using var tf = new SolidBrush(fc);
             RectangleF textRect = new RectangleF(6, 0, Width - 12, Height);
             g.DrawString(label, Font, tf, textRect, sf);
+        }
+    }
+
+    // ── Validation Helper ─────────────────────────────────────────────────────
+    public static class ValidationHelper
+    {
+        public static void LettersOnly(object? sender, KeyPressEventArgs e)
+        {
+            // Allow control characters (backspace, etc.), letters, and whitespaces
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        public static void NumbersOnly(object? sender, KeyPressEventArgs e)
+        {
+            // Allow control characters and digits
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        public static void DecimalsOnly(object? sender, KeyPressEventArgs e)
+        {
+            // Allow control characters, digits, and a single decimal point
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            // Only allow one decimal point
+            if (e.KeyChar == '.' && sender is TextBox textBox && textBox.Text.Contains('.'))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

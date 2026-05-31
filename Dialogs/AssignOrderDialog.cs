@@ -1,4 +1,5 @@
-﻿using System;
+using sweetSystem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,43 +24,60 @@ namespace sweetSystem
             InitializeComponent();
 
             GridHelper.Style(_grid, readOnly: true, rtl: true);
-
-            bottomPanel.Controls.Add(btnPrint);
-            BtnSave.Text = "✔ حفظ وتكليف";
         }
 
         public AssignOrderDialog(Order o) : this()
         {
             _order = o;
 
-            Text = $"تكليف الطلب #{o.Id} - {o.DisplayCustomer}";
+            Text = $"تكليف الطلب #{o.Id} - {o.CustomerName}";
 
             var packagers = MockData.Employees
                 .Where(e => e.Role == EmployeeRole.Packager)
                 .ToArray();
+            string[] packagerNames = MockData.Employees
+    .Where(e => e.Role == EmployeeRole.Packager)
+    .Select(e => e.Name)
+    .ToArray();
 
-            CbPackager.Items.AddRange(packagers);
+            CbPackager.Items.AddRange(packagerNames);
 
-            if (o.AssignedPackager != null &&
-                packagers.Contains(o.AssignedPackager))
+            if (o.Packager != null &&
+                packagers.Contains(o.Packager))
             {
-                CbPackager.SelectedItem = o.AssignedPackager;
+                CbPackager.SelectedItem = o.Packager;
             }
             else if (packagers.Length > 0)
             {
                 CbPackager.SelectedIndex = 0;
             }
 
-            foreach (var l in o.Lines)
-                _grid.Rows.Add(l.Product.Name, l.Quantity);
+            foreach (var l in MockData.OrderItems.Where(oi => oi.OrderId == o.Id))
+                _grid.Rows.Add(l.Product?.Name ?? "—", l.Quantity);
+
+            //string text = paperBuilder.BuildOrderTicket(o);
+
+            //MessageBox.Show(text, "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //RawPrinterHelper.PrintOut(text);
         }
 
         protected override void BtnSave_Click(object sender, EventArgs e)
         {
-            if (CbPackager.SelectedItem is Employee emp && _order != null)
+            if (_order == null || CbPackager.SelectedIndex < 0) return;
+
+            string selectedName = CbPackager.SelectedItem?.ToString() ?? "";
+            var emp = MockData.Employees.FirstOrDefault(
+                emp => emp.Role == EmployeeRole.Packager && emp.Name == selectedName);
+
+            if (emp != null)
             {
-                _order.AssignedPackager = emp;
+                _order.Packager = emp;
+                _order.PackagerId = emp.Id;
                 _order.Status = OrderStatus.Assigned;
+
+                // Print the order ticket
+                string ticket = paperBuilder.BuildOrderTicket(_order);
+                RawPrinterHelper.PrintOut(ticket);
 
                 DialogResult = DialogResult.OK;
                 Close();
@@ -68,9 +86,14 @@ namespace sweetSystem
 
         private void BtnPrint_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("جاري الطباعة...", "طباعة",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            if (_order == null) return;
+            string ticket = paperBuilder.BuildOrderTicket(_order);
+            MessageBox.Show(ticket, "معاينة الطباعة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void CbPackager_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

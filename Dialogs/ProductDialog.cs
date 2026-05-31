@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,6 +24,10 @@ public partial class ProductDialog : BaseDialog
         public ProductDialog()
         {
             InitializeComponent();
+            TxName.KeyPress += ValidationHelper.LettersOnly;
+            TxCategory.KeyPress += ValidationHelper.LettersOnly;
+            TxRetail.KeyPress += ValidationHelper.DecimalsOnly;
+            TxWholesale.KeyPress += ValidationHelper.DecimalsOnly;
         }
 
         public string? SelectedImageRelativePath { get; set; }
@@ -83,18 +87,19 @@ public partial class ProductDialog : BaseDialog
                 Text = "تعديل بيانات المنتج";
 
                 TxName.Text = p.Name;
-                TxCategory.Text = p.Category;
-                TxRetail.Text = p.RetailPrice.ToString("N3");
+                TxCategory.Text = p.Category.ToString();
+                TxRetail.Text = p.Price.ToString("N3");
                 TxWholesale.Text = p.WholesalePrice.ToString("N3");
 
-                if (!string.IsNullOrEmpty(p.Unit))
+                string unitStr = p.Unit.ToString();
+                if (!string.IsNullOrEmpty(unitStr))
                 {
-                    if (TxUnit.Items.Contains(p.Unit))
-                        TxUnit.SelectedItem = p.Unit;
+                    if (TxUnit.Items.Contains(unitStr))
+                        TxUnit.SelectedItem = unitStr;
                     else
                     {
-                        TxUnit.Items.Add(p.Unit);
-                        TxUnit.SelectedItem = p.Unit;
+                        TxUnit.Items.Add(unitStr);
+                        TxUnit.SelectedItem = unitStr;
                     }
                 }
 
@@ -130,9 +135,27 @@ public partial class ProductDialog : BaseDialog
         protected override void BtnSave_Click(object sender, EventArgs e)
         {
             // validate simple fields
-            if (string.IsNullOrWhiteSpace(TxName.Text))
+            if (string.IsNullOrWhiteSpace(TxName.Text) || TxName.Text.Any(char.IsDigit))
             {
-                MessageBox.Show("الرجاء إدخال اسم المنتج.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("الرجاء إدخال اسم المنتج بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(TxCategory.Text) && TxCategory.Text.Any(char.IsDigit))
+            {
+                MessageBox.Show("الرجاء إدخال فئة المنتج بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxRetail.Text) || !decimal.TryParse(TxRetail.Text, out _))
+            {
+                MessageBox.Show("الرجاء إدخال سعر القطاعي كأرقام صحيحة.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxWholesale.Text) || !decimal.TryParse(TxWholesale.Text, out _))
+            {
+                MessageBox.Show("الرجاء إدخال سعر الجملة كأرقام صحيحة.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
