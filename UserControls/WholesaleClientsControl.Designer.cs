@@ -34,7 +34,7 @@ namespace sweetSystem.UserControls
             // 
             // headerPanel
             // 
-            headerPanel.BackColor = Color.FromArgb(255, 255, 255);
+
             headerPanel.Controls.Add(h1Label);
             headerPanel.Controls.Add(sepBar);
             headerPanel.Dock = DockStyle.Top;
@@ -47,7 +47,7 @@ namespace sweetSystem.UserControls
             // 
             h1Label.Dock = DockStyle.Fill;
             h1Label.Font = new Font("Cairo", 16F, FontStyle.Bold);
-            h1Label.ForeColor = Color.FromArgb(36, 36, 36);
+
             h1Label.Location = new Point(0, 0);
             h1Label.Name = "h1Label";
             h1Label.Padding = new Padding(0, 0, 16, 0);
@@ -58,7 +58,7 @@ namespace sweetSystem.UserControls
             // 
             // sepBar
             // 
-            sepBar.BackColor = Color.FromArgb(100, 158, 100);
+
             sepBar.Dock = DockStyle.Bottom;
             sepBar.Location = new Point(0, 82);
             sepBar.Name = "sepBar";
@@ -67,7 +67,7 @@ namespace sweetSystem.UserControls
             // 
             // topBar
             // 
-            topBar.BackColor = Color.FromArgb(247, 246, 242);
+
             topBar.ColumnCount = 4;
             topBar.ColumnStyles.Add(new ColumnStyle());
             topBar.ColumnStyles.Add(new ColumnStyle());
@@ -118,10 +118,10 @@ namespace sweetSystem.UserControls
             // 
             // btnAdd
             // 
-            btnAdd.BackColor = Color.FromArgb(100, 158, 100);
+
             btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnAdd.ForeColor = Color.White;
+
             btnAdd.Location = new Point(16, 10);
             btnAdd.Margin = new Padding(0, 10, 16, 0);
             btnAdd.Name = "btnAdd";
@@ -134,7 +134,7 @@ namespace sweetSystem.UserControls
             // 
             // sumBar
             // 
-            sumBar.BackColor = Color.FromArgb(255, 255, 255);
+
             sumBar.Controls.Add(_lblTotalBal);
             sumBar.Dock = DockStyle.Top;
             sumBar.Location = new Point(0, 144);
@@ -147,7 +147,7 @@ namespace sweetSystem.UserControls
             // 
             _lblTotalBal.Dock = DockStyle.Fill;
             _lblTotalBal.Font = new Font("Cairo", 11F, FontStyle.Bold);
-            _lblTotalBal.ForeColor = Color.FromArgb(196, 68, 68);
+
             _lblTotalBal.Location = new Point(16, 0);
             _lblTotalBal.Name = "_lblTotalBal";
             _lblTotalBal.Size = new Size(554, 45);
@@ -180,7 +180,7 @@ namespace sweetSystem.UserControls
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(247, 246, 242);
+
             Controls.Add(bodyPanel);
             Controls.Add(sumBar);
             Controls.Add(topBar);

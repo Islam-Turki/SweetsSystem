@@ -31,7 +31,7 @@ namespace sweetSystem.UserControls
             // 
             // headerPanel
             // 
-            headerPanel.BackColor = Color.FromArgb(255, 255, 255);
+
             headerPanel.Controls.Add(h1Label);
             headerPanel.Controls.Add(sepBar);
             headerPanel.Dock = DockStyle.Top;
@@ -44,7 +44,7 @@ namespace sweetSystem.UserControls
             // 
             h1Label.Dock = DockStyle.Fill;
             h1Label.Font = new Font("Cairo", 16F, FontStyle.Bold);
-            h1Label.ForeColor = Color.FromArgb(36, 36, 36);
+
             h1Label.Location = new Point(0, 0);
             h1Label.Name = "h1Label";
             h1Label.Padding = new Padding(0, 0, 16, 0);
@@ -55,7 +55,7 @@ namespace sweetSystem.UserControls
             // 
             // sepBar
             // 
-            sepBar.BackColor = Color.FromArgb(100, 158, 100);
+
             sepBar.Dock = DockStyle.Bottom;
             sepBar.Location = new Point(0, 82);
             sepBar.Name = "sepBar";
@@ -64,7 +64,7 @@ namespace sweetSystem.UserControls
             // 
             // toolbar
             // 
-            toolbar.BackColor = Color.FromArgb(255, 255, 255);
+
             toolbar.Controls.Add(_lblDateBadge);
             toolbar.Controls.Add(_btnPrint);
             toolbar.Controls.Add(_btnTomorrow);
@@ -81,7 +81,7 @@ namespace sweetSystem.UserControls
             // 
             _lblDateBadge.AutoSize = true;
             _lblDateBadge.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            _lblDateBadge.ForeColor = Color.FromArgb(190, 145, 75);
+
             _lblDateBadge.Location = new Point(230, 15);
             _lblDateBadge.Name = "_lblDateBadge";
             _lblDateBadge.Size = new Size(0, 29);
@@ -89,10 +89,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnPrint
             // 
-            _btnPrint.BackColor = Color.FromArgb(190, 145, 75);
+
             _btnPrint.FlatStyle = FlatStyle.Flat;
             _btnPrint.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            _btnPrint.ForeColor = Color.White;
+
             _btnPrint.Location = new Point(8, 10);
             _btnPrint.Name = "_btnPrint";
             _btnPrint.Radius = 6;
@@ -104,10 +104,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnTomorrow
             // 
-            _btnTomorrow.BackColor = Color.FromArgb(108, 108, 98);
+
             _btnTomorrow.FlatStyle = FlatStyle.Flat;
             _btnTomorrow.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            _btnTomorrow.ForeColor = Color.White;
+
             _btnTomorrow.Location = new Point(0, 10);
             _btnTomorrow.Name = "_btnTomorrow";
             _btnTomorrow.Radius = 6;
@@ -119,10 +119,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnToday
             // 
-            _btnToday.BackColor = Color.FromArgb(100, 158, 100);
+
             _btnToday.FlatStyle = FlatStyle.Flat;
             _btnToday.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            _btnToday.ForeColor = Color.White;
+
             _btnToday.Location = new Point(0, 10);
             _btnToday.Name = "_btnToday";
             _btnToday.Radius = 6;
@@ -158,7 +158,7 @@ namespace sweetSystem.UserControls
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(247, 246, 242);
+
             Controls.Add(bodyPanel);
             Controls.Add(toolbar);
             Controls.Add(headerPanel);

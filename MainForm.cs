@@ -20,14 +20,31 @@ namespace sweetSystem
         {
             InitializeComponent();
 
-            // Set dynamic properties that might not stick in the designer
+            // Apply Theme colors fully
             this.BackColor = Theme.Background;
+            this.ForeColor = Theme.TextPrimary;
             this.Font = Theme.FontBody;
+            
             _sidebar.BackColor = Theme.Sidebar;
             _contentArea.BackColor = Theme.Background;
             
-            navLabel.Font = Theme.FontBadge;
+            logoPanel.BackColor = Theme.Sidebar;
+            cake.ForeColor = Theme.TextOnDark;
+            appName.ForeColor = Theme.TextOnDark;
+            appSub.ForeColor = Theme.TextOnDark;
             appSub.Font = Theme.FontSmall;
+
+            navLabel.BackColor = Theme.Sidebar;
+            navLabel.ForeColor = Theme.TextOnDark;
+            navLabel.Font = Theme.FontBadge;
+
+            sep.BackColor = Theme.AccentGold;
+            breakLine.BackColor = Theme.AccentGold;
+            breakLine2.BackColor = Theme.AccentGold;
+
+            footer.BackColor = Theme.SidebarHover;
+            footerLabel.BackColor = Theme.SidebarHover;
+            footerLabel.ForeColor = Theme.TextOnDark;
             footerLabel.Font = Theme.FontSmall;
 
             // Ensure sidebar docks first (takes its width) and content area fills the rest

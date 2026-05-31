@@ -11,6 +11,7 @@ namespace sweetSystem.UserControls
         public EmployeeHRControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",     HeaderText = "رقم الموظف",       FillWeight = 6  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Name",   HeaderText = "الاسم",   FillWeight = 25 });

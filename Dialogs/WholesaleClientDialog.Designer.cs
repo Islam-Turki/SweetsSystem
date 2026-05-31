@@ -40,7 +40,7 @@ namespace sweetSystem
             // label1
             label1.AutoSize = true;
             label1.Font = Theme.FontBodyB;
-            label1.ForeColor = Theme.TextSecondary;
+
             label1.Location = new Point(16, 16);
             label1.Name = "label1";
             label1.Size = new Size(65, 15);
@@ -58,7 +58,7 @@ namespace sweetSystem
             // label2
             label2.AutoSize = true;
             label2.Font = Theme.FontBodyB;
-            label2.ForeColor = Theme.TextSecondary;
+
             label2.Location = new Point(16, 80);
             label2.Name = "label2";
             label2.Size = new Size(60, 15);
@@ -76,7 +76,7 @@ namespace sweetSystem
             // label3
             label3.AutoSize = true;
             label3.Font = Theme.FontBodyB;
-            label3.ForeColor = Theme.TextSecondary;
+
             label3.Location = new Point(16, 144);
             label3.Name = "label3";
             label3.Size = new Size(95, 15);

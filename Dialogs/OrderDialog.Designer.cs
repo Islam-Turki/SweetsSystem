@@ -62,7 +62,7 @@ namespace sweetSystem
             // 
             // TxCustomer
             // 
-            TxCustomer.BackColor = Color.FromArgb(245, 247, 248);
+
             TxCustomer.BorderStyle = BorderStyle.FixedSingle;
             TxCustomer.Font = new Font("Cairo", 9F);
             TxCustomer.Location = new Point(16, 42);
@@ -75,7 +75,7 @@ namespace sweetSystem
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(107, 124, 128);
+
             label1.Location = new Point(16, 16);
             label1.Name = "label1";
             label1.Size = new Size(61, 29);
@@ -86,7 +86,7 @@ namespace sweetSystem
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label2.ForeColor = Color.FromArgb(107, 124, 128);
+
             label2.Location = new Point(16, 81);
             label2.Name = "label2";
             label2.Size = new Size(52, 29);

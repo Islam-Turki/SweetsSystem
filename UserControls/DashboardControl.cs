@@ -14,6 +14,19 @@ namespace sweetSystem.UserControls
         {
             InitializeComponent();
 
+            // Apply Theme colors
+            this.BackColor = Theme.Background;
+            headerPanel.BackColor = Theme.Surface;
+            h1Label.ForeColor = Theme.TextPrimary;
+            secLabel.ForeColor = Theme.TextPrimary;
+            sepBar.BackColor = Theme.AccentGold;
+
+            cardRowPanel.BackColor = Theme.Background;
+            bodyPanel.BackColor = Theme.Background;
+
+            _btnToday.ForeColor = Theme.TextOnAccent;
+            _btnTomorrow.ForeColor = Theme.TextOnAccent;
+
             loadCards();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             // Ensure header alignment is applied and set headers to left-aligned
@@ -89,14 +102,16 @@ namespace sweetSystem.UserControls
             if (_selectedDate.Date == today)
             {
                 secLabel.Text = "طلبات التسليم اليوم";
-                _btnToday.BackColor = Theme.AccentGreen;
-                _btnTomorrow.BackColor = Color.FromArgb(180, 180, 180);
+                _btnToday.BackColor = Theme.AccentGold;
+                _btnTomorrow.BackColor = Theme.SurfaceBorder;
+                _btnTomorrow.ForeColor = Theme.TextPrimary;
             }
             else
             {
                 secLabel.Text = "طلبات التسليم غداً";
-                _btnToday.BackColor = Color.FromArgb(180, 180, 180);
-                _btnTomorrow.BackColor = Theme.AccentGreen;
+                _btnToday.BackColor = Theme.SurfaceBorder;
+                _btnToday.ForeColor = Theme.TextPrimary;
+                _btnTomorrow.BackColor = Theme.AccentGold;
             }
 
             _grid.Rows.Clear();

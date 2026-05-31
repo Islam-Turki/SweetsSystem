@@ -107,7 +107,7 @@ namespace sweetSystem
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(107, 124, 128);
+
             label1.Location = new Point(18, 31);
             label1.Name = "label1";
             label1.Size = new Size(141, 29);
@@ -118,7 +118,7 @@ namespace sweetSystem
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label2.ForeColor = Color.FromArgb(107, 124, 128);
+
             label2.Location = new Point(18, 134);
             label2.Name = "label2";
             label2.Size = new Size(107, 29);
@@ -127,10 +127,10 @@ namespace sweetSystem
             // 
             // btnPrint
             // 
-            btnPrint.BackColor = Color.FromArgb(70, 140, 180);
+
             btnPrint.FlatStyle = FlatStyle.Flat;
             btnPrint.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnPrint.ForeColor = Color.White;
+
             btnPrint.Location = new Point(330, 6);
             btnPrint.Margin = new Padding(3, 6, 3, 6);
             btnPrint.Name = "btnPrint";

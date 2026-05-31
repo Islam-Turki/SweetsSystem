@@ -82,7 +82,7 @@ namespace sweetSystem.UserControls
             // 
             rightHeader.Dock = DockStyle.Top;
             rightHeader.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold);
-            rightHeader.ForeColor = Color.FromArgb(31, 45, 47);
+
             rightHeader.Location = new Point(7, 34);
             rightHeader.Name = "rightHeader";
             rightHeader.Padding = new Padding(0, 0, 16, 0);
@@ -95,7 +95,7 @@ namespace sweetSystem.UserControls
             // 
             leftHeader.Dock = DockStyle.Top;
             leftHeader.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold);
-            leftHeader.ForeColor = Color.FromArgb(31, 45, 47);
+
             leftHeader.Location = new Point(3, 0);
             leftHeader.Name = "leftHeader";
             leftHeader.Padding = new Padding(0, 0, 16, 0);
@@ -106,7 +106,7 @@ namespace sweetSystem.UserControls
             // 
             // headerPanel
             // 
-            headerPanel.BackColor = Color.FromArgb(255, 255, 255);
+
             headerPanel.Controls.Add(h1Label);
             headerPanel.Controls.Add(sepBar);
             headerPanel.Dock = DockStyle.Top;
@@ -120,7 +120,7 @@ namespace sweetSystem.UserControls
             // 
             h1Label.Dock = DockStyle.Fill;
             h1Label.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold);
-            h1Label.ForeColor = Color.FromArgb(36, 36, 36);
+
             h1Label.Location = new Point(0, 0);
             h1Label.Name = "h1Label";
             h1Label.Padding = new Padding(0, 0, 14, 0);
@@ -131,7 +131,7 @@ namespace sweetSystem.UserControls
             // 
             // sepBar
             // 
-            sepBar.BackColor = Color.FromArgb(100, 158, 100);
+
             sepBar.Dock = DockStyle.Bottom;
             sepBar.Location = new Point(0, 61);
             sepBar.Margin = new Padding(3, 2, 3, 2);
@@ -141,7 +141,7 @@ namespace sweetSystem.UserControls
             // 
             // topBar
             // 
-            topBar.BackColor = Color.FromArgb(247, 246, 242);
+
             topBar.ColumnCount = 3;
             topBar.ColumnStyles.Add(new ColumnStyle());
             topBar.ColumnStyles.Add(new ColumnStyle());
@@ -158,10 +158,10 @@ namespace sweetSystem.UserControls
             // 
             // btnAuto
             // 
-            btnAuto.BackColor = Color.FromArgb(68, 125, 175);
+
             btnAuto.FlatStyle = FlatStyle.Flat;
             btnAuto.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
-            btnAuto.ForeColor = Color.White;
+
             btnAuto.Location = new Point(845, 8);
             btnAuto.Margin = new Padding(9, 8, 14, 0);
             btnAuto.Name = "btnAuto";
@@ -174,10 +174,10 @@ namespace sweetSystem.UserControls
             // 
             // btnManualAll
             // 
-            btnManualAll.BackColor = Color.FromArgb(190, 145, 75);
+
             btnManualAll.FlatStyle = FlatStyle.Flat;
             btnManualAll.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
-            btnManualAll.ForeColor = Color.White;
+
             btnManualAll.Location = new Point(673, 8);
             btnManualAll.Margin = new Padding(9, 8, 0, 0);
             btnManualAll.Name = "btnManualAll";
@@ -190,7 +190,7 @@ namespace sweetSystem.UserControls
             // 
             // bodyTable
             // 
-            bodyTable.BackColor = Color.FromArgb(247, 246, 242);
+
             bodyTable.ColumnCount = 2;
             bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             bodyTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
@@ -226,7 +226,7 @@ namespace sweetSystem.UserControls
             // 
             // rightPanel
             // 
-            rightPanel.BackColor = Color.FromArgb(247, 246, 242);
+
             rightPanel.Controls.Add(_pendingGrid);
             rightPanel.Controls.Add(rightHeader);
             rightPanel.Controls.Add(tabs);
@@ -252,10 +252,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnToday
             // 
-            _btnToday.BackColor = Color.FromArgb(53, 133, 142);
+
             _btnToday.FlatStyle = FlatStyle.Flat;
             _btnToday.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
-            _btnToday.ForeColor = Color.White;
+
             _btnToday.Location = new Point(547, 0);
             _btnToday.Margin = new Padding(0, 0, 7, 6);
             _btnToday.Name = "_btnToday";
@@ -268,10 +268,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnTomorrow
             // 
-            _btnTomorrow.BackColor = Color.FromArgb(53, 133, 142);
+
             _btnTomorrow.FlatStyle = FlatStyle.Flat;
             _btnTomorrow.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
-            _btnTomorrow.ForeColor = Color.White;
+
             _btnTomorrow.Location = new Point(418, 0);
             _btnTomorrow.Margin = new Padding(0, 0, 7, 6);
             _btnTomorrow.Name = "_btnTomorrow";
@@ -286,7 +286,7 @@ namespace sweetSystem.UserControls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(247, 246, 242);
+
             Controls.Add(bodyTable);
             Controls.Add(topBar);
             Controls.Add(headerPanel);

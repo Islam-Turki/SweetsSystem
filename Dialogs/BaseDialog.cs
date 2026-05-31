@@ -17,6 +17,20 @@ public partial class BaseDialog : Form
         public BaseDialog()
         {
             InitializeComponent();
+            
+            this.BackColor = Theme.Surface;
+            this.ForeColor = Theme.TextPrimary;
+            if (bottomPanel != null) bottomPanel.BackColor = Theme.Background;
+            if (BtnSave != null) 
+            {
+                BtnSave.BackColor = Theme.AccentGold;
+                BtnSave.ForeColor = Theme.TextOnAccent;
+            }
+            if (BtnCancel != null)
+            {
+                BtnCancel.BackColor = Theme.TextSecondary;
+                BtnCancel.ForeColor = Theme.TextOnAccent;
+            }
         }
 
         public BaseDialog(string title, int h = 420) : this()

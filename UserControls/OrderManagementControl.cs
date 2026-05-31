@@ -11,6 +11,7 @@ namespace sweetSystem.UserControls
         public OrderManagementControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",       HeaderText = "رقم الطلب",             FillWeight = 6  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Date",     HeaderText = "موعد التسليم", FillWeight = 12 });

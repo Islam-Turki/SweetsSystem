@@ -31,7 +31,7 @@ namespace sweetSystem
             this.SuspendLayout();
 
             // bottomPanel
-            bottomPanel.BackColor = Theme.Background;
+
             bottomPanel.Dock = DockStyle.Bottom;
             bottomPanel.Location = new Point(0, 355);
             bottomPanel.Name = "bottomPanel";
@@ -40,7 +40,7 @@ namespace sweetSystem
             bottomPanel.Paint += new PaintEventHandler(this.BottomPanel_Paint);
 
             // BtnSave
-            BtnSave.BackColor = Theme.AccentGreen;
+
             BtnSave.Location = new Point(16, 14);
             BtnSave.Name = "BtnSave";
             BtnSave.Size = new Size(130, 35);
@@ -49,7 +49,7 @@ namespace sweetSystem
             BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
 
             // BtnCancel
-            BtnCancel.BackColor = Theme.TextSecondary;
+
             BtnCancel.Location = new Point(156, 14);
             BtnCancel.Name = "BtnCancel";
             BtnCancel.Size = new Size(110, 35);
@@ -63,7 +63,7 @@ namespace sweetSystem
 
             // BaseDialog
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.BackColor = Theme.Surface;
+
             this.ClientSize = new Size(400, 420);
             this.Controls.Add(bottomPanel);
             this.Font = Theme.FontBody;

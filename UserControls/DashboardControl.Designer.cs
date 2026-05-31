@@ -36,7 +36,7 @@ namespace sweetSystem.UserControls
             // 
             // headerPanel
             // 
-            headerPanel.BackColor = Color.FromArgb(255, 255, 255);
+
             headerPanel.Controls.Add(h1Label);
             headerPanel.Controls.Add(sepBar);
             headerPanel.Dock = DockStyle.Top;
@@ -49,7 +49,7 @@ namespace sweetSystem.UserControls
             // 
             h1Label.Dock = DockStyle.Right;
             h1Label.Font = new Font("Cairo", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            h1Label.ForeColor = Color.FromArgb(36, 36, 36);
+
             h1Label.Location = new Point(0, 0);
             h1Label.Name = "h1Label";
             h1Label.Padding = new Padding(0, 0, 16, 0);
@@ -60,7 +60,7 @@ namespace sweetSystem.UserControls
             // 
             // sepBar
             // 
-            sepBar.BackColor = Color.FromArgb(100, 158, 100);
+
             sepBar.Dock = DockStyle.Bottom;
             sepBar.Location = new Point(0, 81);
             sepBar.Name = "sepBar";
@@ -69,7 +69,7 @@ namespace sweetSystem.UserControls
             // 
             // cardRowPanel
             // 
-            cardRowPanel.BackColor = Color.FromArgb(247, 246, 242);
+
             cardRowPanel.Controls.Add(_cOrders);
             cardRowPanel.Controls.Add(_cPending);
             cardRowPanel.Controls.Add(_cRevenue);
@@ -86,8 +86,8 @@ namespace sweetSystem.UserControls
             // 
             // _cOrders
             // 
-            _cOrders.AccentColor = Color.FromArgb(100, 158, 100);
-            _cOrders.BackColor = Color.FromArgb(255, 255, 255);
+
+
             _cOrders.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cOrders.Location = new Point(909, 11);
             _cOrders.Margin = new Padding(0, 0, 10, 0);
@@ -101,8 +101,8 @@ namespace sweetSystem.UserControls
             // 
             // _cPending
             // 
-            _cPending.AccentColor = Color.FromArgb(100, 158, 100);
-            _cPending.BackColor = Color.FromArgb(255, 255, 255);
+
+
             _cPending.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cPending.Location = new Point(704, 11);
             _cPending.Margin = new Padding(0, 0, 10, 0);
@@ -115,8 +115,8 @@ namespace sweetSystem.UserControls
             // 
             // _cRevenue
             // 
-            _cRevenue.AccentColor = Color.FromArgb(100, 158, 100);
-            _cRevenue.BackColor = Color.FromArgb(255, 255, 255);
+
+
             _cRevenue.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cRevenue.Location = new Point(499, 11);
             _cRevenue.Margin = new Padding(0, 0, 10, 0);
@@ -129,8 +129,8 @@ namespace sweetSystem.UserControls
             // 
             // _cClients
             // 
-            _cClients.AccentColor = Color.FromArgb(100, 158, 100);
-            _cClients.BackColor = Color.FromArgb(255, 255, 255);
+
+
             _cClients.Font = new Font("Cairo", 11F, FontStyle.Bold);
             _cClients.Location = new Point(294, 11);
             _cClients.Margin = new Padding(0, 0, 10, 0);
@@ -143,10 +143,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnToday
             // 
-            _btnToday.BackColor = Color.FromArgb(53, 133, 142);
+
             _btnToday.FlatStyle = FlatStyle.Flat;
             _btnToday.Font = new Font("Cairo", 8F, FontStyle.Bold);
-            _btnToday.ForeColor = Color.White;
+
             _btnToday.Location = new Point(16, 214);
             _btnToday.Margin = new Padding(3, 4, 3, 4);
             _btnToday.Name = "_btnToday";
@@ -158,10 +158,10 @@ namespace sweetSystem.UserControls
             // 
             // _btnTomorrow
             // 
-            _btnTomorrow.BackColor = Color.FromArgb(180, 180, 180);
+
             _btnTomorrow.FlatStyle = FlatStyle.Flat;
             _btnTomorrow.Font = new Font("Cairo", 8F, FontStyle.Bold);
-            _btnTomorrow.ForeColor = Color.White;
+
             _btnTomorrow.Location = new Point(113, 214);
             _btnTomorrow.Margin = new Padding(3, 4, 3, 4);
             _btnTomorrow.Name = "_btnTomorrow";
@@ -198,7 +198,7 @@ namespace sweetSystem.UserControls
             // 
             secLabel.Dock = DockStyle.Top;
             secLabel.Font = new Font("Cairo", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            secLabel.ForeColor = Color.FromArgb(36, 36, 36);
+
             secLabel.Location = new Point(0, 214);
             secLabel.Name = "secLabel";
             secLabel.Padding = new Padding(0, 3, 5, 3);
@@ -212,7 +212,7 @@ namespace sweetSystem.UserControls
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(247, 246, 242);
+
             Controls.Add(_btnToday);
             Controls.Add(bodyPanel);
             Controls.Add(_btnTomorrow);

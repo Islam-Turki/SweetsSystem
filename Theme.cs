@@ -7,22 +7,42 @@ namespace sweetSystem
     public static class Theme
     {
         // ── Palette ───────────────────────────────────────────────────────────
-        public static readonly Color Sidebar = Color.FromArgb(43, 110, 116);
-        public static readonly Color SidebarHover = Color.FromArgb(63, 142, 150);
-        public static readonly Color SidebarActive = Color.FromArgb(111, 190, 196);
+        /// <summary>Use for main form backgrounds</summary>
+        public static readonly Color Background = Color.FromArgb(253, 248, 245); // Soft Vanilla
 
-        public static readonly Color Background = Color.FromArgb(245, 247, 248);
-        public static readonly Color Surface = Color.FromArgb(255, 255, 255);
-        public static readonly Color SurfaceBorder = Color.FromArgb(227, 232, 234);
+        /// <summary>Use for panels and data grids</summary>
+        public static readonly Color Surface = Color.FromArgb(255, 255, 255); // Pure white
 
-        public static readonly Color AccentGreen = Color.FromArgb(53, 133, 142);
-        public static readonly Color AccentGold = Color.FromArgb(200, 160, 90);
-        public static readonly Color AccentRed = Color.FromArgb(210, 70, 70);
+        /// <summary>Use for borders between panels</summary>
+        public static readonly Color SurfaceBorder = Color.FromArgb(240, 235, 230);
+
+        /// <summary>Use for sidebar and dark elements</summary>
+        public static readonly Color Sidebar = Color.FromArgb(60, 45, 35); // Dark Chocolate
+        public static readonly Color SidebarHover = Color.FromArgb(80, 60, 45);
+        public static readonly Color SidebarActive = Color.FromArgb(210, 150, 75); // Caramel
+
+        /// <summary>Use for primary buttons, highlights, and DataGridView selection rows</summary>
+        public static readonly Color AccentGold = Color.FromArgb(210, 150, 75); // Caramel
+
+        /// <summary>Use for success (like validation checkmarks)</summary>
+        public static readonly Color AccentGreen = Color.FromArgb(147, 197, 114); // Pistachio Green
+
+        /// <summary>Use for errors or delete actions</summary>
+        public static readonly Color AccentRed = Color.FromArgb(220, 80, 90); // Strawberry Red
+
+        /// <summary>Secondary accent or informative blue</summary>
         public static readonly Color AccentBlue = Color.FromArgb(70, 140, 180);
 
-        public static readonly Color TextPrimary = Color.FromArgb(31, 45, 47);
-        public static readonly Color TextSecondary = Color.FromArgb(107, 124, 128);
-        public static readonly Color TextOnDark = Color.FromArgb(234, 246, 247);
+        /// <summary>Use for primary text</summary>
+        public static readonly Color TextPrimary = Color.FromArgb(60, 45, 35); // Dark Chocolate
+
+        /// <summary>Use for secondary text and placeholders</summary>
+        public static readonly Color TextSecondary = Color.FromArgb(120, 95, 80); // Milk Chocolate
+
+        /// <summary>Use for text on dark backgrounds</summary>
+        public static readonly Color TextOnDark = Color.FromArgb(253, 248, 245); // Vanilla
+
+        /// <summary>Use for text on accent buttons</summary>
         public static readonly Color TextOnAccent = Color.White;
         // ── Fonts ─────────────────────────────────────────────────────────────
         public static readonly Font FontH1      = new("Cairo", 16f, FontStyle.Bold);

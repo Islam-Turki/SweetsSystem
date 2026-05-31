@@ -45,7 +45,7 @@ namespace sweetSystem
             // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Cairo", 12F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.FromArgb(31, 45, 47);
+
             lblTitle.Location = new Point(16, 12);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(249, 37);
@@ -56,7 +56,7 @@ namespace sweetSystem
             // 
             lblPendingCount.AutoSize = true;
             lblPendingCount.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            lblPendingCount.ForeColor = Color.FromArgb(200, 160, 90);
+
             lblPendingCount.Location = new Point(16, 46);
             lblPendingCount.Name = "lblPendingCount";
             lblPendingCount.Size = new Size(0, 29);
@@ -65,7 +65,7 @@ namespace sweetSystem
             // lblInfo
             // 
             lblInfo.Font = new Font("Cairo", 8F);
-            lblInfo.ForeColor = Color.FromArgb(107, 124, 128);
+
             lblInfo.Location = new Point(16, 72);
             lblInfo.Name = "lblInfo";
             lblInfo.Size = new Size(368, 36);
@@ -78,7 +78,7 @@ namespace sweetSystem
             chkSelectAll.Checked = true;
             chkSelectAll.CheckState = CheckState.Checked;
             chkSelectAll.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            chkSelectAll.ForeColor = Color.FromArgb(53, 133, 142);
+
             chkSelectAll.Location = new Point(16, 112);
             chkSelectAll.Name = "chkSelectAll";
             chkSelectAll.Size = new Size(107, 33);
@@ -89,7 +89,7 @@ namespace sweetSystem
             // 
             // ClbPackagers
             // 
-            ClbPackagers.BackColor = Color.White;
+
             ClbPackagers.BorderStyle = BorderStyle.FixedSingle;
             ClbPackagers.CheckOnClick = true;
             ClbPackagers.Font = new Font("Cairo", 10F);

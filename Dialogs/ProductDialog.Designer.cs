@@ -187,7 +187,7 @@ namespace sweetSystem
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(107, 124, 128);
+
             label1.Location = new Point(13, 24);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
@@ -199,7 +199,7 @@ namespace sweetSystem
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label2.ForeColor = Color.FromArgb(107, 124, 128);
+
             label2.Location = new Point(13, 95);
             label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
@@ -211,7 +211,7 @@ namespace sweetSystem
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label3.ForeColor = Color.FromArgb(107, 124, 128);
+
             label3.Location = new Point(13, 166);
             label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
@@ -223,7 +223,7 @@ namespace sweetSystem
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label4.ForeColor = Color.FromArgb(107, 124, 128);
+
             label4.Location = new Point(16, 237);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
@@ -235,7 +235,7 @@ namespace sweetSystem
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            label5.ForeColor = Color.FromArgb(107, 124, 128);
+
             label5.Location = new Point(13, 308);
             label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";

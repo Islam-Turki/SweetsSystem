@@ -56,7 +56,7 @@ namespace sweetSystem
             // 
             // _sidebar
             // 
-            _sidebar.BackColor = Color.FromArgb(53, 133, 142);
+
             _sidebar.Controls.Add(btnHR);
             _sidebar.Controls.Add(btnWholesale);
             _sidebar.Controls.Add(btnOrderMgmt);
@@ -83,7 +83,7 @@ namespace sweetSystem
             btnWholesale.Active = false;
             btnWholesale.Dock = DockStyle.Top;
             btnWholesale.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnWholesale.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnWholesale.Icon = "🏪";
             btnWholesale.Location = new Point(0, 712);
             btnWholesale.Margin = new Padding(4, 5, 4, 5);
@@ -99,7 +99,7 @@ namespace sweetSystem
             btnHR.Active = false;
             btnHR.Dock = DockStyle.Top;
             btnHR.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnHR.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnHR.Icon = "👥";
             btnHR.Location = new Point(0, 641);
             btnHR.Margin = new Padding(4, 5, 4, 5);
@@ -115,7 +115,7 @@ namespace sweetSystem
             btnProdMgmt.Active = false;
             btnProdMgmt.Dock = DockStyle.Top;
             btnProdMgmt.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnProdMgmt.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnProdMgmt.Icon = "🍬";
             btnProdMgmt.Location = new Point(0, 570);
             btnProdMgmt.Margin = new Padding(4, 5, 4, 5);
@@ -131,7 +131,7 @@ namespace sweetSystem
             btnProdView.Active = false;
             btnProdView.Dock = DockStyle.Top;
             btnProdView.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnProdView.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnProdView.Icon = "🍳";
             btnProdView.Location = new Point(0, 499);
             btnProdView.Margin = new Padding(4, 5, 4, 5);
@@ -144,7 +144,7 @@ namespace sweetSystem
             // 
             // breakLine2
             // 
-            breakLine2.BackColor = Color.FromArgb(150, 195, 150);
+
             breakLine2.Dock = DockStyle.Top;
             breakLine2.Location = new Point(0, 497);
             breakLine2.Margin = new Padding(4, 5, 4, 5);
@@ -154,7 +154,7 @@ namespace sweetSystem
             // 
             // breakLine
             // 
-            breakLine.BackColor = Color.FromArgb(150, 195, 150);
+
             breakLine.Dock = DockStyle.Top;
             breakLine.Location = new Point(0, 284);
             breakLine.Margin = new Padding(4, 5, 4, 5);
@@ -167,7 +167,7 @@ namespace sweetSystem
             btnOrderMgmt.Active = false;
             btnOrderMgmt.Dock = DockStyle.Top;
             btnOrderMgmt.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnOrderMgmt.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnOrderMgmt.Icon = "📋";
             btnOrderMgmt.Location = new Point(0, 426);
             btnOrderMgmt.Margin = new Padding(4, 5, 4, 5);
@@ -183,7 +183,7 @@ namespace sweetSystem
             btnDelegation.Active = false;
             btnDelegation.Dock = DockStyle.Top;
             btnDelegation.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnDelegation.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnDelegation.Icon = "📦";
             btnDelegation.Location = new Point(0, 355);
             btnDelegation.Margin = new Padding(4, 5, 4, 5);
@@ -199,7 +199,7 @@ namespace sweetSystem
             btnOrderEntry.Active = false;
             btnOrderEntry.Dock = DockStyle.Top;
             btnOrderEntry.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnOrderEntry.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnOrderEntry.Icon = "\U0001f6d2";
             btnOrderEntry.Location = new Point(0, 284);
             btnOrderEntry.Margin = new Padding(4, 5, 4, 5);
@@ -215,7 +215,7 @@ namespace sweetSystem
             btnDashboard.Active = false;
             btnDashboard.Dock = DockStyle.Top;
             btnDashboard.Font = new Font("Cairo", 9F, FontStyle.Bold);
-            btnDashboard.ForeColor = Color.FromArgb(245, 239, 230);
+
             btnDashboard.Icon = "📊";
             btnDashboard.Location = new Point(0, 213);
             btnDashboard.Margin = new Padding(4, 5, 4, 5);
@@ -228,7 +228,7 @@ namespace sweetSystem
             // 
             // sep
             // 
-            sep.BackColor = Color.FromArgb(150, 195, 150);
+
             sep.Dock = DockStyle.Top;
             sep.Location = new Point(0, 211);
             sep.Margin = new Padding(4, 5, 4, 5);
@@ -238,10 +238,10 @@ namespace sweetSystem
             // 
             // navLabel
             // 
-            navLabel.BackColor = Color.FromArgb(53, 133, 142);
+
             navLabel.Dock = DockStyle.Top;
             navLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            navLabel.ForeColor = Color.FromArgb(245, 239, 230);
+
             navLabel.Location = new Point(0, 165);
             navLabel.Margin = new Padding(4, 0, 4, 0);
             navLabel.Name = "navLabel";
@@ -252,7 +252,7 @@ namespace sweetSystem
             // 
             // logoPanel
             // 
-            logoPanel.BackColor = Color.FromArgb(53, 133, 142);
+
             logoPanel.Controls.Add(appSub);
             logoPanel.Controls.Add(appName);
             logoPanel.Controls.Add(cake);
@@ -267,7 +267,7 @@ namespace sweetSystem
             // 
             appSub.AutoSize = true;
             appSub.Font = new Font("Segoe UI", 8F);
-            appSub.ForeColor = Color.FromArgb(245, 239, 230);
+
             appSub.Location = new Point(202, 67);
             appSub.Margin = new Padding(4, 0, 4, 0);
             appSub.Name = "appSub";
@@ -279,7 +279,7 @@ namespace sweetSystem
             // 
             appName.AutoSize = true;
             appName.Font = new Font("Cairo", 11F, FontStyle.Bold);
-            appName.ForeColor = Color.White;
+
             appName.Location = new Point(204, 28);
             appName.Margin = new Padding(4, 0, 4, 0);
             appName.Name = "appName";
@@ -291,7 +291,7 @@ namespace sweetSystem
             // 
             cake.AutoSize = true;
             cake.Font = new Font("Segoe UI Emoji", 26F);
-            cake.ForeColor = Color.White;
+
             cake.Location = new Point(16, 28);
             cake.Margin = new Padding(4, 0, 4, 0);
             cake.Name = "cake";
@@ -301,7 +301,7 @@ namespace sweetSystem
             // 
             // footer
             // 
-            footer.BackColor = Color.FromArgb(22, 34, 25);
+
             footer.Controls.Add(footerLabel);
             footer.Dock = DockStyle.Bottom;
             footer.Location = new Point(0, 993);
@@ -312,10 +312,10 @@ namespace sweetSystem
             // 
             // footerLabel
             // 
-            footerLabel.BackColor = Color.FromArgb(53, 133, 142);
+
             footerLabel.Dock = DockStyle.Fill;
             footerLabel.Font = new Font("Segoe UI", 9F);
-            footerLabel.ForeColor = Color.FromArgb(245, 239, 230);
+
             footerLabel.Location = new Point(0, 0);
             footerLabel.Margin = new Padding(4, 0, 4, 0);
             footerLabel.Name = "footerLabel";
@@ -337,7 +337,7 @@ namespace sweetSystem
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+
             ClientSize = new Size(1733, 1055);
             Controls.Add(_contentArea);
             Controls.Add(_sidebar);

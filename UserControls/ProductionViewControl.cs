@@ -14,6 +14,7 @@ namespace sweetSystem.UserControls
         public ProductionViewControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Product",  HeaderText = "المنتج",           FillWeight = 28 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Category", HeaderText = "الفئة",            FillWeight = 14 });
@@ -75,8 +76,10 @@ namespace sweetSystem.UserControls
         {
             bool isToday = _date.Date == DateTime.Today;
             _lblDateBadge.Text   = isToday ? $"اليوم — {_date:ddd dd/MM}" : $"الغد — {_date:ddd dd/MM}";
-            _btnToday.BackColor    = isToday ? Theme.AccentGreen : Theme.TextSecondary;
-            _btnTomorrow.BackColor = isToday ? Theme.TextSecondary : Theme.AccentGreen;
+            _btnToday.BackColor    = isToday ? Theme.AccentGold : Theme.SurfaceBorder;
+            _btnToday.ForeColor    = isToday ? Color.White : Theme.TextPrimary;
+            _btnTomorrow.BackColor = isToday ? Theme.SurfaceBorder : Theme.AccentGold;
+            _btnTomorrow.ForeColor = isToday ? Theme.TextPrimary : Color.White;
 
             var lines = MockData.Orders
                 .Where(o => o.OrderDate.Date == _date.Date)

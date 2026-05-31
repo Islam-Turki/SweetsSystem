@@ -12,6 +12,7 @@ namespace sweetSystem.UserControls
         public CustomersControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID",      HeaderText = "رقم العميل",            FillWeight = 6  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Name",    HeaderText = "الاسم التجاري", FillWeight = 30 });

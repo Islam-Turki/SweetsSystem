@@ -12,6 +12,7 @@ namespace sweetSystem.UserControls
         public ProductManagementControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             GridHelper.Style(_grid, readOnly: true, rtl: true);
 
             // Standard columns

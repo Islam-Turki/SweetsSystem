@@ -13,6 +13,7 @@ namespace sweetSystem.UserControls
         public DelegationHubControl()
         {
             InitializeComponent();
+            this.BackColor = Theme.Background;
             ConfigureGrids(); // Set up columns and styling
             LoadData();
             SetTabStyle(true);
@@ -165,10 +166,10 @@ namespace sweetSystem.UserControls
         }
         private void SetTabStyle(bool todayActive)
         {
-            _btnToday.BackColor = todayActive ? Theme.AccentGreen : Theme.Surface;
+            _btnToday.BackColor = todayActive ? Theme.AccentGold : Theme.SurfaceBorder;
             _btnToday.ForeColor = todayActive ? Color.White : Theme.TextPrimary;
 
-            _btnTomorrow.BackColor = !todayActive ? Theme.AccentGreen : Theme.Surface;
+            _btnTomorrow.BackColor = !todayActive ? Theme.AccentGold : Theme.SurfaceBorder;
             _btnTomorrow.ForeColor = !todayActive ? Color.White : Theme.TextPrimary;
         }
         private bool _showTodayOrders = true;
