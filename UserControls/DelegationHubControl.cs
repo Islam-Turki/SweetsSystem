@@ -12,9 +12,48 @@ namespace sweetSystem.UserControls
         public DelegationHubControl()
         {
             InitializeComponent();
+            ApplyTheme();
             ConfigureGrids(); // Set up columns and styling
             LoadData();
             SetTabStyle(true);
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = Theme.Background;
+            
+            // Header
+            headerPanel.BackColor = Theme.Surface;
+            h1Label.Font = Theme.FontH1;
+            h1Label.ForeColor = Theme.TextPrimary;
+            sepBar.BackColor = Theme.AccentGreen;
+            
+            // Body
+            topBar.BackColor = Theme.Background;
+            bodyTable.BackColor = Theme.Background;
+            rightPanel.BackColor = Theme.Background;
+            
+            // Buttons
+            btnAuto.BackColor = Theme.AccentBlue;
+            btnAuto.Font = Theme.FontBodyB;
+            btnAuto.ForeColor = Theme.TextOnAccent;
+            
+            btnManualAll.BackColor = Theme.AccentGold;
+            btnManualAll.Font = Theme.FontBodyB;
+            btnManualAll.ForeColor = Theme.TextOnAccent;
+            
+            // Labels
+            rightHeader.Font = Theme.FontH2;
+            rightHeader.ForeColor = Theme.TextPrimary;
+            leftHeader.Font = Theme.FontH2;
+            leftHeader.ForeColor = Theme.TextPrimary;
+            
+            _lblSel.Font = Theme.FontBody;
+            _lblSel.ForeColor = Theme.TextSecondary;
+            
+            // Tabs
+            _btnToday.Font = Theme.FontBodyB;
+            _btnTomorrow.Font = Theme.FontBodyB;
         }
         private void BuildContent()
         {

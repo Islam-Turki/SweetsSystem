@@ -10,6 +10,7 @@ namespace sweetSystem.UserControls
         public DashboardControl()
         {
             InitializeComponent();
+            ApplyTheme();
 
             _cOrders.Title = "طلبات اليوم"; _cOrders.SubText = "إجمالي"; _cOrders.AccentColor = Theme.AccentGreen;
             _cPending.Title = "قيد الانتظار"; _cPending.SubText = "بانتظار التعبئة"; _cPending.AccentColor = Theme.AccentGold;
@@ -21,6 +22,33 @@ namespace sweetSystem.UserControls
             _grid.EnableHeadersVisualStyles = false;
             _grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             SetupGridColumns();
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = Theme.Background;
+            
+            // Header
+            headerPanel.BackColor = Theme.Surface;
+            h1Label.Font = Theme.FontH1;
+            h1Label.ForeColor = Theme.TextPrimary;
+            sepBar.BackColor = Theme.AccentGreen;
+            
+            // Cards panel
+            cardRowPanel.BackColor = Theme.Background;
+            
+            // Stats cards
+            _cOrders.AccentColor = Theme.AccentGreen;
+            _cPending.AccentColor = Theme.AccentGold;
+            _cRevenue.AccentColor = Theme.AccentBlue;
+            _cClients.AccentColor = Theme.AccentRed;
+
+            // Section Label
+            secLabel.Font = Theme.FontH2;
+            secLabel.ForeColor = Theme.TextPrimary;
+            
+            // Grid container
+            bodyPanel.BackColor = Theme.Background;
         }
 
         private void SetupGridColumns()

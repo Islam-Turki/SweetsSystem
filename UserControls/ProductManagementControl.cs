@@ -11,6 +11,7 @@ namespace sweetSystem.UserControls
         public ProductManagementControl()
         {
             InitializeComponent();
+            ApplyTheme();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
 
             // Standard columns
@@ -24,6 +25,26 @@ namespace sweetSystem.UserControls
             GridHelper.AddActionColumns(_grid);
             _grid.CellContentClick += Grid_CellContentClick;
             LoadGrid();
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = Theme.Background;
+            
+            headerPanel.BackColor = Theme.Surface;
+            h1Label.Font = Theme.FontH1;
+            h1Label.ForeColor = Theme.TextPrimary;
+            sepBar.BackColor = Theme.AccentGreen;
+            
+            topBar.BackColor = Theme.Background;
+            bodyPanel.BackColor = Theme.Background;
+            
+            _txSearch.Font = Theme.FontBody;
+            _cbFilter.Font = Theme.FontBody;
+            
+            btnAdd.BackColor = Theme.AccentGreen;
+            btnAdd.Font = Theme.FontBodyB;
+            btnAdd.ForeColor = Theme.TextOnAccent;
         }
 
         private void CbFilter_SelectedIndexChanged(object sender, EventArgs e) => LoadGrid();

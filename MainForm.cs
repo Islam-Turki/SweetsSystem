@@ -18,16 +18,7 @@ namespace sweetSystem
         public MainForm()
         {
             InitializeComponent();
-
-            // Set dynamic properties that might not stick in the designer
-            this.BackColor = Theme.Background;
-            this.Font = Theme.FontBody;
-            _sidebar.BackColor = Theme.Sidebar;
-            _contentArea.BackColor = Theme.Background;
-            
-            navLabel.Font = Theme.FontBadge;
-            appSub.Font = Theme.FontSmall;
-            footerLabel.Font = Theme.FontSmall;
+            ApplyTheme();
 
             // Ensure sidebar docks first (takes its width) and content area fills the rest
             _sidebar.SendToBack();
@@ -41,6 +32,41 @@ namespace sweetSystem
 
             // Start on Dashboard
             Navigate(0);          
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = Theme.Background;
+            this.Font = Theme.FontBody;
+            
+            // Sidebar & Logo Area
+            _sidebar.BackColor = Theme.Sidebar;
+            logoPanel.BackColor = Theme.Sidebar;
+            navLabel.BackColor = Theme.Sidebar;
+            
+            // Text Colors
+            cake.ForeColor = Theme.TextOnDark;
+            appName.ForeColor = Theme.TextOnDark;
+            appSub.ForeColor = Theme.TextSecondary;
+            navLabel.ForeColor = Theme.TextSecondary;
+            
+            // Fonts
+            appName.Font = Theme.FontH2;
+            navLabel.Font = Theme.FontBadge;
+            appSub.Font = Theme.FontSmall;
+            footerLabel.Font = Theme.FontSmall;
+            
+            // Separators
+            sep.BackColor = Theme.SidebarHover;
+            breakLine.BackColor = Theme.SidebarHover;
+            
+            // Footer
+            footer.BackColor = Theme.SidebarHover;
+            footerLabel.BackColor = Theme.SidebarHover;
+            footerLabel.ForeColor = Theme.TextSecondary;
+            
+            // Content Area
+            _contentArea.BackColor = Theme.Background;
         }
 
         private void btnDashboard_Click(object sender, EventArgs e) => Navigate(0);

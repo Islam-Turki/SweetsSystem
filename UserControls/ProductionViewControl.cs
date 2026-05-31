@@ -12,6 +12,7 @@ namespace sweetSystem.UserControls
         public ProductionViewControl()
         {
             InitializeComponent();
+            ApplyTheme();
             GridHelper.Style(_grid, readOnly: true, rtl: true);
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Product",  HeaderText = "المنتج",           FillWeight = 28 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Category", HeaderText = "الفئة",            FillWeight = 14 });
@@ -19,6 +20,29 @@ namespace sweetSystem.UserControls
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unit",     HeaderText = "الوحدة",           FillWeight = 8  });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Cook",     HeaderText = "الطباخ المسؤول",  FillWeight = 22 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Orders",   HeaderText = "عدد الطلبات",     FillWeight = 10 });
+        }
+
+        private void ApplyTheme()
+        {
+            this.BackColor = Theme.Background;
+            
+            headerPanel.BackColor = Theme.Surface;
+            h1Label.Font = Theme.FontH1;
+            h1Label.ForeColor = Theme.TextPrimary;
+            sepBar.BackColor = Theme.AccentGreen;
+            
+            toolbar.BackColor = Theme.Surface;
+            bodyPanel.BackColor = Theme.Background;
+            
+            _lblDateBadge.Font = Theme.FontBodyB;
+            _lblDateBadge.ForeColor = Theme.AccentGold;
+            
+            _btnPrint.BackColor = Theme.AccentGold;
+            _btnPrint.Font = Theme.FontBodyB;
+            _btnPrint.ForeColor = Theme.TextOnAccent;
+            
+            _btnToday.Font = Theme.FontBodyB;
+            _btnTomorrow.Font = Theme.FontBodyB;
         }
 
         private void Toolbar_Resize(object sender, EventArgs e)
