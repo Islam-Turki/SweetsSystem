@@ -304,6 +304,50 @@ namespace sweetSystem.UserControls
             }
 
             bool ws = _rbWholesale.Checked;
+
+            // 1. Delivery Date Validation: Must be selected and cannot be in the past
+            string checkDateStr = ws ? _lblDeliveryWholesale.Text : _lblDeliveryRetail.Text;
+            if (!DateTime.TryParseExact(checkDateStr, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime checkDate))
+            {
+                MessageBox.Show("يرجى تحديد تاريخ التسليم.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (checkDate.Date < DateTime.Now.Date)
+            {
+                MessageBox.Show("لا يمكن أن يكون تاريخ التسليم في الماضي.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Retail Payment Validation: Retail orders must be fully paid
+            if (!ws)
+            {
+                double.TryParse(_txPaidRetail.Text, out double paidRetail);
+                double retailTotal = 0;
+                foreach (var l in _cart) retailTotal += l.Product.Price * l.Quantity;
+
+                // Round to 2 decimal places to prevent floating point precision false-positives
+                if (Math.Round(paidRetail, 2) < Math.Round(retailTotal, 2))
+                {
+                    MessageBox.Show("طلبات القطاعي تتطلب دفع كامل المبلغ الإجمالي ولا يمكن أن يكون هناك رصيد متبقي.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            // 3. Overpayment Validation: Cannot pay more than the order's total cost
+            double.TryParse(ws ? _txPaidWholesale.Text : _txPaidRetail.Text, out double paidAmount);
+            double orderTotal = 0;
+            foreach (var l in _cart)
+            {
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                orderTotal += unitPrice * l.Quantity;
+            }
+
+            if (Math.Round(paidAmount, 2) > Math.Round(orderTotal, 2))
+            {
+                MessageBox.Show("لا يمكن دفع مبلغ أكبر من إجمالي الطلب.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string customer = ws ? (_cbClient.SelectedItem as Customer)?.Name ?? "" : _txCustomer.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(customer))
