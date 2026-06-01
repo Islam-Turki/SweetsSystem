@@ -19,6 +19,9 @@ namespace sweetSystem.UserControls
             sepBar = new Panel();
             bodyTable = new TableLayoutPanel();
             infoPanel = new Panel();
+            _actionButtonFlow = new FlowLayoutPanel();
+            _btnSave = new FlatButton();
+            _btnClear = new FlatButton();
             sumCard = new Panel();
             lblSummary = new Label();
             sepBar1 = new Panel();
@@ -70,6 +73,7 @@ namespace sweetSystem.UserControls
             headerPanel.SuspendLayout();
             bodyTable.SuspendLayout();
             infoPanel.SuspendLayout();
+            _actionButtonFlow.SuspendLayout();
             sumCard.SuspendLayout();
             sumTable.SuspendLayout();
             _wholesalePanel.SuspendLayout();
@@ -140,6 +144,7 @@ namespace sweetSystem.UserControls
             // 
             // infoPanel
             // 
+            infoPanel.Controls.Add(_actionButtonFlow);
             infoPanel.Controls.Add(sumCard);
             infoPanel.Controls.Add(_wholesalePanel);
             infoPanel.Controls.Add(_retailPanel);
@@ -151,6 +156,57 @@ namespace sweetSystem.UserControls
             infoPanel.Padding = new Padding(0, 0, 13, 0);
             infoPanel.Size = new Size(580, 879);
             infoPanel.TabIndex = 2;
+            // 
+            // _actionButtonFlow
+            // 
+            _actionButtonFlow.AutoSize = true;
+            _actionButtonFlow.Controls.Add(_btnSave);
+            _actionButtonFlow.Controls.Add(_btnClear);
+            _actionButtonFlow.Dock = DockStyle.Bottom;
+            _actionButtonFlow.FlowDirection = FlowDirection.RightToLeft;
+            _actionButtonFlow.Location = new Point(0, 569);
+            _actionButtonFlow.Margin = new Padding(0);
+            _actionButtonFlow.Name = "_actionButtonFlow";
+            _actionButtonFlow.Padding = new Padding(19, 10, 19, 10);
+            _actionButtonFlow.RightToLeft = RightToLeft.Yes;
+            _actionButtonFlow.Size = new Size(567, 70);
+            _actionButtonFlow.TabIndex = 6;
+            // 
+            // _btnSave
+            // 
+            _btnSave.BackColor = Color.FromArgb(147, 197, 114);
+            _btnSave.Cursor = Cursors.Hand;
+            _btnSave.FlatAppearance.BorderSize = 0;
+            _btnSave.FlatStyle = FlatStyle.Flat;
+            _btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            _btnSave.ForeColor = Color.White;
+            _btnSave.Location = new Point(29, 13);
+            _btnSave.Margin = new Padding(0, 3, 10, 3);
+            _btnSave.Name = "_btnSave";
+            _btnSave.Radius = 6;
+            _btnSave.Size = new Size(138, 44);
+            _btnSave.TabIndex = 0;
+            _btnSave.Text = "✔ حفظ الطلب";
+            _btnSave.UseVisualStyleBackColor = false;
+            _btnSave.Click += BtnSave_Click;
+            // 
+            // _btnClear
+            // 
+            _btnClear.BackColor = Color.FromArgb(220, 53, 69);
+            _btnClear.Cursor = Cursors.Hand;
+            _btnClear.FlatAppearance.BorderSize = 0;
+            _btnClear.FlatStyle = FlatStyle.Flat;
+            _btnClear.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            _btnClear.ForeColor = Color.White;
+            _btnClear.Location = new Point(177, 13);
+            _btnClear.Margin = new Padding(0, 3, 10, 3);
+            _btnClear.Name = "_btnClear";
+            _btnClear.Radius = 6;
+            _btnClear.Size = new Size(140, 44);
+            _btnClear.TabIndex = 1;
+            _btnClear.Text = "✕ إلغاء / مسح";
+            _btnClear.UseVisualStyleBackColor = false;
+            _btnClear.Click += BtnClear_Click;
             // 
             // sumCard
             // 
@@ -210,9 +266,9 @@ namespace sweetSystem.UserControls
             // 
             lblSubTitle.AutoSize = true;
             lblSubTitle.Dock = DockStyle.Fill;
-            lblSubTitle.Location = new Point(272, 0);
+            lblSubTitle.Location = new Point(273, 0);
             lblSubTitle.Name = "lblSubTitle";
-            lblSubTitle.Size = new Size(264, 40);
+            lblSubTitle.Size = new Size(263, 40);
             lblSubTitle.TabIndex = 2;
             lblSubTitle.Text = "المجموع الفرعي:";
             lblSubTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -224,7 +280,7 @@ namespace sweetSystem.UserControls
             _lblSub.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             _lblSub.Location = new Point(3, 0);
             _lblSub.Name = "_lblSub";
-            _lblSub.Size = new Size(263, 40);
+            _lblSub.Size = new Size(264, 40);
             _lblSub.TabIndex = 3;
             _lblSub.Text = "0.00 د.ل";
             _lblSub.TextAlign = ContentAlignment.MiddleRight;
@@ -233,9 +289,9 @@ namespace sweetSystem.UserControls
             // 
             lblBalanceTitle.AutoSize = true;
             lblBalanceTitle.Dock = DockStyle.Fill;
-            lblBalanceTitle.Location = new Point(272, 40);
+            lblBalanceTitle.Location = new Point(273, 40);
             lblBalanceTitle.Name = "lblBalanceTitle";
-            lblBalanceTitle.Size = new Size(264, 40);
+            lblBalanceTitle.Size = new Size(263, 40);
             lblBalanceTitle.TabIndex = 0;
             lblBalanceTitle.Text = "الرصيد السابق:";
             lblBalanceTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -247,7 +303,7 @@ namespace sweetSystem.UserControls
             _lblBalance.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             _lblBalance.Location = new Point(3, 40);
             _lblBalance.Name = "_lblBalance";
-            _lblBalance.Size = new Size(263, 40);
+            _lblBalance.Size = new Size(264, 40);
             _lblBalance.TabIndex = 1;
             _lblBalance.Text = "0.00 د.ل";
             _lblBalance.TextAlign = ContentAlignment.MiddleRight;
@@ -257,9 +313,9 @@ namespace sweetSystem.UserControls
             lblGrandTitle.AutoSize = true;
             lblGrandTitle.Dock = DockStyle.Fill;
             lblGrandTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblGrandTitle.Location = new Point(272, 80);
+            lblGrandTitle.Location = new Point(273, 80);
             lblGrandTitle.Name = "lblGrandTitle";
-            lblGrandTitle.Size = new Size(264, 60);
+            lblGrandTitle.Size = new Size(263, 60);
             lblGrandTitle.TabIndex = 6;
             lblGrandTitle.Text = "الإجمالي الكلي:";
             lblGrandTitle.TextAlign = ContentAlignment.MiddleLeft;
@@ -271,7 +327,7 @@ namespace sweetSystem.UserControls
             _lblGrand.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             _lblGrand.Location = new Point(3, 80);
             _lblGrand.Name = "_lblGrand";
-            _lblGrand.Size = new Size(263, 60);
+            _lblGrand.Size = new Size(264, 60);
             _lblGrand.TabIndex = 7;
             _lblGrand.Text = "0.00 د.ل";
             _lblGrand.TextAlign = ContentAlignment.MiddleRight;
@@ -652,7 +708,7 @@ namespace sweetSystem.UserControls
             _rbRetail.AutoSize = true;
             _rbRetail.Checked = true;
             _rbRetail.Cursor = Cursors.Hand;
-            _rbRetail.Location = new Point(350, 3);
+            _rbRetail.Location = new Point(3, 3);
             _rbRetail.Name = "_rbRetail";
             _rbRetail.RightToLeft = RightToLeft.Yes;
             _rbRetail.Size = new Size(92, 29);
@@ -665,7 +721,7 @@ namespace sweetSystem.UserControls
             // 
             _rbWholesale.AutoSize = true;
             _rbWholesale.Cursor = Cursors.Hand;
-            _rbWholesale.Location = new Point(250, 3);
+            _rbWholesale.Location = new Point(101, 3);
             _rbWholesale.Name = "_rbWholesale";
             _rbWholesale.RightToLeft = RightToLeft.Yes;
             _rbWholesale.Size = new Size(74, 29);
@@ -765,6 +821,7 @@ namespace sweetSystem.UserControls
             bodyTable.ResumeLayout(false);
             infoPanel.ResumeLayout(false);
             infoPanel.PerformLayout();
+            _actionButtonFlow.ResumeLayout(false);
             sumCard.ResumeLayout(false);
             sumCard.PerformLayout();
             sumTable.ResumeLayout(false);
@@ -861,5 +918,8 @@ namespace sweetSystem.UserControls
         private System.Windows.Forms.FlowLayoutPanel btnActFlow;
 
         private sweetSystem.FlatButton _btnSelectProducts;
+        private System.Windows.Forms.FlowLayoutPanel _actionButtonFlow;
+        private sweetSystem.FlatButton _btnSave;
+        private sweetSystem.FlatButton _btnClear;
     }
 }

@@ -148,23 +148,7 @@ namespace sweetSystem
         public string? Location { get; set; }
         public double OpeningBalance { get; set; } = 0;
         
-        public double Balance 
-        { 
-            get 
-            {
-                // Debt from orders (Total - Paid)
-                double ordersDebt = MockData.Orders
-                    .Where(o => o.CustomerId == this.Id)
-                    .Sum(o => o.TotalPrice - o.PaidAmount);
-
-                // Standalone payments (deposits)
-                double deposits = MockData.PaymentTransactions
-                    .Where(t => t.CustomerId == this.Id && t.OrderId == null)
-                    .Sum(t => t.Amount);
-
-                return OpeningBalance + ordersDebt - deposits;
-            }
-        }
+        public double Balance { get; set; } = 0;
     }
 
     /// <summary>

@@ -29,36 +29,30 @@ namespace sweetSystem
         public AssignOrderDialog(Order o) : this()
         {
             _order = o;
+            string orderNumber = o.Id.ToString();
+            Text = $"تكليف الطلب #{orderNumber} - {o.CustomerName}";
 
-            Text = $"تكليف الطلب #{o.Id} - {o.CustomerName}";
+            var dtPackagers = DatabaseHelper.ExecuteQuery("SELECT phone, name FROM employee WHERE role = 'packager'");
+            var packagerNames = new System.Collections.Generic.List<string>();
+            foreach (System.Data.DataRow r in dtPackagers.Rows)
+                packagerNames.Add(r["name"].ToString() ?? "");
 
-            var packagers = MockData.Employees
-                .Where(e => e.Role == EmployeeRole.Packager)
-                .ToArray();
-            string[] packagerNames = MockData.Employees
-    .Where(e => e.Role == EmployeeRole.Packager)
-    .Select(e => e.Name)
-    .ToArray();
+            CbPackager.Items.AddRange(packagerNames.ToArray());
 
-            CbPackager.Items.AddRange(packagerNames);
-
-            if (o.Packager != null &&
-                packagers.Contains(o.Packager))
+            if (o.Packager != null && packagerNames.Contains(o.Packager.Name))
             {
-                CbPackager.SelectedItem = o.Packager;
+                CbPackager.SelectedItem = o.Packager.Name;
             }
-            else if (packagers.Length > 0)
+            else if (packagerNames.Count > 0)
             {
                 CbPackager.SelectedIndex = 0;
             }
 
-            foreach (var l in MockData.OrderItems.Where(oi => oi.OrderId == o.Id))
-                _grid.Rows.Add(l.Product?.Name ?? "—", l.Quantity);
-
-            //string text = paperBuilder.BuildOrderTicket(o);
-
-            //MessageBox.Show(text, "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //RawPrinterHelper.PrintOut(text);
+            var itemsDt = DatabaseHelper.ExecuteQuery("SELECT product_name, quantity FROM order_items WHERE order_number = @on", new[] { new Microsoft.Data.SqlClient.SqlParameter("@on", orderNumber) });
+            foreach(System.Data.DataRow row in itemsDt.Rows)
+            {
+                _grid.Rows.Add(row["product_name"].ToString() ?? "—", row["quantity"].ToString() ?? "0");
+            }
         }
 
         protected override void BtnSave_Click(object sender, EventArgs e)
@@ -66,16 +60,23 @@ namespace sweetSystem
             if (_order == null || CbPackager.SelectedIndex < 0) return;
 
             string selectedName = CbPackager.SelectedItem?.ToString() ?? "";
-            var emp = MockData.Employees.FirstOrDefault(
-                emp => emp.Role == EmployeeRole.Packager && emp.Name == selectedName);
-
-            if (emp != null)
+            
+            var dt = DatabaseHelper.ExecuteQuery("SELECT phone FROM employee WHERE role = 'packager' AND name = @n", new[] { new Microsoft.Data.SqlClient.SqlParameter("@n", selectedName) });
+            
+            if (dt.Rows.Count > 0)
             {
-                _order.Packager = emp;
-                _order.PackagerId = emp.Id;
+                string packagerPhone = dt.Rows[0]["phone"].ToString() ?? "";
+                string orderNumber = _order.Id.ToString();
+
+                DatabaseHelper.ExecuteNonQuery("UPDATE [order] SET packager_phone = @pp, status = @s WHERE order_number = @on", new[] {
+                    new Microsoft.Data.SqlClient.SqlParameter("@pp", packagerPhone),
+                    new Microsoft.Data.SqlClient.SqlParameter("@s", EnumHelper.ToString(OrderStatus.Assigned)),
+                    new Microsoft.Data.SqlClient.SqlParameter("@on", orderNumber)
+                });
+
+                _order.Packager = new Employee { Name = selectedName, Phone = packagerPhone, Role = EmployeeRole.Packager };
                 _order.Status = OrderStatus.Assigned;
 
-                // Print the order ticket
                 string ticket = paperBuilder.BuildOrderTicket(_order);
                 RawPrinterHelper.PrintOut(ticket);
 

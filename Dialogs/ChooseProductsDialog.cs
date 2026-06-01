@@ -50,19 +50,68 @@ namespace sweetSystem.Dialogs
 
         private void LoadCatalog()
         {
-            _catalogFlow.SuspendLayout(); 
-            _catalogFlow.Controls.Clear();
-            _cardMap.Clear();
-
-            foreach (var p in MockData.Products)
+            try
             {
-                var card = BuildProductCard(p);
-                _catalogFlow.Controls.Add(card);
-                _cardMap[p.Id] = card;
-                UpdateCardBadge(p);
-            }
+                _catalogFlow.SuspendLayout(); 
+                _catalogFlow.Controls.Clear();
+                _cardMap.Clear();
 
-            _catalogFlow.ResumeLayout();
+                var dt = DatabaseHelper.ExecuteQuery("SELECT product_name, category, price, unit, picture_url FROM products");
+                
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    var lblEmpty = new Label
+                    {
+                        Text = "لا توجد منتجات مسجلة في النظام حالياً",
+                        Font = new Font("Segoe UI", 16F, FontStyle.Bold),
+                        ForeColor = Theme.TextSecondary,
+                        AutoSize = true,
+                        Margin = new Padding(20)
+                    };
+                    _catalogFlow.Controls.Add(lblEmpty);
+                    _catalogFlow.ResumeLayout(true);
+                    return;
+                }
+
+                var products = new List<Product>();
+                foreach (System.Data.DataRow row in dt.Rows)
+                {
+                    string name = row["product_name"].ToString() ?? "";
+                    
+                    var p = new Product
+                    {
+                        Id = Math.Abs(name.GetHashCode()),
+                        Name = name,
+                        Price = Convert.ToDouble(row["price"]),
+                        WholesalePrice = Convert.ToDouble(row["price"])
+                    };
+
+                    try { p.Category = EnumHelper.FromString<ProductCategory>(row["category"].ToString() ?? ""); } catch {}
+                    try { p.Unit = EnumHelper.FromString<ProductUnit>(row["unit"].ToString() ?? ""); } catch {}
+                    try 
+                    { 
+                        if (row.Table.Columns.Contains("picture_url") && row["picture_url"] != DBNull.Value) 
+                            p.ImagePath = row["picture_url"].ToString(); 
+                    } catch {}
+
+                    products.Add(p);
+                }
+
+                foreach (var p in products)
+                {
+                    var card = BuildProductCard(p);
+                    _catalogFlow.Controls.Add(card);
+                    _cardMap[p.Id] = card;
+                    UpdateCardBadge(p);
+                }
+
+                _catalogFlow.ResumeLayout(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading catalog: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _catalogFlow.ResumeLayout(true);
+            }
         }
 
         private Panel BuildProductCard(Product p)

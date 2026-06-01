@@ -103,6 +103,12 @@ namespace sweetSystem.UserControls
                 AttachInputWrapperEvents(_txCustomerWrap, _txCustomer);
             if (_txCustomerExtraWrap != null && _txCustomerExtra != null)
                 AttachInputWrapperEvents(_txCustomerExtraWrap, _txCustomerExtra);
+
+            // Action Buttons
+            _btnSave.BackColor = Theme.AccentGold;
+            _btnSave.ForeColor = Theme.TextOnAccent;
+            _btnClear.BackColor = Theme.AccentRed;
+            _btnClear.ForeColor = Theme.TextOnAccent;
         }
 
         private void AttachInputWrapperEvents(Panel wrap, TextBox tx, int radius = 8)
@@ -138,17 +144,17 @@ namespace sweetSystem.UserControls
             _cbClient.Items.Clear();
 
             _cbClient.DisplayMember = "Name";
-            _cbClient.ValueMember = "Id";
+            _cbClient.ValueMember = "Number";
 
-            foreach (var c in MockData.Customers)
+            var dt = DatabaseHelper.ExecuteQuery("SELECT customer_number, name, balance FROM customer");
+            foreach (System.Data.DataRow row in dt.Rows)
             {
-                _cbClient.Items.Add(c);
+                _cbClient.Items.Add(new Customer { 
+                    Number = row["customer_number"].ToString(), 
+                    Name = row["name"].ToString(),
+                    OpeningBalance = Convert.ToDouble(row["balance"])
+                });
             }
-
-            //foreach (var c in MockData.Customers)
-            //{
-            //    _cbClient.Items.Add(c);
-            //}
         }
 
         // ══════════════════════════════════════════════════════════════════════
@@ -157,16 +163,23 @@ namespace sweetSystem.UserControls
         
         private void _btnSelectProducts_Click(object sender, EventArgs e)
         {
-            using var dlg = new sweetSystem.Dialogs.ChooseProductsDialog(_rbWholesale.Checked);
-            if (dlg.ShowDialog(this) == DialogResult.OK)
+            try
             {
-                foreach (var item in dlg.SelectedItems)
+                using var dlg = new sweetSystem.Dialogs.ChooseProductsDialog(_rbWholesale.Checked);
+                if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    var ex = _cart.FirstOrDefault(x => x.ProductId == item.ProductId);
-                    if (ex != null) ex.Quantity += item.Quantity;
-                    else _cart.Add(item);
+                    foreach (var item in dlg.SelectedItems)
+                    {
+                        var ex = _cart.FirstOrDefault(x => x.ProductId == item.ProductId);
+                        if (ex != null) ex.Quantity += item.Quantity;
+                        else _cart.Add(item);
+                    }
+                    RefreshCart();
                 }
-                RefreshCart();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -238,7 +251,7 @@ namespace sweetSystem.UserControls
         {
             bool ws = _rbWholesale.Checked;
             double sub = _cart.Sum(l => l.TotalPrice);
-            double prev = ws && _cbClient.SelectedItem is Customer wc ? wc.Balance : 0;
+            double prev = ws && _cbClient.SelectedItem is Customer wc ? wc.OpeningBalance : 0;
 
             _lblSub.Text = Theme.LYD(sub);
             _lblBalance.Text = Theme.LYD(prev);
@@ -286,106 +299,125 @@ namespace sweetSystem.UserControls
         {
             if (_cart.Count == 0)
             {
-                MessageBox.Show("السلة فارغة، يرجى إضافة منتجات.", "تنبيه",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("السلة فارغة، يرجى إضافة منتجات.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             bool ws = _rbWholesale.Checked;
-            string customer = ws
-                ? (_cbClient.SelectedItem as Customer)?.Name ?? ""
-                : _txCustomer.Text.Trim();
+            string customer = ws ? (_cbClient.SelectedItem as Customer)?.Name ?? "" : _txCustomer.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(customer))
             {
-                MessageBox.Show("يرجى إدخال اسم العميل.", "تنبيه",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("يرجى إدخال اسم العميل.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!ws && _txCustomer.Text.Any(char.IsDigit))
             {
-                MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تنبيه",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!ws && !string.IsNullOrWhiteSpace(_txCustomerExtra.Text) && !_txCustomerExtra.Text.All(char.IsDigit))
             {
-                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تنبيه",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var order = _editingOrder ?? new Order { Id = MockData.NextOrderId() };
+            int nextId = _editingOrder?.Id ?? 0;
+            if (_editingOrder == null)
+            {
+                var dtMax = DatabaseHelper.ExecuteQuery("SELECT ISNULL(MAX(CAST(order_number AS INT)), 0) + 1 FROM [order]");
+                nextId = Convert.ToInt32(dtMax.Rows[0][0]);
+            }
+
+            var order = _editingOrder ?? new Order { Id = nextId };
 
             order.OrderDate = DateTime.Today;
             order.CustomerName = customer;
             order.CustomerPhone = ws ? "" : _txCustomerExtra.Text.Trim();
             order.Customer = ws ? _cbClient.SelectedItem as Customer : null;
-            order.CustomerId = ws ? (_cbClient.SelectedItem as Customer)?.Id : null;
             order.IsDelivery = ws ? _chkIsDeliveryWholesale.Checked : _chkIsDeliveryRetail.Checked;
-            order.Status = order.Status; // Keep existing status if editing
             if (_editingOrder == null) order.Status = OrderStatus.Pending;
 
-
-            // Parse delivery date if specified
             string dateStr = ws ? _lblDeliveryWholesale.Text : _lblDeliveryRetail.Text;
             if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dDate))
-            {
                 order.DeliveryDate = dDate;
-            }
             else
-            {
-                order.DeliveryDate = DateTime.Today; // Fallback
-            }
+                order.DeliveryDate = DateTime.Today;
 
-            // Payment logic
             double paid = 0;
             double.TryParse(ws ? _txPaidWholesale.Text : _txPaidRetail.Text, out paid);
             order.PaidAmount = paid;
 
-            // If editing, clear old items first and REVERT balance change
-            if (_editingOrder != null)
-            {
-                var oldItems = MockData.OrderItems.Where(x => x.OrderId == order.Id).ToList();
-                foreach (var item in oldItems) MockData.OrderItems.Remove(item);
-            }
-
-            // Compute total and add order items
             double total = 0;
             foreach (var l in _cart)
             {
                 double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
-                var oi = new OrderItem
-                {
-                    OrderId = order.Id,
-                    ProductId = l.Product.Id,
-                    Product = l.Product,
-                    Quantity = l.Quantity,
-                    TotalPrice = unitPrice * l.Quantity,
-                    Order = order
-                };
-                MockData.OrderItems.Add(oi);
-                total += oi.TotalPrice;
+                total += unitPrice * l.Quantity;
             }
             order.TotalPrice = total;
 
-            // Finalize payment status
             if (order.PaidAmount >= order.TotalPrice) order.PaymentStatus = PaymentStatus.Paid;
             else if (order.PaidAmount > 0) order.PaymentStatus = PaymentStatus.Partial;
             else order.PaymentStatus = PaymentStatus.None;
 
             if (_editingOrder == null)
             {
-                MockData.Orders.Add(order);
-                MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string insertQuery = @"
+                    INSERT INTO [order] (order_number, customer_number, order_date, delivery_date, customer_name, customer_phone, is_delivery, payment_status, total_price, status)
+                    VALUES (@order_number, @customer_number, @order_date, @delivery_date, @customer_name, @customer_phone, @is_delivery, @payment_status, @total_price, @status)";
+                DatabaseHelper.ExecuteNonQuery(insertQuery, new[] {
+                    new Microsoft.Data.SqlClient.SqlParameter("@order_number", order.Id.ToString()),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_number", ws && order.Customer != null ? order.Customer.Number : (object)DBNull.Value),
+                    new Microsoft.Data.SqlClient.SqlParameter("@order_date", order.OrderDate),
+                    new Microsoft.Data.SqlClient.SqlParameter("@delivery_date", order.DeliveryDate),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_name", order.CustomerName),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_phone", order.CustomerPhone),
+                    new Microsoft.Data.SqlClient.SqlParameter("@is_delivery", order.IsDelivery),
+                    new Microsoft.Data.SqlClient.SqlParameter("@payment_status", EnumHelper.ToString(order.PaymentStatus)),
+                    new Microsoft.Data.SqlClient.SqlParameter("@total_price", order.TotalPrice),
+                    new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(order.Status))
+                });
+                MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show($"تم تحديث الطلب #{order.Id} بنجاح!", "تم",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string updateQuery = @"
+                    UPDATE [order] SET 
+                        customer_number = @customer_number, delivery_date = @delivery_date, customer_name = @customer_name, 
+                        customer_phone = @customer_phone, is_delivery = @is_delivery, payment_status = @payment_status, 
+                        total_price = @total_price, status = @status
+                    WHERE order_number = @order_number";
+                DatabaseHelper.ExecuteNonQuery(updateQuery, new[] {
+                    new Microsoft.Data.SqlClient.SqlParameter("@order_number", order.Id.ToString()),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_number", ws && order.Customer != null ? order.Customer.Number : (object)DBNull.Value),
+                    new Microsoft.Data.SqlClient.SqlParameter("@delivery_date", order.DeliveryDate),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_name", order.CustomerName),
+                    new Microsoft.Data.SqlClient.SqlParameter("@customer_phone", order.CustomerPhone),
+                    new Microsoft.Data.SqlClient.SqlParameter("@is_delivery", order.IsDelivery),
+                    new Microsoft.Data.SqlClient.SqlParameter("@payment_status", EnumHelper.ToString(order.PaymentStatus)),
+                    new Microsoft.Data.SqlClient.SqlParameter("@total_price", order.TotalPrice),
+                    new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(order.Status))
+                });
+                DatabaseHelper.ExecuteNonQuery("DELETE FROM order_items WHERE order_number = @id", new[] { new Microsoft.Data.SqlClient.SqlParameter("@id", order.Id.ToString()) });
+                MessageBox.Show($"تم تحديث الطلب #{order.Id} بنجاح!", "تم", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            foreach (var l in _cart)
+            {
+                double unitPrice = ws ? l.Product.WholesalePrice : l.Product.Price;
+                l.TotalPrice = unitPrice * l.Quantity;
+                
+                string insertItemQuery = @"
+                    INSERT INTO order_items (order_number, product_name, quantity, total_price)
+                    VALUES (@order_number, @product_name, @quantity, @total_price)";
+                DatabaseHelper.ExecuteNonQuery(insertItemQuery, new[] {
+                    new Microsoft.Data.SqlClient.SqlParameter("@order_number", order.Id.ToString()),
+                    new Microsoft.Data.SqlClient.SqlParameter("@product_name", l.Product.Name),
+                    new Microsoft.Data.SqlClient.SqlParameter("@quantity", l.Quantity),
+                    new Microsoft.Data.SqlClient.SqlParameter("@total_price", l.TotalPrice)
+                });
             }
 
             BtnClear_Click(null, EventArgs.Empty);
@@ -487,7 +519,7 @@ namespace sweetSystem.UserControls
         {
             base.OnVisibleChanged(e);
 
-            // When the screen is shown, reload the data from MockData
+            // When the screen is shown, reload the data from the Database
             if (this.Visible)
             {
                 BindComboBoxes();
@@ -504,7 +536,12 @@ namespace sweetSystem.UserControls
             if (ws)
             {
                 _rbWholesale.Checked = true;
-                _cbClient.SelectedItem = MockData.Customers.FirstOrDefault(c => c.Id == o.CustomerId);
+                foreach(Customer item in _cbClient.Items)
+                {
+                    if(item.Id == o.CustomerId || item.Number == o.CustomerId?.ToString()) { 
+                        _cbClient.SelectedItem = item; break; 
+                    }
+                }
                 _chkIsDeliveryWholesale.Checked = o.IsDelivery;
                 _lblDeliveryWholesale.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
             }
@@ -512,25 +549,39 @@ namespace sweetSystem.UserControls
             {
                 _rbRetail.Checked = true;
                 _txCustomer.Text = o.CustomerName;
-                // Note: Phone isn't explicitly in Order model but we use CustomerPhone
                 _txCustomerExtra.Text = o.CustomerPhone;
                 _chkIsDeliveryRetail.Checked = o.IsDelivery;
                 _lblDeliveryRetail.Text = o.DeliveryDate.ToString("dd/MM/yyyy");
                 _txPaidRetail.Text = o.PaidAmount.ToString();
             }
 
-            // Load items
             _cart.Clear();
-            var items = MockData.OrderItems.Where(i => i.OrderId == o.Id);
-            foreach (var i in items)
+            var dtItems = DatabaseHelper.ExecuteQuery("SELECT product_name, quantity, total_price FROM order_items WHERE order_number = @id", new[] { new Microsoft.Data.SqlClient.SqlParameter("@id", o.Id.ToString()) });
+            
+            foreach (System.Data.DataRow row in dtItems.Rows)
             {
-                _cart.Add(new OrderItem
+                var pName = row["product_name"].ToString() ?? "";
+                
+                var dtProd = DatabaseHelper.ExecuteQuery("SELECT price, unit, category FROM products WHERE product_name = @pn", new[] { new Microsoft.Data.SqlClient.SqlParameter("@pn", pName) });
+                if (dtProd.Rows.Count > 0)
                 {
-                    Product = i.Product,
-                    ProductId = i.ProductId,
-                    Quantity = i.Quantity,
-                    TotalPrice = i.TotalPrice
-                });
+                    var pr = dtProd.Rows[0];
+                    var prod = new Product { 
+                        Name = pName, 
+                        Price = Convert.ToDouble(pr["price"]), 
+                        WholesalePrice = Convert.ToDouble(pr["price"]),
+                        Unit = EnumHelper.FromString<ProductUnit>(pr["unit"].ToString() ?? "piece"),
+                        Category = EnumHelper.FromString<ProductCategory>(pr["category"].ToString() ?? "other")
+                    };
+                    
+                    _cart.Add(new OrderItem
+                    {
+                        Product = prod,
+                        ProductId = 0,
+                        Quantity = Convert.ToDouble(row["quantity"]),
+                        TotalPrice = Convert.ToDouble(row["total_price"])
+                    });
+                }
             }
 
             if (ws)

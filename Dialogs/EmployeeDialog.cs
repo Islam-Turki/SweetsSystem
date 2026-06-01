@@ -22,8 +22,25 @@ namespace sweetSystem
             InitializeComponent();
             TxName.KeyPress += ValidationHelper.LettersOnly;
 
-            foreach (var prod in MockData.Products)
-                ClbSkills.Items.Add(prod);
+            var dt = DatabaseHelper.ExecuteQuery("SELECT product_name FROM products");
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                var p = new Product { Name = row["product_name"].ToString() ?? "" };
+                ClbSkills.Items.Add(p);
+            }
+        }
+
+        public List<string> SelectedSkills
+        {
+            get
+            {
+                var list = new List<string>();
+                foreach (var item in ClbSkills.CheckedItems)
+                {
+                    if (item is Product p) list.Add(p.Name);
+                }
+                return list;
+            }
         }
 
         public EmployeeDialog(Employee? e = null) : this()
@@ -37,12 +54,17 @@ namespace sweetSystem
                 CbRole.SelectedIndex =
                     e.Role == EmployeeRole.Cook ? 0 : 1;
 
+                var dtSkills = DatabaseHelper.ExecuteQuery("SELECT product_name FROM products WHERE maker_phone = @p", new[] { new Microsoft.Data.SqlClient.SqlParameter("@p", e.Phone) });
+                var skillNames = new List<string>();
+                foreach (System.Data.DataRow r in dtSkills.Rows)
+                    skillNames.Add(r["product_name"].ToString() ?? "");
+
                 for (int i = 0; i < ClbSkills.Items.Count; i++)
                 {
                     var prod = (Product)ClbSkills.Items[i];
                     ClbSkills.SetItemChecked(
                         i,
-                        prod.MakerId == e.Id
+                        skillNames.Contains(prod.Name)
                     );
                 }
             }

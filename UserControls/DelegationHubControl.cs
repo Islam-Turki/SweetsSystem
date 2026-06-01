@@ -74,22 +74,91 @@ namespace sweetSystem.UserControls
             leftPanel.Controls.Add(_lblSel);
         }
 
+        private Order MapRowToOrder(System.Data.DataRow row)
+        {
+            var o = new Order
+            {
+                Id = Convert.ToInt32(row["order_number"]),
+                OrderDate = Convert.ToDateTime(row["order_date"]),
+                DeliveryDate = Convert.ToDateTime(row["delivery_date"]),
+                CustomerName = row["customer_name"].ToString() ?? "",
+                CustomerPhone = row["customer_phone"].ToString() ?? "",
+                IsDelivery = Convert.ToBoolean(row["is_delivery"]),
+                TotalPrice = Convert.ToDouble(row["total_price"])
+            };
+            
+            var statusStr = row["status"].ToString();
+            if (!string.IsNullOrEmpty(statusStr))
+                o.Status = EnumHelper.FromString<OrderStatus>(statusStr);
+                
+            var payStr = row["payment_status"].ToString();
+            if (!string.IsNullOrEmpty(payStr))
+                o.PaymentStatus = EnumHelper.FromString<PaymentStatus>(payStr);
+
+            if (row["customer_number"] != DBNull.Value)
+            {
+                if (int.TryParse(row["customer_number"].ToString(), out int cid))
+                    o.CustomerId = cid;
+            }
+
+            return o;
+        }
+
+        private Order? GetOrderFromDb(int id)
+        {
+            string q = "SELECT * FROM [order] WHERE order_number = @id";
+            var dt = DatabaseHelper.ExecuteQuery(q, new[] { new Microsoft.Data.SqlClient.SqlParameter("@id", id.ToString()) });
+            if (dt.Rows.Count == 0) return null;
+            return MapRowToOrder(dt.Rows[0]);
+        }
+
         public void LoadData()
         {
             _pendingGrid.Rows.Clear();
             DateTime targetDate = _showTodayOrders ? DateTime.Today : DateTime.Today.AddDays(1);
-            foreach (var o in MockData.Orders.Where(o => o.OrderDate.Date == targetDate && o.Status == OrderStatus.Pending))
+            
+            string qPending = @"
+                SELECT o.order_number, o.customer_name, o.customer_number, 
+                       ISNULL(SUM(oi.quantity), 0) as total_items, o.total_price
+                FROM [order] o
+                LEFT JOIN order_items oi ON o.order_number = oi.order_number
+                WHERE CAST(o.order_date AS DATE) = CAST(@date AS DATE) AND o.status = @status
+                GROUP BY o.order_number, o.customer_name, o.customer_number, o.total_price
+                ORDER BY o.order_number DESC";
+            
+            var dtPending = DatabaseHelper.ExecuteQuery(qPending, new[] { 
+                new Microsoft.Data.SqlClient.SqlParameter("@date", targetDate),
+                new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(OrderStatus.Pending))
+            });
+
+            foreach (System.Data.DataRow row in dtPending.Rows)
             {
-                var items = MockData.OrderItems.Where(oi => oi.OrderId == o.Id);
-                _pendingGrid.Rows.Add(o.Id, o.CustomerName, o.CustomerId != null ? "جملة" : "قطاعي", items.Sum(l => l.Quantity), Theme.LYD(o.TotalPrice));
+                _pendingGrid.Rows.Add(
+                    row["order_number"].ToString(), 
+                    row["customer_name"].ToString(), 
+                    row["customer_number"] != DBNull.Value && !string.IsNullOrEmpty(row["customer_number"].ToString()) ? "جملة" : "قطاعي", 
+                    Convert.ToDouble(row["total_items"]), 
+                    Theme.LYD(Convert.ToDouble(row["total_price"]))
+                );
             }
 
             _packagerGrid.Rows.Clear();
-            foreach (var p in MockData.Employees.Where(e => e.Role == EmployeeRole.Packager))
+            string qPackagers = @"
+                SELECT e.name, e.phone,
+                       (SELECT COUNT(*) FROM [order] o WHERE o.packager_phone = e.phone AND CAST(o.order_date AS DATE) = CAST(@today AS DATE)) as order_count
+                FROM employee e
+                WHERE e.role = @role";
+            
+            var dtPackagers = DatabaseHelper.ExecuteQuery(qPackagers, new[] {
+                new Microsoft.Data.SqlClient.SqlParameter("@today", DateTime.Today),
+                new Microsoft.Data.SqlClient.SqlParameter("@role", EnumHelper.ToString(EmployeeRole.Packager))
+            });
+
+            foreach (System.Data.DataRow row in dtPackagers.Rows)
             {
-                int cnt = MockData.Orders.Count(o => o.OrderDate.Date == DateTime.Today && o.Packager?.Id == p.Id);
+                int cnt = Convert.ToInt32(row["order_count"]);
                 string load = cnt <= 2 ? "🟢 خفيف" : cnt <= 5 ? "🟡 متوسط" : "🔴 ثقيل";
-                _packagerGrid.Rows.Add(p.Name, $"{cnt} طلبات", load);
+                _packagerGrid.Rows.Add(row["name"].ToString(), $"{cnt} طلبات", load);
             }
         }
 
@@ -97,7 +166,7 @@ namespace sweetSystem.UserControls
         {
             if (e.RowIndex < 0) return;
             if (!int.TryParse(_pendingGrid.Rows[e.RowIndex].Cells["ID"].Value?.ToString(), out int id)) return;
-            var order = MockData.Orders.FirstOrDefault(o => o.Id == id);
+            var order = GetOrderFromDb(id);
             if (order == null) return;
             using var dlg = new AssignOrderDialog(order);
             if (dlg.ShowDialog(this) == DialogResult.OK) LoadData();
@@ -122,9 +191,18 @@ namespace sweetSystem.UserControls
         private void BtnManualAll_Click(object? sender, EventArgs e)
         {
             DateTime targetDate = _showTodayOrders ? DateTime.Today : DateTime.Today.AddDays(1);
-            var pendingOrders = MockData.Orders
-                .Where(o => o.OrderDate.Date == targetDate && o.Status == OrderStatus.Pending)
-                .ToList();
+            
+            string qAllPending = "SELECT * FROM [order] WHERE CAST(order_date AS DATE) = CAST(@date AS DATE) AND status = @status";
+            var dtAll = DatabaseHelper.ExecuteQuery(qAllPending, new[] { 
+                new Microsoft.Data.SqlClient.SqlParameter("@date", targetDate),
+                new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(OrderStatus.Pending))
+            });
+
+            var pendingOrders = new System.Collections.Generic.List<Order>();
+            foreach (System.Data.DataRow row in dtAll.Rows)
+            {
+                pendingOrders.Add(MapRowToOrder(row));
+            }
 
             if (pendingOrders.Count == 0)
             {

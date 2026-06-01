@@ -81,34 +81,54 @@ namespace sweetSystem.UserControls
             _btnTomorrow.BackColor = isToday ? Theme.SurfaceBorder : Theme.AccentGold;
             _btnTomorrow.ForeColor = isToday ? Theme.TextPrimary : Color.White;
 
-            var lines = MockData.Orders
-                .Where(o => o.OrderDate.Date == _date.Date)
-                .SelectMany(o => MockData.OrderItems.Where(oi => oi.OrderId == o.Id))
-                .GroupBy(l => l.ProductId)
-                .Select(g => new
-                {
-                    Product    = g.First().Product,
-                    TotalQty   = g.Sum(l => l.Quantity),
-                    OrderCount = MockData.Orders.Count(o =>
-                        o.OrderDate.Date == _date.Date &&
-                        MockData.OrderItems.Any(oi => oi.OrderId == o.Id && oi.ProductId == g.Key))
-                })
-                .OrderBy(x => x.Product?.Category)
-                .ThenBy(x => x.Product?.Name);
+            string sql = @"
+                SELECT 
+                    p.product_name AS Product,
+                    p.category AS Category,
+                    SUM(oi.quantity) AS TotalQty,
+                    p.unit AS Unit,
+                    e.name AS Cook,
+                    COUNT(DISTINCT oi.order_number) AS OrderCount
+                FROM order_items oi
+                JOIN [order] o ON oi.order_number = o.order_number
+                JOIN products p ON oi.product_name = p.product_name
+                LEFT JOIN employee e ON p.maker_phone = e.phone
+                WHERE CAST(o.order_date AS DATE) = @date
+                GROUP BY p.product_name, p.category, p.unit, e.name
+                ORDER BY p.category, p.product_name";
+
+            var dt = DatabaseHelper.ExecuteQuery(sql, new[] {
+                new Microsoft.Data.SqlClient.SqlParameter("@date", _date.Date)
+            });
 
             _grid.Rows.Clear();
-            foreach (var item in lines)
+            foreach (System.Data.DataRow row in dt.Rows)
             {
-                var cook = MockData.GetCookForProduct(item.Product);
+                string pName = row["Product"].ToString() ?? "—";
+                
+                string pCatStr = row["Category"].ToString() ?? "";
+                var pCat = ProductCategory.Other;
+                try { pCat = EnumHelper.FromString<ProductCategory>(pCatStr); } catch {}
+                
+                double tQty = Convert.ToDouble(row["TotalQty"]);
+                
+                string pUnitStr = row["Unit"].ToString() ?? "";
+                var pUnit = ProductUnit.Piece;
+                try { pUnit = EnumHelper.FromString<ProductUnit>(pUnitStr); } catch {}
+
+                string cookName = row["Cook"] != DBNull.Value && !string.IsNullOrEmpty(row["Cook"].ToString()) ? row["Cook"].ToString()! : "⚠ غير معيّن";
+                int oCount = Convert.ToInt32(row["OrderCount"]);
+
                 int i = _grid.Rows.Add(
-                    item.Product?.Name ?? "—",
-                    item.Product?.Category.ToString() ?? "",
-                    item.TotalQty,
-                    item.Product?.Unit.ToString() ?? "",
-                    cook?.Name ?? "⚠ غير معيّن",
-                    item.OrderCount
+                    pName,
+                    pCat.ToString(),
+                    tQty,
+                    pUnit.ToString(),
+                    cookName,
+                    oCount
                 );
-                if (cook == null)
+                
+                if (cookName == "⚠ غير معيّن")
                     _grid.Rows[i].DefaultCellStyle.ForeColor = Theme.AccentRed;
             }
         }

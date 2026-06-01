@@ -100,15 +100,19 @@ namespace sweetSystem.printerUrils
             // ── Product List ──────────────────────────────────────
             sb.AppendLine(R("الكمية                          الصنف"));
             sb.AppendLine(Line());
-            List<OrderItem> orderItems = MockData.OrderItems
-    .Where(o => o.OrderId == order.Id)
-    .ToList();
-            foreach (var item in orderItems)
+            
+            var dt = DatabaseHelper.ExecuteQuery("SELECT p.product_name, oi.quantity, p.unit FROM order_items oi JOIN products p ON oi.product_name = p.product_name WHERE oi.order_number = @on", new[] { new Microsoft.Data.SqlClient.SqlParameter("@on", order.Id.ToString()) });
+            
+            foreach (System.Data.DataRow row in dt.Rows)
             {
-                string unit = item.Product?.Unit.ToArabicString() 
-                              ?? "";
-                string name = item.Product?.Name ?? "—";
-                sb.AppendLine(ProductLine(name, item.Quantity, unit));
+                string name = row["product_name"].ToString() ?? "—";
+                double qty = Convert.ToDouble(row["quantity"]);
+                string unitStr = row["unit"].ToString() ?? "";
+                
+                string unit = "";
+                try { unit = EnumHelper.FromString<ProductUnit>(unitStr).ToArabicString(); } catch {}
+
+                sb.AppendLine(ProductLine(name, qty, unit));
             }
 
             sb.AppendLine(Line(ThickSeparator));

@@ -25,7 +25,11 @@ namespace sweetSystem.UserControls
             
             GridHelper.AddActionColumns(_grid);
             _grid.CellContentClick += Grid_CellContentClick;
-            LoadGrid();
+            if (!this.DesignMode)
+            {
+                _cbFilter.SelectedIndex = 0;
+                LoadGrid();
+            }
         }
 
         private void CbFilter_SelectedIndexChanged(object sender, EventArgs e) => LoadGrid();
@@ -36,19 +40,37 @@ namespace sweetSystem.UserControls
             var q = _txSearch.Text.Trim().ToLower();
             var f = _cbFilter.SelectedIndex;
 
-            var list = MockData.Customers.Where(c =>
-                (string.IsNullOrEmpty(q) || c.Name.ToLower().Contains(q) || c.Phone.Contains(q)) &&
-                (f == 0 || (f == 1 && c.Balance > 0) || (f == 2 && c.Balance == 0)));
+            string sql = @"
+                SELECT customer_number, name, phone, balance
+                FROM customer
+                WHERE (@q = '' OR LOWER(name) LIKE '%' + @q + '%' OR phone LIKE '%' + @q + '%')";
 
-            foreach (var c in list)
+            var parameters = new System.Collections.Generic.List<Microsoft.Data.SqlClient.SqlParameter>
             {
-                string status = c.Balance == 0 ? "✅ مسدد" : "⚠ عليه رصيد";
-                int i = _grid.Rows.Add(c.Id, c.Name, c.Phone, Theme.LYD(c.Balance), status);
-                if (c.Balance > 0)
+                new Microsoft.Data.SqlClient.SqlParameter("@q", q)
+            };
+
+            if (f == 1) sql += " AND balance > 0";
+            if (f == 2) sql += " AND balance <= 0";
+
+            var dt = DatabaseHelper.ExecuteQuery(sql, parameters.ToArray());
+
+            double totalDebt = 0;
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                string id = row["customer_number"].ToString() ?? "";
+                string name = row["name"].ToString() ?? "";
+                string phone = row["phone"].ToString() ?? "";
+                double balance = Convert.ToDouble(row["balance"]);
+
+                if (balance > 0) totalDebt += balance;
+
+                string status = balance <= 0 ? "✅ مسدد" : "⚠ عليه رصيد";
+                int i = _grid.Rows.Add(id, name, phone, Theme.LYD(balance), status);
+                if (balance > 0)
                     _grid.Rows[i].DefaultCellStyle.ForeColor = Theme.AccentRed;
             }
 
-            double totalDebt = MockData.Customers.Sum(c => c.Balance);
             _lblTotalBal.Text = $"إجمالي الديون في السوق: {Theme.LYD(totalDebt)}";
         }
 
@@ -58,29 +80,48 @@ namespace sweetSystem.UserControls
             string col = _grid.Columns[e.ColumnIndex].Name;
             if (col != "Edit" && col != "Delete" && col != "Deposit") return;
 
-            int id = Convert.ToInt32(_grid.Rows[e.RowIndex].Cells["ID"].Value);
-            var c  = MockData.Customers.First(x => x.Id == id);
+            string customerNum = _grid.Rows[e.RowIndex].Cells["ID"].Value?.ToString() ?? "";
+            
+            var dt = DatabaseHelper.ExecuteQuery("SELECT customer_number, name, phone, balance FROM customer WHERE customer_number = @cn", new[] { new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum) });
+            if (dt.Rows.Count == 0) return;
+            var row = dt.Rows[0];
+            var c = new Customer
+            {
+                Number = customerNum,
+                Name = row["name"].ToString() ?? "",
+                Phone = row["phone"].ToString() ?? "",
+                OpeningBalance = Convert.ToDouble(row["balance"])
+            };
 
             if (col == "Edit")
             {
                 var dlg = new CustomerDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    c.Name = dlg.TxName.Text;
-                    c.Phone = dlg.TxPhone.Text;
-                    if (double.TryParse(dlg.TxBalance.Text, out var b)) c.OpeningBalance = b;
+                    string newName = dlg.TxName.Text;
+                    string phone = dlg.TxPhone.Text;
+                    double.TryParse(dlg.TxBalance.Text, out var b);
+
+                    DatabaseHelper.ExecuteNonQuery("UPDATE customer SET name = @n, phone = @p, balance = @b WHERE customer_number = @cn", new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@n", newName),
+                        new Microsoft.Data.SqlClient.SqlParameter("@p", phone),
+                        new Microsoft.Data.SqlClient.SqlParameter("@b", b),
+                        new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum)
+                    });
                     LoadGrid();
                 }
             }
             else if (col == "Delete")
             {
-                if (MessageBox.Show($"هل تريد بالتأكيد حذف العميل '{c.Name}'؟", "تأكيد الحذف",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                { MockData.Customers.Remove(c); LoadGrid(); }
+                if (MessageBox.Show($"هل تريد بالتأكيد حذف العميل '{c.Name}'؟", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                { 
+                    try { DatabaseHelper.ExecuteNonQuery("DELETE FROM customer WHERE customer_number = @cn", new[] { new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum) }); LoadGrid(); } 
+                    catch { MessageBox.Show("لا يمكن حذف العميل لوجود طلبات أو معاملات مرتبطة به.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
             }
             else if (col == "Deposit")
             {
-                if (c.Balance <= 0)
+                if (c.OpeningBalance <= 0)
                 {
                     MessageBox.Show("هذا العميل ليس عليه ديون.", "معلومة", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -88,24 +129,23 @@ namespace sweetSystem.UserControls
                 var dlg = new DepositDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    // Capture balance before the deposit is applied
-                    double balanceBefore = c.Balance;
+                    double balanceBefore = c.OpeningBalance;
 
-                    // Record a standalone payment (deposit)
-                    MockData.PaymentTransactions.Add(new PaymentTransaction
-                    {
-                        Id = MockData.PaymentTransactions.Count == 0 ? 1 : MockData.PaymentTransactions.Max(t => t.Id) + 1,
-                        CustomerId = c.Id,
-                        Amount = dlg.Amount,
-                        PaymentDate = DateTime.Now,
-                        Notes = "إيداع يدوي"
+                    DatabaseHelper.ExecuteNonQuery("INSERT INTO payment_transaction (id, customer_number, amount, payment_date, notes) VALUES (NEWID(), @cn, @amt, @dt, @notes)", new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum),
+                        new Microsoft.Data.SqlClient.SqlParameter("@amt", dlg.Amount),
+                        new Microsoft.Data.SqlClient.SqlParameter("@dt", DateTime.Now),
+                        new Microsoft.Data.SqlClient.SqlParameter("@notes", "إيداع يدوي")
                     });
 
-                    double balanceAfter = c.Balance;
+                    DatabaseHelper.ExecuteNonQuery("UPDATE customer SET balance = balance - @amt WHERE customer_number = @cn", new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@amt", dlg.Amount),
+                        new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum)
+                    });
 
-                    // Build and print the deposit receipt
-                    string receipt = paperBuilder.BuildDepositReceipt(
-                        c.Name, balanceBefore, dlg.Amount, balanceAfter);
+                    double balanceAfter = balanceBefore - dlg.Amount;
+
+                    string receipt = paperBuilder.BuildDepositReceipt(c.Name, balanceBefore, dlg.Amount, balanceAfter);
                     RawPrinterHelper.PrintOut(receipt);
 
                     MessageBox.Show($"تم إيداع {Theme.LYD(dlg.Amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -120,14 +160,31 @@ namespace sweetSystem.UserControls
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
                 double.TryParse(dlg.TxBalance.Text, out var b);
-                MockData.Customers.Add(new Customer
+                string newName = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "عميل جديد" : dlg.TxName.Text;
+                string newPhone = dlg.TxPhone.Text;
+                
+                string newNum = "1";
+                try {
+                    var maxDt = DatabaseHelper.ExecuteQuery("SELECT ISNULL(MAX(CAST(customer_number AS INT)), 0) + 1 FROM customer");
+                    newNum = maxDt.Rows[0][0].ToString() ?? "1";
+                } catch {
+                    newNum = DateTime.Now.Ticks.ToString().Substring(0, 8);
+                }
+
+                try
                 {
-                    Id = MockData.NextCustomerId(),
-                    Name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "عميل جديد" : dlg.TxName.Text,
-                    Phone = dlg.TxPhone.Text,
-                    OpeningBalance = b
-                });
-                LoadGrid();
+                    DatabaseHelper.ExecuteNonQuery("INSERT INTO customer (customer_number, name, phone, balance) VALUES (@cn, @n, @p, @b)", new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@cn", newNum),
+                        new Microsoft.Data.SqlClient.SqlParameter("@n", newName),
+                        new Microsoft.Data.SqlClient.SqlParameter("@p", newPhone),
+                        new Microsoft.Data.SqlClient.SqlParameter("@b", b)
+                    });
+                    LoadGrid();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("حدث خطأ أثناء إضافة العميل.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

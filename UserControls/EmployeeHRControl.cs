@@ -30,17 +30,31 @@ namespace sweetSystem.UserControls
             var q = _txSearch.Text.Trim().ToLower();
             var f = _cbFilter.SelectedItem?.ToString() ?? "الكل";
 
-            var list = MockData.Employees.Where(e =>
-                (string.IsNullOrEmpty(q) || e.Name.ToLower().Contains(q)) &&
-                (f == "الكل" || MockData.RoleAr(e.Role) == f));
+            string sql = @"
+                SELECT e.phone, e.name, e.role,
+                       (SELECT STRING_AGG(CAST(product_name AS NVARCHAR(MAX)), N'، ') FROM products p WHERE p.maker_phone = e.phone) as skills
+                FROM employee e
+                WHERE (@q = '' OR e.name LIKE '%' + @q + '%')";
 
-            foreach (var emp in list)
+            if (f != "الكل")
             {
-                string skills = emp.Role == EmployeeRole.Cook
-                    ? string.Join("، ", MockData.Products.Where(p => p.MakerId == emp.Id).Select(p => p.Name))
-                    : "—";
-                int i = _grid.Rows.Add(emp.Id, emp.Name, MockData.RoleAr(emp.Role), skills);
-                _grid.Rows[i].DefaultCellStyle.BackColor = emp.Role == EmployeeRole.Cook
+                if (f == "طباخ") sql += " AND e.role = 'cook'";
+                else if (f == "موظف تعبئة") sql += " AND e.role = 'packager'";
+            }
+
+            var dt = DatabaseHelper.ExecuteQuery(sql, new[] { new Microsoft.Data.SqlClient.SqlParameter("@q", q) });
+
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                string roleStr = row["role"].ToString() ?? "";
+                EmployeeRole role = roleStr == "cook" ? EmployeeRole.Cook : EmployeeRole.Packager;
+                
+                string skills = role == EmployeeRole.Cook ? (row["skills"].ToString() ?? "") : "—";
+                if (string.IsNullOrWhiteSpace(skills) && role == EmployeeRole.Cook) skills = "—";
+
+                string roleAr = role == EmployeeRole.Cook ? "طباخ" : "تعبئة وتغليف";
+                int i = _grid.Rows.Add(row["phone"].ToString(), row["name"].ToString(), roleAr, skills);
+                _grid.Rows[i].DefaultCellStyle.BackColor = role == EmployeeRole.Cook
                     ? Color.FromArgb(245, 252, 245) : Color.FromArgb(245, 248, 255);
             }
         }
@@ -51,25 +65,52 @@ namespace sweetSystem.UserControls
             string col = _grid.Columns[e.ColumnIndex].Name;
             if (col != "Edit" && col != "Delete") return;
 
-            int id  = Convert.ToInt32(_grid.Rows[e.RowIndex].Cells["ID"].Value);
-            var emp = MockData.Employees.First(x => x.Id == id);
+            string phone = _grid.Rows[e.RowIndex].Cells["ID"].Value?.ToString() ?? "";
+            string currentName = _grid.Rows[e.RowIndex].Cells["Name"].Value?.ToString() ?? "";
 
             if (col == "Edit")
             {
+                var emp = new Employee { 
+                    Phone = phone, 
+                    Name = currentName, 
+                    Role = _grid.Rows[e.RowIndex].Cells["Role"].Value?.ToString() == "طباخ" ? EmployeeRole.Cook : EmployeeRole.Packager
+                };
+
                 var dlg = new EmployeeDialog(emp);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    emp.Name = dlg.TxName.Text;
-                    emp.Role = dlg.CbRole.SelectedIndex == 0 ? EmployeeRole.Cook : EmployeeRole.Packager;
-                    // SkillProductIds removed — skills are now tracked via Product.MakerId
+                    string newName = dlg.TxName.Text;
+                    string newRole = dlg.CbRole.SelectedIndex == 0 ? "cook" : "packager";
+
+                    DatabaseHelper.ExecuteNonQuery("UPDATE employee SET name = @name, role = @role WHERE phone = @phone", new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@name", newName),
+                        new Microsoft.Data.SqlClient.SqlParameter("@role", newRole),
+                        new Microsoft.Data.SqlClient.SqlParameter("@phone", phone)
+                    });
+
+                    if (newRole == "cook")
+                    {
+                        DatabaseHelper.ExecuteNonQuery("UPDATE products SET maker_phone = NULL WHERE maker_phone = @phone", new[] { new Microsoft.Data.SqlClient.SqlParameter("@phone", phone) });
+                        foreach (var skill in dlg.SelectedSkills)
+                        {
+                            DatabaseHelper.ExecuteNonQuery("UPDATE products SET maker_phone = @phone WHERE product_name = @pn", new[] {
+                                new Microsoft.Data.SqlClient.SqlParameter("@phone", phone),
+                                new Microsoft.Data.SqlClient.SqlParameter("@pn", skill)
+                            });
+                        }
+                    }
+
                     LoadGrid();
                 }
             }
             else
             {
-                if (MessageBox.Show($"هل تريد بالتأكيد حذف الموظف '{emp.Name}'؟", "تأكيد الحذف",
+                if (MessageBox.Show($"هل تريد بالتأكيد حذف الموظف '{currentName}'؟", "تأكيد الحذف",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                { MockData.Employees.Remove(emp); LoadGrid(); }
+                { 
+                    DatabaseHelper.ExecuteNonQuery("DELETE FROM employee WHERE phone = @phone", new[] { new Microsoft.Data.SqlClient.SqlParameter("@phone", phone) });
+                    LoadGrid(); 
+                }
             }
         }
 
@@ -78,13 +119,30 @@ namespace sweetSystem.UserControls
             var dlg = new EmployeeDialog();
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                MockData.Employees.Add(new Employee
-                {
-                    Id = MockData.NextEmployeeId(),
-                    Name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "موظف جديد" : dlg.TxName.Text,
-                    Role = dlg.CbRole.SelectedIndex == 0 ? EmployeeRole.Cook : EmployeeRole.Packager,
-                    // SkillProductIds removed — skills are now tracked via Product.MakerId
+                string name = string.IsNullOrWhiteSpace(dlg.TxName.Text) ? "موظف جديد" : dlg.TxName.Text;
+                string role = dlg.CbRole.SelectedIndex == 0 ? "cook" : "packager";
+                
+                // Generate a dummy phone for now since EmployeeDialog lacks a phone field
+                string newPhone = "09" + new Random().Next(10000000, 99999999).ToString();
+
+                string q = "INSERT INTO employee (phone, name, role, is_available) VALUES (@phone, @name, @role, 1)";
+                DatabaseHelper.ExecuteNonQuery(q, new[] {
+                    new Microsoft.Data.SqlClient.SqlParameter("@phone", newPhone),
+                    new Microsoft.Data.SqlClient.SqlParameter("@name", name),
+                    new Microsoft.Data.SqlClient.SqlParameter("@role", role)
                 });
+
+                if (role == "cook")
+                {
+                    foreach (var skill in dlg.SelectedSkills)
+                    {
+                        DatabaseHelper.ExecuteNonQuery("UPDATE products SET maker_phone = @phone WHERE product_name = @pn", new[] {
+                            new Microsoft.Data.SqlClient.SqlParameter("@phone", newPhone),
+                            new Microsoft.Data.SqlClient.SqlParameter("@pn", skill)
+                        });
+                    }
+                }
+
                 LoadGrid();
             }
         }

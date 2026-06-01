@@ -79,22 +79,26 @@ namespace sweetSystem.UserControls
             var tomorrow = today.AddDays(1);
 
             // 1. Today's Orders (Created today)
-            int todayCount = MockData.Orders.Count(o => o.OrderDate.Date == today);
+            string qToday = "SELECT COUNT(*) FROM [order] WHERE CAST(order_date AS DATE) = CAST(@date AS DATE)";
+            int todayCount = Convert.ToInt32(DatabaseHelper.ExecuteQuery(qToday, new[] { new Microsoft.Data.SqlClient.SqlParameter("@date", today) }).Rows[0][0]);
             _cOrders.Update(todayCount.ToString());
             _cOrders.SubText = "تم إدخالها اليوم";
 
             // 2. Pending Orders (All orders still pending)
-            int pendingCount = MockData.Orders.Count(o => o.Status == OrderStatus.Pending);
+            string qPending = "SELECT COUNT(*) FROM [order] WHERE status = @status";
+            int pendingCount = Convert.ToInt32(DatabaseHelper.ExecuteQuery(qPending, new[] { new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(OrderStatus.Pending)) }).Rows[0][0]);
             _cPending.Update(pendingCount.ToString());
             _cPending.SubText = "بانتظار التجهيز";
 
             // 3. Delivery Orders (All orders marked for delivery)
-            int deliveryCount = MockData.Orders.Count(o => o.IsDelivery);
+            string qDelivery = "SELECT COUNT(*) FROM [order] WHERE is_delivery = 1";
+            int deliveryCount = Convert.ToInt32(DatabaseHelper.ExecuteQuery(qDelivery).Rows[0][0]);
             _cRevenue.Update(deliveryCount.ToString());
             _cRevenue.SubText = "إجمالي طلبات التوصيل";
 
             // 4. Tomorrow's Orders (Scheduled for delivery tomorrow)
-            int tomorrowCount = MockData.Orders.Count(o => o.DeliveryDate.Date == tomorrow);
+            string qTomorrow = "SELECT COUNT(*) FROM [order] WHERE CAST(delivery_date AS DATE) = CAST(@date AS DATE)";
+            int tomorrowCount = Convert.ToInt32(DatabaseHelper.ExecuteQuery(qTomorrow, new[] { new Microsoft.Data.SqlClient.SqlParameter("@date", tomorrow) }).Rows[0][0]);
             _cClients.Update(tomorrowCount.ToString());
             _cClients.SubText = "موعد تسليمها غداً";
 
@@ -115,27 +119,46 @@ namespace sweetSystem.UserControls
             }
 
             _grid.Rows.Clear();
-            var deliveries = MockData.Orders
-                .Where(o => o.DeliveryDate.Date == _selectedDate.Date)
-                .OrderByDescending(x => x.Id);
+            string qDeliveries = @"
+                SELECT o.order_number, o.customer_number, o.customer_name, 
+                       ISNULL(SUM(oi.quantity), 0) as total_items, 
+                       o.total_price, o.status, o.delivery_date
+                FROM [order] o
+                LEFT JOIN order_items oi ON o.order_number = oi.order_number
+                WHERE CAST(o.delivery_date AS DATE) = CAST(@date AS DATE)
+                GROUP BY o.order_number, o.customer_number, o.customer_name, o.total_price, o.status, o.delivery_date
+                ORDER BY o.order_number DESC";
+            var dt = DatabaseHelper.ExecuteQuery(qDeliveries, new[] { new Microsoft.Data.SqlClient.SqlParameter("@date", _selectedDate.Date) });
 
-            foreach (var o in deliveries)
+            foreach (System.Data.DataRow row in dt.Rows)
             {
-                Color rowBg = o.Status switch
+                var statusStr = row["status"].ToString() ?? "";
+                OrderStatus status;
+                try { status = EnumHelper.FromString<OrderStatus>(statusStr); } catch { status = OrderStatus.Pending; }
+                
+                Color rowBg = status switch
                 {
                     OrderStatus.Assigned => Color.FromArgb(228, 244, 228),
                     OrderStatus.Completed => Color.FromArgb(220, 238, 255),
                     _ => Theme.Surface
                 };
-                var orderItems = MockData.OrderItems.Where(oi => oi.OrderId == o.Id);
+
                 int i = _grid.Rows.Add(
-                    o.Id,
-                    o.CustomerId != null ? "جملة" : "قطاعي",
-                    o.CustomerName,
-                    orderItems.Sum(l => l.Quantity),
-                    Theme.LYD(o.TotalPrice),
-                    MockData.OrderStatusAr(o.Status),
-                    o.DeliveryDate.ToString("dd/MM/yyyy"));
+                    row["order_number"].ToString(),
+                    row["customer_number"] != DBNull.Value && !string.IsNullOrEmpty(row["customer_number"].ToString()) ? "جملة" : "قطاعي",
+                    row["customer_name"].ToString(),
+                    Convert.ToDouble(row["total_items"]),
+                    Theme.LYD(Convert.ToDouble(row["total_price"])),
+                    status switch {
+                        OrderStatus.Pending => "معلق",
+                        OrderStatus.InProduction => "قيد التجهيز",
+                        OrderStatus.Completed => "جاهز",
+                        OrderStatus.Delivered => "مسلّم",
+                        OrderStatus.Assigned => "مكلّف",
+                        _ => "غير معروف"
+                    },
+                    Convert.ToDateTime(row["delivery_date"]).ToString("dd/MM/yyyy"));
+                
                 _grid.Rows[i].DefaultCellStyle.BackColor = rowBg;
             }
         }
