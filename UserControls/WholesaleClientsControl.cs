@@ -129,27 +129,48 @@ namespace sweetSystem.UserControls
                 var dlg = new DepositDialog(c);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    double balanceBefore = c.OpeningBalance;
+                    double amount = dlg.Amount;
+                    
+                    // Use BeginInvoke to prevent DataGridView re-entrancy issues when clearing rows inside CellContentClick
+                    this.BeginInvoke(new Action(() => 
+                    {
+                        try 
+                        {
+                            double balanceBefore = c.OpeningBalance;
 
-                    DatabaseHelper.ExecuteNonQuery("INSERT INTO payment_transaction (id, customer_number, amount, payment_date, notes) VALUES (NEWID(), @cn, @amt, @dt, @notes)", new[] {
-                        new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum),
-                        new Microsoft.Data.SqlClient.SqlParameter("@amt", dlg.Amount),
-                        new Microsoft.Data.SqlClient.SqlParameter("@dt", DateTime.Now),
-                        new Microsoft.Data.SqlClient.SqlParameter("@notes", "إيداع يدوي")
-                    });
+                            // 1. Database Operations
+                            DatabaseHelper.ExecuteNonQuery("INSERT INTO payment_transaction (id, customer_number, amount, payment_date, notes) VALUES (NEWID(), @cn, @amt, @dt, @notes)", new[] {
+                                new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum),
+                                new Microsoft.Data.SqlClient.SqlParameter("@amt", amount),
+                                new Microsoft.Data.SqlClient.SqlParameter("@dt", DateTime.Now),
+                                new Microsoft.Data.SqlClient.SqlParameter("@notes", "إيداع يدوي")
+                            });
 
-                    DatabaseHelper.ExecuteNonQuery("UPDATE customer SET balance = balance - @amt WHERE customer_number = @cn", new[] {
-                        new Microsoft.Data.SqlClient.SqlParameter("@amt", dlg.Amount),
-                        new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum)
-                    });
+                            DatabaseHelper.ExecuteNonQuery("UPDATE customer SET balance = balance - @amt WHERE customer_number = @cn", new[] {
+                                new Microsoft.Data.SqlClient.SqlParameter("@amt", amount),
+                                new Microsoft.Data.SqlClient.SqlParameter("@cn", customerNum)
+                            });
 
-                    double balanceAfter = balanceBefore - dlg.Amount;
+                            // 2. IMMEDIATE UI Refresh
+                            LoadGrid();
 
-                    string receipt = paperBuilder.BuildDepositReceipt(c.Name, balanceBefore, dlg.Amount, balanceAfter);
-                    RawPrinterHelper.PrintOut(receipt);
+                            // 3. Success Message
+                            MessageBox.Show($"تم إيداع {Theme.LYD(amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    MessageBox.Show($"تم إيداع {Theme.LYD(dlg.Amount)} بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadGrid();
+                            // 4. Print Receipt (wrapped in try-catch to prevent print errors from breaking the UI)
+                            try 
+                            {
+                                double balanceAfter = balanceBefore - amount;
+                                string receipt = paperBuilder.BuildDepositReceipt(c.Name, balanceBefore, amount, balanceAfter);
+                                RawPrinterHelper.PrintOut(receipt);
+                            } 
+                            catch { /* Ignore printer errors */ }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("حدث خطأ أثناء حفظ الإيداع: " + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }));
                 }
             }
         }

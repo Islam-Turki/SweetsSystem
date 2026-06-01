@@ -16,7 +16,19 @@ namespace sweetSystem
 
     public partial class DepositDialog : BaseDialog
     {
-        public double Amount => (double)NumAmount.Value;
+        private double _maxDebt;
+
+        public double Amount 
+        {
+            get 
+            {
+                if (decimal.TryParse(NumAmount.Text, out decimal val))
+                {
+                    return (double)val;
+                }
+                return (double)NumAmount.Value;
+            }
+        }
 
         public DepositDialog()
         {
@@ -27,11 +39,27 @@ namespace sweetSystem
         {
             Text = $"إيداع للعميل {c.Name}";
 
-            if (c.Balance > 0)
+            // Capture the actual debt value correctly (checking both properties just in case)
+            _maxDebt = Math.Max(c.Balance, c.OpeningBalance);
+
+            if (_maxDebt > 0)
             {
-                NumAmount.Maximum = (decimal)c.Balance;
-                NumAmount.Value = 100.0m;
+                NumAmount.Maximum = (decimal)_maxDebt;
+                // Safely set the initial value without exceeding the maximum
+                NumAmount.Value = Math.Min(100.0m, (decimal)_maxDebt);
             }
+        }
+
+        protected override void BtnSave_Click(object sender, EventArgs e)
+        {
+            // Validation: Prevent depositing more than the current debt
+            if (Amount > _maxDebt)
+            {
+                MessageBox.Show("لا يمكن إيداع مبلغ أكبر من إجمالي الرصيد المدين للعميل.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Abort immediately so base.BtnSave_Click doesn't return DialogResult.OK
+            }
+            
+            base.BtnSave_Click(sender, e);
         }
     }
 }

@@ -42,16 +42,23 @@ namespace sweetSystem
 
         protected override void BtnSave_Click(object sender, EventArgs e)
         {
+            // Fix: ensure the textbox value is fully captured (clear focus / commit)
+            this.ValidateChildren();
+            this.ActiveControl = null;
+
             if (string.IsNullOrWhiteSpace(TxName.Text) || TxName.Text.Any(char.IsDigit))
             {
                 MessageBox.Show("الرجاء إدخال اسم العميل بحروف فقط (بدون أرقام).", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(TxPhone.Text) && !TxPhone.Text.All(char.IsDigit))
+            if (!string.IsNullOrWhiteSpace(TxPhone.Text))
             {
-                MessageBox.Show("الرجاء إدخال رقم الهاتف كأرقام فقط.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (!TxPhone.Text.All(char.IsDigit) || TxPhone.Text.Length != 10)
+                {
+                    MessageBox.Show("رقم الهاتف يجب أن يتكون من 10 أرقام فقط.", "تحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
             if (string.IsNullOrWhiteSpace(TxBalance.Text) || !decimal.TryParse(TxBalance.Text, out _))

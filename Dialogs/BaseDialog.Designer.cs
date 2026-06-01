@@ -46,6 +46,7 @@ namespace sweetSystem
             BtnSave.Size = new Size(130, 35);
             BtnSave.TabIndex = 0;
             BtnSave.Text = "✔ حفظ";
+            BtnSave.CausesValidation = false;
             BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
 
             // BtnCancel
