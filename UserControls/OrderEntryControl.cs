@@ -423,6 +423,33 @@ namespace sweetSystem.UserControls
                     new Microsoft.Data.SqlClient.SqlParameter("@total_price", order.TotalPrice),
                     new Microsoft.Data.SqlClient.SqlParameter("@status", EnumHelper.ToString(order.Status))
                 });
+
+                // --- Wholesale Financial Logic ---
+                if (ws && order.Customer != null)
+                {
+                    // 1. Update Customer Balance (Debt increases by TotalPrice, decreases by PaidAmount)
+                    string updateBalanceSql = "UPDATE customer SET balance = balance + @TotalPrice - @PaidAmount WHERE customer_number = @CustNum";
+                    DatabaseHelper.ExecuteNonQuery(updateBalanceSql, new[] {
+                        new Microsoft.Data.SqlClient.SqlParameter("@TotalPrice", order.TotalPrice),
+                        new Microsoft.Data.SqlClient.SqlParameter("@PaidAmount", order.PaidAmount),
+                        new Microsoft.Data.SqlClient.SqlParameter("@CustNum", order.Customer.Number)
+                    });
+
+                    // 2. Record the Payment Transaction (If PaidAmount > 0)
+                    if (order.PaidAmount > 0)
+                    {
+                        string insertPaymentSql = "INSERT INTO payment_transaction (id, customer_number, order_number, amount, payment_date, notes) VALUES (NEWID(), @CustNum, @OrderNum, @PaidAmount, @PayDate, @Notes)";
+                        DatabaseHelper.ExecuteNonQuery(insertPaymentSql, new[] {
+                            new Microsoft.Data.SqlClient.SqlParameter("@CustNum", order.Customer.Number),
+                            new Microsoft.Data.SqlClient.SqlParameter("@OrderNum", order.Id.ToString()),
+                            new Microsoft.Data.SqlClient.SqlParameter("@PaidAmount", order.PaidAmount),
+                            new Microsoft.Data.SqlClient.SqlParameter("@PayDate", DateTime.Now),
+                            new Microsoft.Data.SqlClient.SqlParameter("@Notes", "دفعة مبدئية مع الطلب")
+                        });
+                    }
+                }
+                // ---------------------------------
+
                 MessageBox.Show($"تم حفظ الطلب #{order.Id} بنجاح!", "تم", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else

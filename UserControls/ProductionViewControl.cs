@@ -51,25 +51,14 @@ namespace sweetSystem.UserControls
                 return;
             }
 
-            var items = new System.Collections.Generic.List<(string ProductName, string Unit, double TotalQuantity)>();
-
-            foreach (DataGridViewRow row in _grid.Rows)
+            try
             {
-                if (row.IsNewRow) continue;
-
-                string name = row.Cells["Product"].Value?.ToString() ?? "—";
-                double qty  = Convert.ToDouble(row.Cells["TotalQty"].Value ?? 0);
-
-                string unitRaw    = row.Cells["Unit"].Value?.ToString() ?? "";
-                string unitArabic = unitRaw;
-                if (Enum.TryParse<ProductUnit>(unitRaw, out var unitEnum))
-                    unitArabic = unitEnum.ToArabicString();
-
-                items.Add((name, unitArabic, qty));
+                PdfReportGenerator.GenerateDailyProductionSheet(_date);
             }
-
-            string slip = paperBuilder.BuildDailyProductionSlip(_date, items);
-            RawPrinterHelper.PrintOut(slip);
+            catch (Exception ex)
+            {
+                MessageBox.Show("حدث خطأ أثناء إنشاء ملف الـ PDF:\n" + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void RefreshGrid()

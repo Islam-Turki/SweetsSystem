@@ -116,8 +116,8 @@ namespace sweetSystem.Dialogs
 
         private Panel BuildProductCard(Product p)
         {
-            const int CARD_W = 170;
-            const int CARD_H = 200;
+            const int CARD_W = 180;
+            const int CARD_H = 280; // Significantly increased height
 
             var card = new Panel
             {
@@ -131,7 +131,7 @@ namespace sweetSystem.Dialogs
             var picBox = new PictureBox
             {
                 Width = CARD_W,
-                Height = 110,
+                Height = 120,
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.FromArgb(245, 239, 230),
                 Cursor = Cursors.Hand,
@@ -150,45 +150,59 @@ namespace sweetSystem.Dialogs
                 }
                 catch
                 {
-                    picBox.Image = BuildPlaceholderImage(CARD_W, 110, p.Name);
+                    picBox.Image = BuildPlaceholderImage(CARD_W, 120, p.Name);
                 }
             }
             else
             {
-                picBox.Image = BuildPlaceholderImage(CARD_W, 110, p.Name);
+                picBox.Image = BuildPlaceholderImage(CARD_W, 120, p.Name);
             }
 
             var nameLabel = new Label
             {
                 Text = p.Name,
                 AutoSize = false,
-                Width = CARD_W - 12,
-                Height = 36,
-                Left = 6,
-                Top = 114,
-                TextAlign = ContentAlignment.MiddleCenter,
+                Width = CARD_W - 10,
+                Height = 45,
                 Font = new Font("Cairo", 8.5f, FontStyle.Bold),
                 ForeColor = Theme.TextPrimary,
                 BackColor = Color.Transparent,
                 Cursor = Cursors.Hand,
-                Tag = p
+                Tag = p,
+                TextAlign = ContentAlignment.TopCenter,
+                Location = new Point(5, 130)
+            };
+
+            string unitText = p.Unit == ProductUnit.Kg ? "كجم" : "قطعة";
+            var unitLabel = new Label
+            {
+                Text = "الوحدة: " + unitText,
+                AutoSize = false,
+                Width = CARD_W - 10,
+                Height = 25,
+                Font = new Font("Cairo", 8f),
+                ForeColor = Theme.TextSecondary,
+                BackColor = Color.Transparent,
+                Cursor = Cursors.Hand,
+                Tag = p,
+                TextAlign = ContentAlignment.TopCenter,
+                Location = new Point(5, 180)
             };
 
             var priceLabel = new Label
             {
                 Text = Theme.LYD(_isWholesale ? p.WholesalePrice : p.Price),
                 AutoSize = false,
-                Width = CARD_W - 12,
-                Height = 20,
-                Left = 6,
-                Top = 150,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Cairo", 8f),
+                Width = CARD_W - 10,
+                Height = 30,
+                Font = new Font("Cairo", 9f, FontStyle.Bold),
                 ForeColor = Theme.AccentGreen,
                 BackColor = Color.Transparent,
                 Cursor = Cursors.Hand,
                 Tag = p,
-                Name = $"price_{p.Id}"
+                Name = $"price_{p.Id}",
+                TextAlign = ContentAlignment.TopCenter,
+                Location = new Point(5, 210)
             };
 
             var minusBtn = new Label
@@ -234,11 +248,11 @@ namespace sweetSystem.Dialogs
                 Text = "+ أضف",
                 AutoSize = false,
                 Width = CARD_W,
-                Height = 28,
+                Height = 32,
                 Left = 0,
-                Top = CARD_H - 28,
+                Top = CARD_H - 32, // Pin to very bottom of the card
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Cairo", 8.5f, FontStyle.Bold),
+                Font = new Font("Cairo", 9f, FontStyle.Bold),
                 ForeColor = Color.White,
                 BackColor = Theme.AccentGreen,
                 Cursor = Cursors.Hand,
@@ -246,7 +260,7 @@ namespace sweetSystem.Dialogs
                 Name = $"add_{p.Id}"
             };
 
-            card.Controls.AddRange(new Control[] { picBox, nameLabel, priceLabel, addBtn, badge, minusBtn });
+            card.Controls.AddRange(new Control[] { picBox, nameLabel, unitLabel, priceLabel, addBtn, badge, minusBtn });
 
             bool hovered = false;
             card.Paint += (_, e) =>

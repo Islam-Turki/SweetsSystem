@@ -146,6 +146,8 @@ namespace sweetSystem
             g.EnableHeadersVisualStyles                 = false;
             g.ColumnHeadersDefaultCellStyle.BackColor   = Theme.AccentGreen;
             g.ColumnHeadersDefaultCellStyle.ForeColor   = Color.White;
+            g.ColumnHeadersDefaultCellStyle.SelectionBackColor = Theme.AccentGreen;
+            g.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
             g.ColumnHeadersDefaultCellStyle.Font        = Theme.FontBodyB;
             g.ColumnHeadersDefaultCellStyle.Alignment   = rtl
                 ? DataGridViewContentAlignment.MiddleLeft

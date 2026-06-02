@@ -16,55 +16,93 @@ namespace sweetSystem.Dialogs
 
         private void InitializeComponent()
         {
-            this._catalogFlow = new System.Windows.Forms.FlowLayoutPanel();
-            this.catalogSearch = new System.Windows.Forms.TextBox();
-            this._lblSelectionCount = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            _catalogFlow = new FlowLayoutPanel();
+            catalogSearch = new TextBox();
+            _lblSelectionCount = new Label();
+            bottomPanel.SuspendLayout();
+            SuspendLayout();
+            // 
+            // BtnSave
+            // 
+            BtnSave.FlatAppearance.BorderSize = 0;
+            BtnSave.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            BtnSave.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            BtnSave.Location = new Point(23, 31);
+            BtnSave.Margin = new Padding(4, 7, 4, 7);
+            BtnSave.Size = new Size(186, 77);
+            // 
+            // BtnCancel
+            // 
+            BtnCancel.FlatAppearance.BorderSize = 0;
+            BtnCancel.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            BtnCancel.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            BtnCancel.Location = new Point(223, 31);
+            BtnCancel.Margin = new Padding(4, 7, 4, 7);
+            BtnCancel.Size = new Size(157, 77);
+            // 
+            // bottomPanel
+            // 
+            bottomPanel.Controls.Add(_lblSelectionCount);
+            bottomPanel.Location = new Point(0, 442);
+            bottomPanel.Margin = new Padding(4, 7, 4, 7);
+            bottomPanel.Size = new Size(1120, 143);
+            bottomPanel.Controls.SetChildIndex(_lblSelectionCount, 0);
+            bottomPanel.Controls.SetChildIndex(BtnCancel, 0);
+            bottomPanel.Controls.SetChildIndex(BtnSave, 0);
             // 
             // _catalogFlow
             // 
-            this._catalogFlow.AutoScroll = true;
-            this._catalogFlow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._catalogFlow.Location = new System.Drawing.Point(0, 29);
-            this._catalogFlow.Name = "_catalogFlow";
-            this._catalogFlow.Padding = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this._catalogFlow.Size = new System.Drawing.Size(784, 532);
-            this._catalogFlow.TabIndex = 0;
+            _catalogFlow.AutoScroll = true;
+            _catalogFlow.Dock = DockStyle.Fill;
+            _catalogFlow.Location = new Point(0, 35);
+            _catalogFlow.Margin = new Padding(4, 7, 4, 7);
+            _catalogFlow.Name = "_catalogFlow";
+            _catalogFlow.Padding = new Padding(9, 11, 9, 11);
+            _catalogFlow.Size = new Size(1120, 550);
+            _catalogFlow.TabIndex = 0;
             // 
             // catalogSearch
             // 
-            this.catalogSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.catalogSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.catalogSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.catalogSearch.Location = new System.Drawing.Point(0, 0);
-            this.catalogSearch.Name = "catalogSearch";
-            this.catalogSearch.PlaceholderText = "🔍 ابحث عن منتج...";
-            this.catalogSearch.Size = new System.Drawing.Size(784, 29);
-            this.catalogSearch.TabIndex = 1;
-            this.catalogSearch.TextChanged += new System.EventHandler(this.CatalogSearch_TextChanged);
+            catalogSearch.BorderStyle = BorderStyle.FixedSingle;
+            catalogSearch.Dock = DockStyle.Top;
+            catalogSearch.Font = new Font("Microsoft Sans Serif", 12F);
+            catalogSearch.Location = new Point(0, 0);
+            catalogSearch.Margin = new Padding(4, 7, 4, 7);
+            catalogSearch.Name = "catalogSearch";
+            catalogSearch.PlaceholderText = "🔍 ابحث عن منتج...";
+            catalogSearch.Size = new Size(1120, 35);
+            catalogSearch.TabIndex = 1;
+            catalogSearch.TextChanged += CatalogSearch_TextChanged;
             // 
             // _lblSelectionCount
             // 
-            this._lblSelectionCount.AutoSize = true;
-            this._lblSelectionCount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._lblSelectionCount.Location = new System.Drawing.Point(300, 20);
-            this._lblSelectionCount.Name = "_lblSelectionCount";
-            this._lblSelectionCount.Size = new System.Drawing.Size(150, 20);
-            this._lblSelectionCount.TabIndex = 2;
-            this._lblSelectionCount.Text = "تم اختيار 0 منتجات";
-            this.bottomPanel.Controls.Add(this._lblSelectionCount);
+            _lblSelectionCount.AutoSize = true;
+            _lblSelectionCount.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            _lblSelectionCount.Location = new Point(429, 44);
+            _lblSelectionCount.Margin = new Padding(4, 0, 4, 0);
+            _lblSelectionCount.Name = "_lblSelectionCount";
+            _lblSelectionCount.Size = new Size(166, 28);
+            _lblSelectionCount.TabIndex = 2;
+            _lblSelectionCount.Text = "تم اختيار 0 منتجات";
             // 
             // ChooseProductsDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this._catalogFlow);
-            this.Controls.Add(this.catalogSearch);
-            this.Name = "ChooseProductsDialog";
-            this.Text = "اختيار المنتجات";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(10F, 33F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1120, 585);
+            Controls.Add(_catalogFlow);
+            Controls.Add(catalogSearch);
+            Margin = new Padding(4, 7, 4, 7);
+            Name = "ChooseProductsDialog";
+            Text = "اختيار المنتجات";
+            WindowState = FormWindowState.Maximized;
+            Controls.SetChildIndex(catalogSearch, 0);
+            Controls.SetChildIndex(_catalogFlow, 0);
+            Controls.SetChildIndex(bottomPanel, 0);
+            bottomPanel.ResumeLayout(false);
+            bottomPanel.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         private System.Windows.Forms.FlowLayoutPanel _catalogFlow;

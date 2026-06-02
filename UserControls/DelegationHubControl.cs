@@ -14,9 +14,31 @@ namespace sweetSystem.UserControls
         {
             InitializeComponent();
             this.BackColor = Theme.Background;
+            this.Font = new Font("Cairo", 10f);
             ConfigureGrids(); // Set up columns and styling
             LoadData();
             SetTabStyle(true);
+            
+            this.Load += (s, e) => ApplyCairoFont(this);
+        }
+
+        private void ApplyCairoFont(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                c.Font = new Font("Cairo", c.Font.Size, c.Font.Style);
+                
+                if (c is DataGridView grid)
+                {
+                    grid.DefaultCellStyle.Font = new Font("Cairo", grid.DefaultCellStyle.Font.Size, grid.DefaultCellStyle.Font.Style);
+                    grid.ColumnHeadersDefaultCellStyle.Font = new Font("Cairo", grid.ColumnHeadersDefaultCellStyle.Font.Size, grid.ColumnHeadersDefaultCellStyle.Font.Style);
+                }
+
+                if (c.HasChildren)
+                {
+                    ApplyCairoFont(c);
+                }
+            }
         }
         private void BuildContent()
         {
@@ -257,6 +279,12 @@ namespace sweetSystem.UserControls
             // Style the Grids (Using your GridHelper)
             GridHelper.Style(_pendingGrid, readOnly: true, rtl: true);
             GridHelper.Style(_packagerGrid, readOnly: true, rtl: true);
+
+            // Explicitly enforce Cairo font on DataGridViews
+            _pendingGrid.DefaultCellStyle.Font = new Font("Cairo", 10f);
+            _pendingGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Cairo", 10f, FontStyle.Bold);
+            _packagerGrid.DefaultCellStyle.Font = new Font("Cairo", 10f);
+            _packagerGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Cairo", 10f, FontStyle.Bold);
 
             // Define Pending Grid Columns
             _pendingGrid.Columns.Clear();

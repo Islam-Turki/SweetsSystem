@@ -33,11 +33,14 @@ namespace sweetSystem
             _packagers = new List<Employee>();
         }
 
+        private DateTime _targetDate;
+
         /// <summary>
         /// Creates the dialog pre-loaded with the pending orders for the given date.
         /// </summary>
         public AutoAssignDialog(DateTime targetDate) : this()
         {
+            _targetDate = targetDate;
             _pendingOrders = new List<Order>();
             string sqlOrders = @"
                 SELECT order_number, customer_number, CAST(order_date AS DATE) as odate, delivery_date, is_delivery, payment_status, total_price, status, notes
@@ -163,9 +166,15 @@ namespace sweetSystem
                 });
 
                 Assignments.Add((order, packager));
+            }
 
-                string ticket = paperBuilder.BuildOrderTicket(order);
-                RawPrinterHelper.PrintOut(ticket);
+            try
+            {
+                PdfReportGenerator.GenerateAutoAssignReport(_targetDate);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("حدث خطأ أثناء إنشاء ملف الـ PDF:\n" + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             DialogResult = DialogResult.OK;

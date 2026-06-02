@@ -77,8 +77,14 @@ namespace sweetSystem
                 _order.Packager = new Employee { Name = selectedName, Phone = packagerPhone, Role = EmployeeRole.Packager };
                 _order.Status = OrderStatus.Assigned;
 
-                string ticket = paperBuilder.BuildOrderTicket(_order);
-                RawPrinterHelper.PrintOut(ticket);
+                try
+                {
+                    PdfReportGenerator.GenerateOrderAssignmentPdf(_order.Id.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("حدث خطأ أثناء إنشاء ملف الـ PDF:\n" + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 DialogResult = DialogResult.OK;
                 Close();
@@ -88,8 +94,15 @@ namespace sweetSystem
         private void BtnPrint_Click(object sender, EventArgs e)
         {
             if (_order == null) return;
-            string ticket = paperBuilder.BuildOrderTicket(_order);
-            MessageBox.Show(ticket, "معاينة الطباعة", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            try
+            {
+                PdfReportGenerator.GenerateOrderAssignmentPdf(_order.Id.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("حدث خطأ أثناء إنشاء ملف الـ PDF:\n" + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CbPackager_SelectedIndexChanged(object sender, EventArgs e)
